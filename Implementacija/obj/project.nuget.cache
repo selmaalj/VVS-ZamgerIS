@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "ivdmlFoiehO6P4hPsuivmNWmb00DA8Qov4PyNMQ/vyGbbgUaA5pwY7/ik9H0E6IuIdBA/Mys3RORc6adk0d/pg==",
+  "dgSpecHash": "oS2CC+RnIGfs6S7++zT3WXpw250Lu3e56JhgmRyPlke2tnKWUbOVqEO17HmLbPV1/EESs6pLapQQpwriEaNK+g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Nedim\\source\\repos\\ooadproject\\ooadproject.csproj",
+  "projectFilePath": "C:\\Users\\Nedim\\source\\repos\\ooadproject\\Implementacija\\ooadproject.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Nedim\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Nedim\\.nuget\\packages\\messagepack\\2.1.152\\messagepack.2.1.152.nupkg.sha512",

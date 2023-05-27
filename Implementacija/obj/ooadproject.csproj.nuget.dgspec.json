@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Nedim\\source\\repos\\ooadproject\\ooadproject.csproj": {}
+    "C:\\Users\\Nedim\\source\\repos\\ooadproject\\Implementacija\\ooadproject.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Nedim\\source\\repos\\ooadproject\\ooadproject.csproj": {
+    "C:\\Users\\Nedim\\source\\repos\\ooadproject\\Implementacija\\ooadproject.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Nedim\\source\\repos\\ooadproject\\ooadproject.csproj",
+        "projectUniqueName": "C:\\Users\\Nedim\\source\\repos\\ooadproject\\Implementacija\\ooadproject.csproj",
         "projectName": "ooadproject",
-        "projectPath": "C:\\Users\\Nedim\\source\\repos\\ooadproject\\ooadproject.csproj",
+        "projectPath": "C:\\Users\\Nedim\\source\\repos\\ooadproject\\Implementacija\\ooadproject.csproj",
         "packagesPath": "C:\\Users\\Nedim\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Nedim\\source\\repos\\ooadproject\\obj\\",
+        "outputPath": "C:\\Users\\Nedim\\source\\repos\\ooadproject\\Implementacija\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Nedim\\AppData\\Roaming\\NuGet\\NuGet.Config",
