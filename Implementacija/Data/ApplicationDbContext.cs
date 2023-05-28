@@ -52,6 +52,15 @@ namespace ooadproject.Data
             .HasForeignKey(se => se.CourseID)
             .OnDelete(DeleteBehavior.NoAction);
 
+            modelBuilder.Entity<Teacher>()
+            .HasBaseType<Person>();
+
+            modelBuilder.Entity<Notification>()
+            .HasOne(se => se.Recipient)
+            .WithMany()
+            .HasForeignKey(se => se.RecipientID)
+            .OnDelete(DeleteBehavior.NoAction);
+
 
             base.OnModelCreating(modelBuilder);
         }

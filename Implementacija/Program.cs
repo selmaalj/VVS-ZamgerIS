@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using ooadproject.Data;
 using ooadproject.Models;
 
@@ -11,27 +12,24 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<Person>(options => options.SignIn.RequireConfirmedAccount = false)
-        .AddEntityFrameworkStores<ApplicationDbContext>();
+builder.Services.AddDefaultIdentity<Person>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = false;
+    options.Password = new PasswordOptions
+    {
+        RequireDigit = false,
+        RequiredLength = 5,
+        RequireLowercase = false,
+        RequireUppercase = false,
+        RequireNonAlphanumeric = false
+    };
+}).AddRoles<IdentityRole<int>>()
+ .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
 
 builder.Services.AddControllersWithViews();
-/*
-builder.Services.AddAuthentication(o =>
-{
-    o.DefaultScheme = IdentityConstants.ApplicationScheme;
-    o.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-})
-.AddIdentityCookies(o => { });
-*/
 
-builder.Services.AddIdentityCore<Person>(o =>
-{
-    o.Stores.MaxLengthForKeys = 128;
-    o.SignIn.RequireConfirmedAccount = false;
-    o.Password.RequiredLength = 8;
-})
-.AddDefaultUI()
-.AddDefaultTokenProviders();
 
 var app = builder.Build();
 

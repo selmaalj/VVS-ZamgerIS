@@ -1,8 +1,9 @@
 {
   "ExpandedNodes": [
     "",
-    "\\Implementacija"
+    "\\Implementacija",
+    "\\Implementacija\\Models"
   ],
-  "SelectedNode": "\\Implementacija\\appsettings.json",
+  "SelectedNode": "\\Implementacija\\Models\\Person.cs",
   "PreviewInSolutionExplorer": false
 }
