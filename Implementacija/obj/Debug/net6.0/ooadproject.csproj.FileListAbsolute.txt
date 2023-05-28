@@ -558,3 +558,4 @@ C:\Users\Nedim\source\repos\ooadproject\Implementacija\obj\Debug\net6.0\refint\o
 C:\Users\Nedim\source\repos\ooadproject\Implementacija\obj\Debug\net6.0\ooadproject.pdb
 C:\Users\Nedim\source\repos\ooadproject\Implementacija\obj\Debug\net6.0\ooadproject.genruntimeconfig.cache
 C:\Users\Nedim\source\repos\ooadproject\Implementacija\obj\Debug\net6.0\ref\ooadproject.dll
+C:\Users\Nedim\source\repos\ooadproject\Implementacija\bin\Debug\net6.0\Microsoft.AspNet.Identity.Core.dll
