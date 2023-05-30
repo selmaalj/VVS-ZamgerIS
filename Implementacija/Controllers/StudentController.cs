@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,6 +14,7 @@ using ooadproject.Models;
 
 namespace ooadproject.Controllers
 {
+
     [Authorize]
     public class StudentController : Controller
     {
@@ -26,6 +29,8 @@ namespace ooadproject.Controllers
             _passwordHasher = passwordHasher;   
         }
        
+
+
 
         // GET: Student
         public async Task<IActionResult> Index()
@@ -45,6 +50,7 @@ namespace ooadproject.Controllers
 
             var student = await _context.Student
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (student == null)
             {
                 return NotFound();
@@ -64,6 +70,7 @@ namespace ooadproject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+
       //  public async Task<IActionResult> Create([Bind("Index,Department,Year,Id,FirstName,LastName,UserName,Email,NormalizedUserName,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] Student student)
             public async Task<IActionResult> Create([Bind("Index,Department,Year,Id,FirstName,LastName,UserName,Email")] Student student)
         {
@@ -87,7 +94,9 @@ namespace ooadproject.Controllers
             return View(student);
         }
 
+
         [Authorize(Roles="Student")]
+
         // GET: Student/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -109,9 +118,11 @@ namespace ooadproject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Edit(int id, [Bind("Index,Department,Year,Id,FirstName,LastName,UserName,Email,NormalizedUserName,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] Student student)
         {
             if (id != student.Id)
+
             {
                 return NotFound();
             }
@@ -125,7 +136,9 @@ namespace ooadproject.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
+
                     if (!StudentExists(student.Id))
+
                     {
                         return NotFound();
                     }
@@ -149,6 +162,7 @@ namespace ooadproject.Controllers
 
             var student = await _context.Student
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (student == null)
             {
                 return NotFound();
@@ -178,7 +192,9 @@ namespace ooadproject.Controllers
 
         private bool StudentExists(int id)
         {
+
           return (_context.Student?.Any(e => e.Id == id)).GetValueOrDefault();
+
         }
     }
 }
