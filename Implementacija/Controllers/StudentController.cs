@@ -70,8 +70,8 @@ namespace ooadproject.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
 
-        //  public async Task<IActionResult> Create([Bind("Index,Department,Year,Id,FirstName,LastName,UserName,Email,NormalizedUserName,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] Student student)
-        public async Task<IActionResult> Create([Bind("Index,Department,Year,Id,FirstName,LastName,UserName,Email")] Student student)
+          public async Task<IActionResult> Create([Bind("Index,Department,Year,Id,FirstName,LastName,UserName,Email,NormalizedUserName,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] Student student)
+      //  public async Task<IActionResult> Create([Bind("Index,Department,Year,Id,FirstName,LastName,UserName,Email")] Student student)
         {
             if (ModelState.IsValid)
             {
