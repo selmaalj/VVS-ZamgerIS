@@ -1,5 +1,8 @@
 ﻿@page
 @model LoginModel
+@using ooadproject.Models
+@inject SignInManager<Person> SignInManager
+@inject UserManager<Person> UserManager
 
 @{
     ViewData["Title"] = "Log in";

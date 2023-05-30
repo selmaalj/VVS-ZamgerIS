@@ -23,6 +23,10 @@ builder.Services.AddDefaultIdentity<Person>(options =>
         RequireUppercase = false,
         RequireNonAlphanumeric = false
     };
+    options.SignIn.RequireConfirmedEmail = false;
+    options.SignIn.RequireConfirmedAccount = false;
+    options.SignIn.RequireConfirmedPhoneNumber = false;
+    options.Lockout.MaxFailedAccessAttempts = 1000;
 }).AddRoles<IdentityRole<int>>()
  .AddEntityFrameworkStores<ApplicationDbContext>();
 

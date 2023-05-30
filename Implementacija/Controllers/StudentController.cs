@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -12,6 +12,7 @@ using ooadproject.Models;
 
 namespace ooadproject.Controllers
 {
+    [Authorize]
     public class StudentController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -63,7 +64,8 @@ namespace ooadproject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Index,Department,Year,Id,FirstName,LastName,UserName,Email,NormalizedUserName,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] Student student)
+      //  public async Task<IActionResult> Create([Bind("Index,Department,Year,Id,FirstName,LastName,UserName,Email,NormalizedUserName,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] Student student)
+            public async Task<IActionResult> Create([Bind("Index,Department,Year,Id,FirstName,LastName,UserName,Email")] Student student)
         {
             if (ModelState.IsValid)
             {
@@ -85,6 +87,7 @@ namespace ooadproject.Controllers
             return View(student);
         }
 
+        [Authorize(Roles="Student")]
         // GET: Student/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
