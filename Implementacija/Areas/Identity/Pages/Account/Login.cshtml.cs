@@ -14,18 +14,28 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using ooadproject.Models;
+using System.Security.Claims;
+
 
 namespace ooadproject.Areas.Identity.Pages.Account
 {
     public class LoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly SignInManager<Person> _signInManager;
         private readonly ILogger<LoginModel> _logger;
-
-        public LoginModel(SignInManager<IdentityUser> signInManager, ILogger<LoginModel> logger)
+        private readonly IPasswordHasher<Person> _passwordHasher;
+        private readonly UserManager<Person> _userManager;
+        public LoginModel(SignInManager<Person> signInManager, 
+                          ILogger<LoginModel> logger, 
+                          IPasswordHasher<Person> passwordHasher, 
+                          UserManager<Person> userManager
+            )
         {
             _signInManager = signInManager;
             _logger = logger;
+            _passwordHasher = passwordHasher;
+            _userManager = userManager;
         }
 
         /// <summary>
@@ -111,13 +121,40 @@ namespace ooadproject.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
-                if (result.Succeeded)
+
+                // Modified login
+                // var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+                var user = await _userManager.FindByEmailAsync(Input.Email);
+                var result = _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, Input.Password);
+                var role = await _userManager.GetRolesAsync(user);
+                if (result.HasFlag(PasswordVerificationResult.Success))
                 {
+                    // manual creation of authentication cookie
+
+                    var claims = new List<Claim>
+                    {
+                        new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                        new Claim(ClaimTypes.Name, user.UserName),
+                        new Claim(ClaimTypes.Email, user.Email),
+                        new Claim(ClaimTypes.Role, role[0]),
+                        // Add any additional custom claims as needed
+                    };
+
+
+                    var claimsIdentity = new ClaimsIdentity(claims, "ApplicationCookie");
+                    var authProperties = new AuthenticationProperties
+                    {
+                        IsPersistent = Input.RememberMe
+                        // Set any other properties of the authentication cookie as needed
+                    };
+
+                    await HttpContext.SignInAsync("Identity.Application", new ClaimsPrincipal(claimsIdentity), authProperties);
+                    await _signInManager.RefreshSignInAsync(user);
                     _logger.LogInformation("User logged in.");
+                    // end
                     return LocalRedirect(returnUrl);
                 }
-                if (result.RequiresTwoFactor)
+             /*   if (result.RequiresTwoFactor)
                 {
                     return RedirectToPage("./LoginWith2fa", new { ReturnUrl = returnUrl, RememberMe = Input.RememberMe });
                 }
@@ -125,7 +162,7 @@ namespace ooadproject.Areas.Identity.Pages.Account
                 {
                     _logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
-                }
+                } */
                 else
                 {
                     ModelState.AddModelError(string.Empty, "Invalid login attempt.");

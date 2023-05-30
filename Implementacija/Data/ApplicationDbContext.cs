@@ -1,10 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using ooadproject.Models;
 
 namespace ooadproject.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<Person, IdentityRole<int>, int>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -49,6 +50,15 @@ namespace ooadproject.Data
             .HasOne(se => se.Course)
             .WithMany()
             .HasForeignKey(se => se.CourseID)
+            .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Teacher>()
+            .HasBaseType<Person>();
+
+            modelBuilder.Entity<Notification>()
+            .HasOne(se => se.Recipient)
+            .WithMany()
+            .HasForeignKey(se => se.RecipientID)
             .OnDelete(DeleteBehavior.NoAction);
 
 
