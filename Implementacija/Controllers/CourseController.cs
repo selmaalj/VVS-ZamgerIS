@@ -19,6 +19,21 @@ namespace ooadproject.Controllers
             _context = context;
         }
 
+        public List<SelectListItem>  GetTeacherNamesList()
+        {
+            List<SelectListItem> Teachers = new List<SelectListItem>();
+
+            foreach (var item in _context.Teacher)
+            {
+                Teachers.Add(new SelectListItem() { Text = $"{item.Title} {item.FirstName} {item.LastName}", Value = item.Id.ToString() });
+            }
+
+            return Teachers;
+
+        }
+
+
+        // prikaziSvePredmete()
         // GET: Course
         public async Task<IActionResult> Index()
         {
@@ -26,6 +41,8 @@ namespace ooadproject.Controllers
             return View(await applicationDbContext.ToListAsync());
         }
 
+
+        //
         // GET: Course/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -45,10 +62,13 @@ namespace ooadproject.Controllers
             return View(course);
         }
 
+        
+        // kreirajPredmet()
         // GET: Course/Create
         public IActionResult Create()
         {
-            ViewData["TeacherID"] = new SelectList(_context.Teacher, "Id", "Id");
+            // putting teacher names in list to display on Create form
+            ViewData["TeacherID"] = new SelectList(GetTeacherNamesList(), "Value", "Text");
             return View();
         }
 
@@ -82,7 +102,7 @@ namespace ooadproject.Controllers
             {
                 return NotFound();
             }
-            ViewData["TeacherID"] = new SelectList(_context.Teacher, "Id", "Id", course.TeacherID);
+            ViewData["TeacherID"] = new SelectList(GetTeacherNamesList(), "Value", "Text");
             return View(course);
         }
 
