@@ -33,8 +33,7 @@ namespace ooadproject.Controllers
         }
 
 
-        // prikaziSvePredmete()
-        // GET: Course
+
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Course.Include(c => c.Teacher);
@@ -42,8 +41,7 @@ namespace ooadproject.Controllers
         }
 
 
-        //
-        // GET: Course/Details/5
+ 
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Course == null)
@@ -63,8 +61,6 @@ namespace ooadproject.Controllers
         }
 
         
-        // kreirajPredmet()
-        // GET: Course/Create
         public IActionResult Create()
         {
             // putting teacher names in list to display on Create form
@@ -72,9 +68,7 @@ namespace ooadproject.Controllers
             return View();
         }
 
-        // POST: Course/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,Name,TeacherID,AcademicYear,ECTS,Semester")] Course course)
@@ -89,7 +83,7 @@ namespace ooadproject.Controllers
             return View(course);
         }
 
-        // GET: Course/Edit/5
+
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Course == null)
@@ -106,9 +100,7 @@ namespace ooadproject.Controllers
             return View(course);
         }
 
-        // POST: Course/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,Name,TeacherID,AcademicYear,ECTS,Semester")] Course course)
@@ -142,7 +134,6 @@ namespace ooadproject.Controllers
             return View(course);
         }
 
-        // GET: Course/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Course == null)
@@ -161,7 +152,7 @@ namespace ooadproject.Controllers
             return View(course);
         }
 
-        // POST: Course/Delete/5
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -184,10 +175,27 @@ namespace ooadproject.Controllers
         {
           return (_context.Course?.Any(e => e.ID == id)).GetValueOrDefault();
         }
-        public async Task<IActionResult> CourseStatus()
+
+        public async Task<IActionResult> CourseStatus(Course course)
         {
-            var applicationDbContext = _context.Course.Include(c => c.Teacher);
-            return View(await applicationDbContext.ToListAsync());
+            var StudentCourses = await _context.StudentCourse.Where(sc => sc.Course == course).ToListAsync();
+            var Students = new List<Student>();
+            foreach (var item in StudentCourses)
+            {
+                Students.Add(item.Student);
+            }
+
+            var Exams = await _context.Exam.Where(e => e.Course == course).ToListAsync();
+            
+            var Homeworks = await _context.Homework.Where(h => h.Course == course).ToListAsync();
+
+            return ViewBag(Students, Exams, Homeworks);
         }
+
+        /* @egraca3
+        public async Task<IActionResult> EvaluateGrades()
+        {
+
+        } */
     }
 }
