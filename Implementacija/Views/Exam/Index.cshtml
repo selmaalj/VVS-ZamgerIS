@@ -32,9 +32,10 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+            var name = item.Course.Name;
+            <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Course.ID)
+                @Html.DisplayFor(modelItem => name)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Time)

@@ -22,7 +22,35 @@ namespace ooadproject.Controllers
             _userManager = userManager;
         }
 
-        // GET: Exam
+        public List<SelectListItem> GetExamTypesList()
+        {
+            List<SelectListItem> Types = new List<SelectListItem>();
+            var EnumValues = Enum.GetValues(typeof(ExamType));
+
+            foreach (var value in EnumValues)
+            {
+                Types.Add(new SelectListItem
+                {
+                    Text = value.ToString(),
+                    Value = ((int)value).ToString()
+                });
+            }
+
+            return Types;
+
+        }
+        public List<SelectListItem> GetCourseNamesList()
+        {
+            List<SelectListItem> Courses = new List<SelectListItem>();
+
+            foreach (var item in _context.Course.Where(c => c.Teacher.Id == _userManager.GetUserAsync(User).Id))
+            {
+                Courses.Add(new SelectListItem() { Text = item.Name, Value = item.ID.ToString() });
+            }
+
+            return Courses;
+
+        }
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Exam.Include(e => e.Course);
@@ -51,16 +79,16 @@ namespace ooadproject.Controllers
             return View(exam);
         }
 
-        // GET: Exam/Create
+
         public IActionResult Create()
-        {
+        {   
+
             ViewData["CourseID"] = new SelectList(_context.Course, "ID", "ID");
+            ViewData["ExamTypes"] = GetExamTypesList();
+            ViewData["CourseNames"] = GetCourseNamesList();
             return View();
         }
 
-        // POST: Exam/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,CourseID,Time,Type,TotalPoints,MinimumPoints")] Exam exam)
@@ -75,7 +103,6 @@ namespace ooadproject.Controllers
             return RedirectToAction(nameof(Index)); 
         }
 
-        // POST: Exam/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
