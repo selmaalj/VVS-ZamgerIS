@@ -39,11 +39,14 @@ namespace ooadproject.Controllers
             return Types;
 
         }
-        public List<SelectListItem> GetCourseNamesList()
+        public async Task<List<SelectListItem>> GetCourseNamesList()
         {
-            List<SelectListItem> Courses = new List<SelectListItem>();
+            var user = await _userManager.GetUserAsync(User);
 
-            foreach (var item in _context.Course.Where(c => c.Teacher.Id == _userManager.GetUserAsync(User).Id))
+            var Courses = new List<SelectListItem>();
+            
+            var UserCourses = await _context.Course.Where(c => c.Teacher.Id == user.Id).ToListAsync();
+            foreach (var item in UserCourses)
             {
                 Courses.Add(new SelectListItem() { Text = item.Name, Value = item.ID.ToString() });
             }
@@ -60,7 +63,6 @@ namespace ooadproject.Controllers
             return View(exams);
         }
 
-        // GET: Exam/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Exam == null)
@@ -80,12 +82,12 @@ namespace ooadproject.Controllers
         }
 
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {   
 
-            ViewData["CourseID"] = new SelectList(_context.Course, "ID", "ID");
+            ViewData["CourseID"] = await GetCourseNamesList();
             ViewData["ExamTypes"] = GetExamTypesList();
-            ViewData["CourseNames"] = GetCourseNamesList();
+          //  ViewData["CourseNames"] = ;
             return View();
         }
 

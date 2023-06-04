@@ -176,8 +176,9 @@ namespace ooadproject.Controllers
           return (_context.Course?.Any(e => e.ID == id)).GetValueOrDefault();
         }
 
-        public async Task<IActionResult> CourseStatus(Course course)
+        public async Task<IActionResult> CourseStatus(int? id)
         {
+            var course = await _context.Course.FindAsync(id);
             var StudentCourses = await _context.StudentCourse.Where(sc => sc.Course == course).ToListAsync();
             var Students = new List<Student>();
             foreach (var item in StudentCourses)
