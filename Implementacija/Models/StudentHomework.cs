@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ooadproject.Models
 {
-    public class StudentHomework
+    public class StudentHomework: IActivity
     {
         [Key]
         public int ID { get; set; }
@@ -20,5 +20,20 @@ namespace ooadproject.Models
         public string Comment { get; set; }
 
         public StudentHomework() { }
+
+        public double GetPointsScored()
+        {
+            return PointsScored;
+        }
+
+        public double GetTotalPoints()
+        {
+            return Homework.TotalPoints;
+        }
+
+        public DateTime GetActivityDate()
+        {
+            return Homework.Deadline.Date;
+        }
     }
 }
