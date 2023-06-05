@@ -1,88 +1,62 @@
 ﻿@model IEnumerable<ooadproject.Models.Teacher>
-@inject SignInManager<Person> SignInManager
-@inject UserManager<Person> UserManager
 
 @{
     ViewData["Title"] = "Index";
 }
 
-@section SideMenu {
-    <ul class="list-unstyled ps-0">
-        <li class="mb-1">
-            <a class="btn align-items-center rounded-active" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-page="/Teacher/Index">Početna</a>
-        </li>
-        <li class="mb-1">
-            <button class="btn btn-toggle align-items-center rounded collapsed text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" data-bs-toggle="collapse" data-bs-target="#home-collapse1" aria-expanded="true">
-                <i class="fa-solid fa-arrow-right" style="font-size: 1rem;"></i>
-                Izvještaji
-            </button>
-            <div class="collapse" id="home-collapse1">
-                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" style="padding-left: 1rem;">
-                    <li><a class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-page="">Pregled predmeta</a></li>
-                    <li><a class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-page="">Pregled predmeta</a></li>
-                    <li><a class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-page="">Pregled predmeta</a></li>
-                    <!-- For each course in Model.CourseNames display a link to the course page
-                                            foreach(var courseName in Model.CourseNames)
-                    {
-                                            <li><a href="#" class="link-dark rounded text-decoration-none">courseName</a></li>
-                                        }
-                                        -->
-                </ul>
-            </div>
-        </li>
-        <li class="mb-1">
-            <button class="btn btn-toggle align-items-center rounded collapsed text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" data-bs-toggle="collapse" data-bs-target="#home-collapse2" aria-expanded="true">
-                <i class="fa-solid fa-arrow-right" style="font-size: 1rem;"></i>
-                Unos rezultata studenata
-            </button>
-            <div class="collapse" id="home-collapse2">
-                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" style="padding-left: 1rem;">
-                    <li><a class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-page="">Pregled predmeta</a></li>
-                    <li><a class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-page="">Pregled predmeta</a></li>
-                    <li><a class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-page="">Pregled predmeta</a></li>
-                    <!-- For each course in Model.CourseNames display a link to the course page
-                                            foreach(var courseName in Model.CourseNames)
-                    {
-                                            <li><a href="#" class="link-dark rounded text-decoration-none">courseName</a></li>
-                                        }
-                                        -->
-                </ul>
-            </div>
-        </li>
-        <li class="mb-1">
-            <a class="btn align-items-center rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-page="">Ispiti</a>
-        </li>
-    </ul>
-}
-@if (SignInManager.IsSignedIn(User))
-{
-    <h1 class="pb-5">Dobro došli, @User.Identity?.Name!</h1>
-    <h2 class="pb-3">Aktuelni ispiti</h2>
-    /* Create table with all the current open exams that the teacher is assigned to*/
-    /* For each exam in Model.Exams display a row with the exam information */
-    /* Maybe add check if no exams are open, don't showt table */
-    <table class="table table-bordered">
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
         <tr>
-            <th>Predmet</th>
-            <th>Ispit</th>
-            <th>Datum</th>
-            <th>Prijavljeno</th>
-            <th>Opcije</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LastName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+   
+            <th></th>
         </tr>
-        <!--   """Code to add later""""
-        foreach (var exam in Model)
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
         {
             <tr>
-                <td>exam.name</td>
-                <td>student.type</td>
-                <td>student.date</td>
-                <td>exam.prijavljeno</td>
                 <td>
-                    <a href="#" class="link-dark rounded text-decoration-none">Uredi</a>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
                 </td>
             </tr>
         }
-         -->
-    </table>
-    <h2 class="pb-3 pt-5">Obavještenja</h2>
-}
+    </tbody>
+</table>

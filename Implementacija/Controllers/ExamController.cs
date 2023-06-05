@@ -59,7 +59,7 @@ namespace ooadproject.Controllers
             var applicationDbContext = _context.Exam.Include(e => e.Course);
             var user = await _userManager.GetUserAsync(User);
             var courses = await _context.Course.Where(c => c.TeacherID == user.Id).ToListAsync();
-            var exams = await _context.Exam.Where(e => courses.Contains(e.Course)).ToListAsync();
+            var exams = await _context.Exam.Include(e => e.Course).Where(e => courses.Contains(e.Course)).ToListAsync();
             return View(exams);
         }
 
