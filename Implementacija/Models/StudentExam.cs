@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ooadproject.Models
 {
-    public class StudentExam
+    public class StudentExam: IActivity
     {
         [Key]
         public int ID { get; set; }
@@ -21,5 +21,20 @@ namespace ooadproject.Models
         public bool IsPassed { get; set; }
 
         public StudentExam() { }
+
+        public double GetPointsScored()
+        {
+            return PointsScored;
+        }
+
+        public double GetTotalPoints()
+        {
+            return Exam.TotalPoints;
+        }
+
+        public DateTime GetActivityDate()
+        {
+            return Exam.Time.Date;
+        }
     }
 }
