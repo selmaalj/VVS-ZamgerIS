@@ -60,8 +60,9 @@ namespace ooadproject.Controllers
             var student = await _userManager.GetUserAsync(User);
 
             var StudentCourses = await _context.StudentCourse.Include(sc => sc.Course).Where(sc => sc.StudentID == student.Id).ToListAsync();
+            var notifications = await GetUserNotificationsAsync();
             ViewData["Courses"] = StudentCourses;
-            ViewData["Notifications"] = GetUserNotificationsAsync();
+            ViewData["Notifications"] = notifications;
 
             return View();
         }
@@ -73,9 +74,10 @@ namespace ooadproject.Controllers
 
             var Courses = await _context.Course.Where(c => c.TeacherID == teacher.Id).ToListAsync();
             var Exams = await _context.Exam.Include(e => e.Course).Where(e => e.Course.TeacherID == teacher.Id && e.Time > DateTime.Now).ToListAsync();
+            var notifications = await GetUserNotificationsAsync();
 
             ViewData["Courses"] = Courses;
-            ViewData["Notifications"] = GetUserNotificationsAsync();
+            ViewData["Notifications"] = notifications;
             ViewData["Exams"] = Exams;
 
             return View();
@@ -89,9 +91,10 @@ namespace ooadproject.Controllers
 
             var Courses = await _context.Course.Where(c => c.TeacherID == teacher.Id).ToListAsync();
             var Exams = await _context.Exam.Include(e => e.Course).Where(e => e.Course.TeacherID == teacher.Id && e.Time > DateTime.Now).ToListAsync();
+            var notifications = await GetUserNotificationsAsync();
 
             ViewData["Courses"] = Courses;
-            ViewData["Notifications"] = GetUserNotificationsAsync();
+            ViewData["Notifications"] = notifications;
             ViewData["Exams"] = Exams;
 
             return View();
