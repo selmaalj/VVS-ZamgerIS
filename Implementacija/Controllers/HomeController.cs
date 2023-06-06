@@ -44,14 +44,14 @@ namespace ooadproject.Controllers
             {
                 return RedirectToAction(nameof(StudentHome));
             }
+            else if(role == "StudentService")
+            {
+                return RedirectToAction(nameof(StudentServiceHome));
+            }
             else
             {
                 return RedirectToAction(nameof(TeacherHome));
-            }
-
-
-        
-           
+            }     
         }
 
 
