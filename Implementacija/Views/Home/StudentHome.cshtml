@@ -22,11 +22,7 @@
                     {
                     <li><a class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" 
                         asp-page="/StudentCourse/StudentCourseStatus/@course.ID">@course.Course.Name</a></li>
-                    
-                    }
-
-
-                
+                    }                
                 </ul>
             </div>
         </li>
@@ -44,5 +40,22 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <h1 class="pb-3">Dobro došli, @User.Identity?.Name!</h1>
+    <hr />
     <h2>Obavijesti</h2>
+    @if (ViewBag.Notifications.Count == 0)
+    {
+        <div style="padding-left: 1rem; padding-top: 1rem;">
+            <h3>Trenutno nema novih obavještenja</h3>
+        </div>
+    }
+    else
+    {
+        @foreach (var notification in ViewBag.Notifications)
+        {
+            <a class="link-dark rounded text-decoration-none btn-lg d-flex justify-content-start align-items-center mb-1" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'">
+                <i class="far fa-bell me-3" style="font-size: 1.5rem;"></i>
+                @notification.Title: @notification.Description
+            </a>
+        }
+    }
 }
