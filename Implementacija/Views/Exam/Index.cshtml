@@ -47,28 +47,22 @@
         </li>
     </ul>
 }
-<h1>Index</h1>
+<h1 class="pb-4">Aktuelni ispiti</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table table-bordered border-dark">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Course)
+                Predmet
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Time)
+                Ispit
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Type)
+                Datum
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TotalPoints)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MinimumPoints)
+                Prijavljeno
             </th>
             <th></th>
         </tr>
@@ -81,23 +75,25 @@
                 @Html.DisplayFor(modelItem => name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Time)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Type)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TotalPoints)
+                    @Html.DisplayFor(modelItem => item.Time)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MinimumPoints)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.ID">Uredi</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Detalji</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Izbriši</a>
             </td>
-        </tr>
-}
+        </tr>}
     </tbody>
 </table>
+<h1 class="pb-4">Kreiraj ispit</h1>
+
+<div style="padding-left: 20px;">
+    <a class="btn btn-secondary" style="background-color: #0e6efd; color: white;" onmouseover="this.style.backgroundColor='#4c84ff'" onmouseout="this.style.backgroundColor='#0e6efd'" asp-action="Create">Kreiraj novi ispit</a>
+</div>
+
