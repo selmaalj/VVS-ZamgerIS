@@ -48,49 +48,48 @@
     </ul>
 }
 
-<h1>Edit</h1>
+<h1>Uredite ispit</h1>
 
-<h4>Exam</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="ID" />
-            <div class="form-group">
-                <label asp-for="CourseID" class="control-label"></label>
+            <div class="form-group pb-2">
+                <label asp-for="CourseID" class="control-label pb-1">Predmet</label>
                 <select asp-for="CourseID" class="form-control" asp-items="ViewBag.CourseID"></select>
                 <span asp-validation-for="CourseID" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Time" class="control-label"></label>
+            <div class="form-group pb-2">
+                <label asp-for="Time" class="control-label pb-1">Vrijeme</label>
                 <input asp-for="Time" class="form-control" />
                 <span asp-validation-for="Time" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
+            <div class="form-group pb-2">
+                <label asp-for="Type" class="control-label pb-1">Tip ispita</label>
                 <select asp-for="Type" class="form-control" asp-items="ViewBag.ExamTypes"></select>
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="TotalPoints" class="control-label"></label>
+            <div class="form-group pb-2">
+                <label asp-for="TotalPoints" class="control-label pb-1">Ukupni bodovi</label>
                 <input asp-for="TotalPoints" class="form-control" />
                 <span asp-validation-for="TotalPoints" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="MinimumPoints" class="control-label"></label>
+            <div class="form-group pb-2">
+                <label asp-for="MinimumPoints" class="control-label pb-1">Prag</label>
                 <input asp-for="MinimumPoints" class="form-control" />
                 <span asp-validation-for="MinimumPoints" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="form-group pt-1">
+                <input type="submit" value="Sačuvaj Izmjene" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="pt-2">Vratite se</a>
 </div>
 
 @section Scripts {

@@ -54,31 +54,31 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Course)
+            Kurs
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Course.ID)
+            @Html.DisplayFor(model => model.Course.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Time)
+            Vrijeme
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Time)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Type)
+            Tip ispita
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Type)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TotalPoints)
+            Ukupni bodovi
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.TotalPoints)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.MinimumPoints)
+            Prag
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.MinimumPoints)
@@ -86,6 +86,6 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.ID">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.ID">Uredi</a> |
+    <a asp-action="Index">Vratite se</a>
 </div>
