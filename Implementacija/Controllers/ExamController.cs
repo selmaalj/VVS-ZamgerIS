@@ -60,6 +60,7 @@ namespace ooadproject.Controllers
             var user = await _userManager.GetUserAsync(User);
             var courses = await _context.Course.Where(c => c.TeacherID == user.Id).ToListAsync();
             var exams = await _context.Exam.Include(e => e.Course).Where(e => courses.Contains(e.Course)).ToListAsync();
+            ViewData["Courses"] = courses;
             return View(exams);
         }
 
@@ -73,6 +74,8 @@ namespace ooadproject.Controllers
             var exam = await _context.Exam
                 .Include(e => e.Course)
                 .FirstOrDefaultAsync(m => m.ID == id);
+            var user = await _userManager.GetUserAsync(User);
+            ViewData["Courses"] = await _context.Course.Where(c => c.TeacherID == user.Id).ToListAsync();
             if (exam == null)
             {
                 return NotFound();
@@ -84,10 +87,11 @@ namespace ooadproject.Controllers
 
         public async Task<IActionResult> Create()
         {   
-
+            var user = await _userManager.GetUserAsync(User);
             ViewData["CourseID"] = await GetCourseNamesList();
             ViewData["ExamTypes"] = GetExamTypesList();
-          //  ViewData["CourseNames"] = ;
+            ViewData["Courses"] = await _context.Course.Where(c => c.TeacherID == user.Id).ToListAsync();
+            //  ViewData["CourseNames"] = ;
             return View();
         }
 
@@ -118,10 +122,65 @@ namespace ooadproject.Controllers
             {
                 _context.Exam.Remove(exam);
             }
-            
+            var user = await _userManager.GetUserAsync(User);
+            ViewData["Courses"] = await _context.Course.Where(c => c.TeacherID == user.Id).ToListAsync();
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null || _context.Exam == null)
+            {
+                return NotFound();
+            }
+
+            var exam = await _context.Exam.FindAsync(id);
+            if (exam == null)
+            {
+                return NotFound();
+            }
+            ViewData["CourseID"] = new SelectList(await _context.Course.ToListAsync(), "ID", "Name", exam.CourseID);
+            ViewData["Courses"] = await _context.Course.ToListAsync();
+            ViewData["ExamTypes"] = GetExamTypesList();
+            return View(exam);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, [Bind("ID,CourseID,Time,Type,TotalPoints,MinimumPoints")] Exam exam)
+        {
+            if (id != exam.ID)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    _context.Update(exam);
+                    await _context.SaveChangesAsync();
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    if (!ExamExists(id))
+                    {
+                        return NotFound();
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            ViewData["CourseID"] = new SelectList(await _context.Course.ToListAsync(), "ID", "Name", exam.CourseID);
+            ViewData["Courses"] = await _context.Course.ToListAsync();
+            ViewData["ExamTypes"] = GetExamTypesList();
+            return View(exam);
+        }
+
 
         private bool ExamExists(int id)
         {
