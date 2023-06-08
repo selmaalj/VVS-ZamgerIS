@@ -6,7 +6,7 @@
 @section SideMenu {
     <ul class="list-unstyled ps-0">
         <li class="mb-1">
-            <a class="btn align-items-center rounded-active" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-page="/Teacher/Index">Početna</a>
+            <a class="btn align-items-center rounded-active" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="Home" asp-action="TeacherHome">Početna</a>
         </li>
         <li class="mb-1">
             <button class="btn btn-toggle align-items-center rounded collapsed text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" data-bs-toggle="collapse" data-bs-target="#home-collapse1" aria-expanded="true">
@@ -19,7 +19,7 @@
                     @foreach (var course in ViewBag.Courses)
                     {
                         <li>
-                            <a class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'">@course.Name</a>
+                            <a asp-controller="Course" asp-action="CourseStatus" asp-route-id="@course.ID" class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'">@course.Name</a>
                         </li>
                     }
                 </ul>
@@ -43,7 +43,7 @@
             </div>
         </li>
         <li class="mb-1">
-            <a class="btn align-items-center rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="Exam" asp-action="Index">Ispiti</a>
+            <a class="btn align-items-center rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="Exam" asp-action="Index" data-viewbag="@ViewBag.">Ispiti</a>
         </li>
     </ul>
 }
