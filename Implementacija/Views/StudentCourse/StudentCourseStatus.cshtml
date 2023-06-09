@@ -1,3 +1,73 @@
 ﻿@{
-    ViewBag["Title"] = ViewBag.StudentCourse.Course.Name;
+    ViewData["Title"] = "StudentCourseStatus";
 }
+
+@section SideMenu {
+    <ul class="list-unstyled ps-0">
+        <li class="mb-1">
+            <a class="btn align-items-center rounded-active" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="Home" asp-action="StudentHome">Početna</a>
+        </li>
+
+        <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded collapsed text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                <i class="fa-solid fa-arrow-right" style="font-size: 1rem;"></i>
+                Predmeti
+            </button>
+            <div class="collapse" id="home-collapse">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" style="padding-left: 1rem;">
+                    @foreach (var course in ViewBag.Courses)
+                    {
+                        <li>
+                            <a class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'"
+                               asp-controller="StudentCourse" asp-action="StudentCourseStatus" asp-route-id="@course.ID">@course.Course.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </li>
+        <li class="mb-1">
+            <a class="btn align-items-center rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-page="">Aktuelni zahtjevi</a>
+        </li>
+        <li class="mb-1">
+            <a class="btn align-items-center rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="ExamRegistration" asp-action="Index">Prijava ispita</a>
+        </li>
+        <li class="mb-1">
+            <a class="btn align-items-center rounded text-deco" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="StudentCourse" asp-action="">Pregled rezultata studija</a>
+        </li>
+    </ul>
+}
+<h1>@ViewBag.StudentCourse.Course.Name</h1>
+<h2>@ViewBag.StudentCourse.Course.Teacher.GetFullName()</h2>
+<div class="progress">
+    <div class="progress-bar" role="progressbar" aria-valuenow="@ViewBag.PointsScored" aria-valuemin="0" aria-valuemax="@ViewBag.TotalPoints" style="width: @((double)ViewBag.PointsScored / (double)ViewBag.TotalPoints * 100)%"></div>
+
+</div>
+<h3>Ostvarili ste @ViewBag.PointsScored/@ViewBag.TotalPoints</h3>
+@if (ViewBag.Activities != null && ViewBag.Activities.Count > 0)
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>Tip</th>
+                <th>Naziv</th>
+                <th>Datum</th>
+                <th>Ukupno bodova</th>
+                <th>Mogućih</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var activity in ViewBag.Activities)
+            {
+                <tr>
+                    <td>@activity.GetActivityType()</td>
+                    <td>@activity.GetActivityName()</td>
+                    <td>@activity.GetActivityDate()</td>
+                    <td>@activity.GetPointsScored()</td>
+                    <td>@activity.GetTotalPoints()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+
