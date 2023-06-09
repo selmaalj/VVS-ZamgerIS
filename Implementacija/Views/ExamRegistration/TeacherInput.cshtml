@@ -1,0 +1,85 @@
+﻿@model IEnumerable<ooadproject.Models.ExamRegistration>
+@{
+    ViewData["Title"] = ViewBag.CurrentCourse.Name;
+}
+@section SideMenu {
+    <ul class="list-unstyled ps-0">
+        <li class="mb-1">
+            <a class="btn align-items-center rounded-active" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="Home" asp-action="TeacherHome">Početna</a>
+        </li>
+        <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded collapsed text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" data-bs-toggle="collapse" data-bs-target="#home-collapse1" aria-expanded="true">
+                <i class="fa-solid fa-arrow-right" style="font-size: 1rem;"></i>
+                Izvještaji
+            </button>
+            <div class="collapse" id="home-collapse1">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" style="padding-left: 1rem;">
+                    <!--Display all courses a teacher is teaching-->
+                    @foreach (var course in ViewBag.Courses)
+                    {
+                        <li>
+                            <a asp-controller="Course" asp-action="CourseStatus" asp-route-id="@course.ID" class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'">@course.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </li>
+        <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded collapsed text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" data-bs-toggle="collapse" data-bs-target="#home-collapse2" aria-expanded="true">
+                <i class="fa-solid fa-arrow-right" style="font-size: 1rem;"></i>
+                Unos rezultata studenata
+            </button>
+            <div class="collapse" id="home-collapse2">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" style="padding-left: 1rem;">
+                    <!-- For each course in Model.CourseNames display a link to the course page-->
+                    @foreach (var course in ViewBag.Courses)
+                    {
+                        <li>
+                            <a class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'">@course.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </li>
+        <li class="mb-1">
+            <a class="btn align-items-center rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="Exam" asp-action="Index" data-viewbag="@ViewBag.">Ispiti</a>
+        </li>
+    </ul>
+}
+<h1 class="pb-3">@ViewBag.CurrentCourse.Name</h1>
+<table class="table table-bordered pb-5">
+    <tr>
+        <th>Student</th>
+        @foreach (var exam in ViewBag.Exams)
+        {
+            <th>
+                @exam.Type
+                (@exam.Time)
+            </th>
+        }
+        <th></th>
+    </tr>
+    <!-- Data rows go here -->
+
+</table>
+<h2 class="pt-3">Grupni unos rezultata</h2>
+<div class="row mb-3">
+    <div class="col-md-4">
+        <form>
+            <div class="form-group">
+                <label class="control-label pb-1 pt-3">Ispit</label>
+                <!--Kasnije kada se doda Homework, pridodati na ovo i Homework-->
+                <select class="form-control"></select>
+            </div>
+
+            <div class="form-group">
+                <label for="linkInput" class="control-label pb-1 pt-3">Link</label>
+                <input type="url" class="form-control" id="linkInput" placeholder="Unesite spreadsheet link">
+            </div>
+
+            <button type="submit" class="btn btn-primary mt-3">Unesi</button>
+        </form>
+    </div>
+</div>
+
+
