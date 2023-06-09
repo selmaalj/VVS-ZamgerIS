@@ -39,8 +39,9 @@ namespace ooadproject.Controllers
 
             ViewData["RegisteredExams"] = registeredExams;
             ViewData["OpenedExams"] = openedExams;
+            ViewData["Courses"] = studentCourses;
 
-            return View();
+            return View(openedExams);
         }
 
   

@@ -3,45 +3,82 @@
 @{
     ViewData["Title"] = "Index";
 }
+@section SideMenu {
+    <ul class="list-unstyled ps-0">
+        <li class="mb-1">
+            <a class="btn align-items-center rounded-active" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="Home" asp-action="StudentHome">Početna</a>
+        </li>
 
-<h1>Index</h1>
+        <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded collapsed text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
+                <i class="fa-solid fa-arrow-right" style="font-size: 1rem;"></i>
+                Predmeti
+            </button>
+            <div class="collapse" id="home-collapse">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" style="padding-left: 1rem;">
+                    @foreach (var course in ViewBag.Courses)
+                    {
+                        <li>
+                            <a class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="StudentCourse" asp-action="StudentCourseStatus" asp-route-id="@course.ID">@course.Course.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </li>
+        <li class="mb-1">
+            <a class="btn align-items-center rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-page="">Aktuelni zahtjevi</a>
+        </li>
+        <li class="mb-1">
+            <a class="btn align-items-center rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="ExamRegistration" asp-action="Index">Prijava ispita</a>
+        </li>
+        <li class="mb-1">
+            <a class="btn align-items-center rounded text-deco" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="StudentCourse" asp-action="">Pregled rezultata studija</a>
+        </li>
+    </ul>
+}
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<h1 class="pb-3">Aktuelni ispiti</h1>
+<table class="table table-bordered">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Student)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Exam)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RegistrationTime)
-            </th>
-            <th></th>
+            <th>Predmet</th>
+            <th>Ispit</th>
+            <th>Datum</th>
+            <th>Status</th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Student.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Exam.ID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RegistrationTime)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var exam in ViewBag.OpenedExams)
+        {
+            <tr>
+                <td>@exam.Exam.Course.Name</td>
+                <td>@exam.Exam.Type</td>
+                <td>@exam.Exam.Time</td>
+                <td><a>Prijavi se</a></td>
+            </tr>
+        }
     </tbody>
 </table>
+<h1 class="pb-3">Prijavljeni ispiti</h1>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Predmet</th>
+            <th>Ispit</th>
+            <th>Datum</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var exam in ViewBag.RegisteredExams)
+        {
+            <tr>
+                <td>@exam.Exam.Course.Name</td>
+                <td>@exam.Exam.Type</td>
+                <td>@exam.Exam.Time</td>
+                <td><a>Odjavi se</a></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
