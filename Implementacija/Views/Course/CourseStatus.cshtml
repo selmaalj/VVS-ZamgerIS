@@ -35,7 +35,7 @@
                     @foreach (var course in ViewBag.Courses)
                     {
                         <li>
-                            <a asp-controller="ExamRegistration" asp-action="TeacherInput" asp-route-id="@course.ID" class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'">@course.Name</a>
+                            <a asp-controller="StudentExam" asp-action="TeacherInput" asp-route-id="@course.ID" class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'">@course.Name</a>
                         </li>
                     }
                 </ul>

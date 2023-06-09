@@ -42,22 +42,6 @@ namespace ooadproject.Controllers
 
             return View(openedExams);
         }
-        //Create function that returns every type of open exam and homework as a SelectListItem on the specific course by CourseID
-        public async Task<IActionResult> TeacherInput(int id)
-        {
-            var user = await _userManager.GetUserAsync(User);
-            var courses = await _context.Course.Where(c => c.TeacherID == user.Id).ToListAsync();
-            var currentCourse = await _context.Course.FindAsync(id);
-            var exams = await _context.Exam.Include(e => e.Course).Where(e => courses.Contains(e.Course)).ToListAsync();
-            ViewData["Courses"] = courses;
-            ViewData["Exams"] = exams;
-            ViewData["CurrentCourse"] = currentCourse;
-            return View();
-        }
-
-  
-
-
         // POST: ExamRegistration/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
