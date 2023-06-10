@@ -148,6 +148,34 @@ namespace ooadproject.Controllers
             ViewData["TotalPoints"] = Scored;
             return View();
         }
+        //View that shows the status of all courses for a student based on the year of study
+        public async Task<IActionResult> StudentOverallStatus(int? id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var courses = await _context.StudentCourse.Include(sc => sc.Course).Where(sc => sc.StudentID == user.Id).ToListAsync();
+
+            //Create a set of courses where the grade is bigger than 5
+            var CoursesWithGrade = new List<StudentCourse>();
+            foreach (var item in courses)
+            {
+                if (item.Grade > 5)
+                {
+                    CoursesWithGrade.Add(item);
+                }
+            }
+            ViewData["GradedCourses"] = CoursesWithGrade;
+            ViewData["Courses"] = courses;
+            //Calculate the average grade for all courses
+            double AverageGrade = 0;
+            foreach (var item in CoursesWithGrade)
+            {
+                AverageGrade += item.Grade;
+            }
+            AverageGrade /= CoursesWithGrade.Count;
+            ViewData["AverageGrade"] = AverageGrade;
+
+            return View();
+        }
 
         private bool StudentCourseExists(int id)
         {

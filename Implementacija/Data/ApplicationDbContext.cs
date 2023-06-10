@@ -66,7 +66,7 @@ namespace ooadproject.Data
             .HasForeignKey(se => se.RecipientID)
             .OnDelete(DeleteBehavior.NoAction);
 
-
+           
 
             base.OnModelCreating(modelBuilder);
         }

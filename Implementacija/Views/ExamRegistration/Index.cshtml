@@ -19,7 +19,8 @@
                     @foreach (var course in ViewBag.Courses)
                     {
                         <li>
-                            <a class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="StudentCourse" asp-action="StudentCourseStatus" asp-route-id="@course.ID">@course.Course.Name</a>
+                            <a class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'"
+                               asp-controller="StudentCourse" asp-action="StudentCourseStatus" asp-route-id="@course.ID">@course.Course.Name</a>
                         </li>
                     }
                 </ul>
@@ -32,7 +33,7 @@
             <a class="btn align-items-center rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="ExamRegistration" asp-action="Index">Prijava ispita</a>
         </li>
         <li class="mb-1">
-            <a class="btn align-items-center rounded text-deco" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="StudentCourse" asp-action="">Pregled rezultata studija</a>
+            <a class="btn align-items-center rounded text-deco" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="StudentCourse" asp-action="StudentOverallStatus">Pregled rezultata studija</a>
         </li>
     </ul>
 }
@@ -48,7 +49,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var exam in ViewBag.OpenedExams)
+        @foreach (var exam in (List<ExamRegistration>)ViewData["OpenedExams"])
         {
             <tr>
                 <td>@exam.Exam.Course.Name</td>
@@ -81,4 +82,5 @@
         }
     </tbody>
 </table>
+
 
