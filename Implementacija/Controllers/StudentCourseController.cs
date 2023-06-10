@@ -113,6 +113,12 @@ namespace ooadproject.Controllers
             var user = await _userManager.GetUserAsync(User);
             var courses = await _context.StudentCourse.Include(sc => sc.Course).Where(sc => sc.StudentID == user.Id).ToListAsync();
             var StudentCourse = await _context.StudentCourse.FindAsync(id);
+            StudentCourse.Course.Teacher = await _context.Teacher.FindAsync(StudentCourse.Course.TeacherID);
+            //Set Teacher for every StudentCourse.Course
+            foreach (var item in courses)
+            {
+                item.Course.Teacher = await _context.Teacher.FindAsync(item.Course.TeacherID);
+            }
    
             var StudentExams = await _context.StudentExam.Where(se => se.CourseID == id).ToListAsync();
             var StudentHomeworks = await _context.StudentHomework.Where(sh => sh.CourseID == id).ToListAsync();
