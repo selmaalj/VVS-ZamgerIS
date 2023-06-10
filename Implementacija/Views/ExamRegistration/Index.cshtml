@@ -48,7 +48,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var exam in ViewBag.OpenedExams)
+        @foreach (var exam in (List<ExamRegistration>)ViewData["OpenedExams"])
         {
             <tr>
                 <td>@exam.Exam.Course.Name</td>
@@ -81,4 +81,5 @@
         }
     </tbody>
 </table>
+
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using MessagePack.Formatters;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -50,13 +51,24 @@ namespace ooadproject.Controllers
             return Courses;
 
         }
+        public int GetExamRegistrations(int id)
+        {
+            return _context.ExamRegistration.Where(er => er.ExamID == id).CountAsync().Result;
+
+        }
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Exam.Include(e => e.Course);
             var user = await _userManager.GetUserAsync(User);
             var courses = await _context.Course.Where(c => c.TeacherID == user.Id).ToListAsync();
             var exams = await _context.Exam.Include(e => e.Course).Where(e => courses.Contains(e.Course)).ToListAsync();
+            var registered = new Dictionary<int, int>();
+            foreach (var item in exams)
+            {
+                registered.Add(item.ID, GetExamRegistrations(item.ID));
+            }
             ViewData["Courses"] = courses;
+            ViewData["RegisteredForExam"] = registered;
             return View(exams);
         }
 

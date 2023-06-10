@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    var Registrations = (Dictionary<int,int>) ViewData["RegisteredForExam"];
 }
 @section SideMenu {
     <ul class="list-unstyled ps-0">
@@ -68,6 +69,7 @@
         </tr>
     </thead>
     <tbody>
+
 @foreach (var item in Model) {
             var name = item.Course.Name;
             <tr>
@@ -81,7 +83,7 @@
                     @Html.DisplayFor(modelItem => item.Time)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MinimumPoints)
+                @Html.DisplayFor(modelItem => Registrations[item.ID])
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ID">Uredi</a> |

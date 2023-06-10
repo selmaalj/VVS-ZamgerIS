@@ -31,17 +31,21 @@ namespace ooadproject.Controllers
             var studentCourses = await _context.StudentCourse.Include(sc => sc.Course).Where(c => c.StudentID == user.Id).ToListAsync();
             var courses = studentCourses.Select(c => c.Course).ToList();
             var exams = await _context.Exam.Include(e => e.Course).Where(e => courses.Contains(e.Course) && e.Time > DateTime.Now).ToListAsync();
+            var examsID = exams.Select(exams => exams.ID).ToList();
 
-            var registrations = await _context.ExamRegistration.Include(er => er.Exam).Where(er => exams.Contains(er.Exam)).ToListAsync();
-            var registeredExams = registrations.Select(r => r.Exam);
+            var registrations = await _context.ExamRegistration.Include(er => er.Exam).Where(er => examsID.Contains(er.ExamID) && er.StudentID == user.Id).ToListAsync();
 
-            var openedExams = registrations.Where(r => exams.Contains(r.Exam) && !registeredExams.Contains(r.Exam)).ToList();
+            var registeredExams = registrations.Select(r => r.Exam).ToList();
 
-            ViewData["RegisteredExams"] = registeredExams;
+            var openedExams = registrations.Where(r => examsID.Contains(r.ExamID) && !registeredExams.Contains(r.Exam))
+                                        //   .Select(r => r.Exam)
+                                           .ToList();
+
+            ViewData["RegisteredExams"] = registrations;
             ViewData["OpenedExams"] = openedExams;
             ViewData["Courses"] = studentCourses;
 
-            return View(openedExams);
+            return View();
         }
         // POST: ExamRegistration/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
