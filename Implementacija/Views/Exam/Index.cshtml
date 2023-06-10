@@ -3,29 +3,66 @@
 @{
     ViewData["Title"] = "Index";
 }
+@section SideMenu {
+    <ul class="list-unstyled ps-0">
+        <li class="mb-1">
+            <a class="btn align-items-center rounded-active" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-page="/Teacher/Index">Početna</a>
+        </li>
+        <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded collapsed text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" data-bs-toggle="collapse" data-bs-target="#home-collapse1" aria-expanded="true">
+                <i class="fa-solid fa-arrow-right" style="font-size: 1rem;"></i>
+                Izvještaji
+            </button>
+            <div class="collapse" id="home-collapse1">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" style="padding-left: 1rem;">
+                    <!--Display all courses a teacher is teaching-->
+                    @foreach (var course in ViewBag.Courses)
+                    {
+                        <li>
+                            <a class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'">@course.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </li>
+        <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded collapsed text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" data-bs-toggle="collapse" data-bs-target="#home-collapse2" aria-expanded="true">
+                <i class="fa-solid fa-arrow-right" style="font-size: 1rem;"></i>
+                Unos rezultata studenata
+            </button>
+            <div class="collapse" id="home-collapse2">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" style="padding-left: 1rem;">
+                    <!-- For each course in Model.CourseNames display a link to the course page-->
+                    @foreach (var course in ViewBag.Courses)
+                    {
+                        <li>
+                            <a class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'">@course.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </li>
+        <li class="mb-1">
+            <a class="btn align-items-center rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="Exam" asp-action="Index">Ispiti</a>
+        </li>
+    </ul>
+}
+<h1 class="pb-4">Aktuelni ispiti</h1>
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table table-bordered border-dark">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Course)
+                Predmet
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Time)
+                Ispit
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Type)
+                Datum
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.TotalPoints)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.MinimumPoints)
+                Prijavljeno
             </th>
             <th></th>
         </tr>
@@ -38,23 +75,25 @@
                 @Html.DisplayFor(modelItem => name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Time)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Type)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TotalPoints)
+                    @Html.DisplayFor(modelItem => item.Time)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.MinimumPoints)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.ID">Uredi</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Detalji</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Izbriši</a>
             </td>
-        </tr>
-}
+        </tr>}
     </tbody>
 </table>
+<h1 class="pb-4">Kreiraj ispit</h1>
+
+<div style="padding-left: 20px;">
+    <a class="btn btn-secondary" style="background-color: #0e6efd; color: white;" onmouseover="this.style.backgroundColor='#4c84ff'" onmouseout="this.style.backgroundColor='#0e6efd'" asp-action="Create">Kreiraj novi ispit</a>
+</div>
+

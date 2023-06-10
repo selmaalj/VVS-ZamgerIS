@@ -1,46 +1,91 @@
 ﻿@model ooadproject.Models.Exam
+@{
+    ViewData["Title"] = "Kreirajte ispit";
+}
+@section SideMenu {
+    <ul class="list-unstyled ps-0">
+        <li class="mb-1">
+            <a class="btn align-items-center rounded-active" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-page="/Teacher/Index">Početna</a>
+        </li>
+        <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded collapsed text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" data-bs-toggle="collapse" data-bs-target="#home-collapse1" aria-expanded="true">
+                <i class="fa-solid fa-arrow-right" style="font-size: 1rem;"></i>
+                Izvještaji
+            </button>
+            <div class="collapse" id="home-collapse1">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" style="padding-left: 1rem;">
+                    <!--Display all courses a teacher is teaching-->
+                    @foreach (var course in ViewBag.Courses)
+                    {
+                        <li>
+                            <a class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'">@course.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </li>
+        <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded collapsed text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" data-bs-toggle="collapse" data-bs-target="#home-collapse2" aria-expanded="true">
+                <i class="fa-solid fa-arrow-right" style="font-size: 1rem;"></i>
+                Unos rezultata studenata
+            </button>
+            <div class="collapse" id="home-collapse2">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" style="padding-left: 1rem;">
+                    <!-- For each course in Model.CourseNames display a link to the course page-->
+                    @foreach (var course in ViewBag.Courses)
+                    {
+                        <li>
+                            <a class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'">@course.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </li>
+        <li class="mb-1">
+            <a class="btn align-items-center rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="Exam" asp-action="Index">Ispiti</a>
+        </li>
+    </ul>
+}
+<h1>Kreiraj ispit</h1>
 
-<h1>Create</h1>
-
-<h4>Exam</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CourseID" class="control-label"></label>
-                <select asp-for="CourseID" class="form-control" asp-items="@(ViewBag.CourseID as IEnumerable<SelectListItem>)"></select>
+            <div class="form-group pb-2" >
+                <label asp-for="CourseID" class="control-label pb-1"> Predmet</label>
+                <select asp-for="CourseID" class="form-control" onmouseover="this.style.cursor='pointer'" asp-items="@(ViewBag.CourseID as IEnumerable<SelectListItem>)"></select>
             </div>
-            <div class="form-group">
-                <label asp-for="Time" class="control-label"></label>
-                <input asp-for="Time" class="form-control" />
+            <div class="form-group pb-2">
+                <label asp-for="Time" class="control-label pb-1">Vrijeme</label>
+                <input asp-for="Time" class="form-control" onmouseover="this.style.cursor='pointer'" />
                 <span asp-validation-for="Time" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Type" class="control-label"></label>
-                <select asp-for="Type" class="form-control" asp-items="ViewBag.ExamTypes"></select>
+            <div class="form-group pb-2">
+                <label asp-for="Type" class="control-label pb-1">Tip ispita</label>
+                <select asp-for="Type" class="form-control" asp-items="ViewBag.ExamTypes" onmouseover="this.style.cursor='pointer'"></select>
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="TotalPoints" class="control-label"></label>
+            <div class="form-group pb-2">
+                <label asp-for="TotalPoints" class="control-label pb-1">Ukupno bodova</label>
                 <input asp-for="TotalPoints" class="form-control" />
                 <span asp-validation-for="TotalPoints" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="MinimumPoints" class="control-label"></label>
+            <div class="form-group pb-2">
+                <label asp-for="MinimumPoints" class="control-label pb-1">Prag</label>
                 <input asp-for="MinimumPoints" class="form-control" />
                 <span asp-validation-for="MinimumPoints" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group pt-1">
+                <input type="submit" value="Kreiraj" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+<div class="pt-2">
+    <a asp-action="Index">Vratite se</a>
 </div>
 
 @section Scripts {
