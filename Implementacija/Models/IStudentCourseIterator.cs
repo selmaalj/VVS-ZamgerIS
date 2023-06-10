@@ -3,7 +3,7 @@
     public interface IStudentCourseIterator
     {
         StudentCourse first();
-        StudentCourse current();
+        StudentCourse currentCourse();
         StudentCourse next();
         bool isDone();
     }

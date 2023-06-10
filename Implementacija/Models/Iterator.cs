@@ -2,33 +2,34 @@
 {
     public class Iterator : IStudentCourseIterator
     {
-        private StudentCourses courses;
-        private int current = 0;
-        public Iterator(StudentCourses courses)
+        StudentCourseCollection courses;
+        int current = 0;
+
+        public Iterator(StudentCourseCollection courses)
         {
             this.courses = courses;
         }
 
-        StudentCourse first()
+        public StudentCourse first()
         {
             current = 0;
-            if (courses.count == 0) return null;
+            if (courses.count() == 0) return null;
             return courses[current];
         }
-        StudentCourse current()
+        public StudentCourse currentCourse()
         {
-            if (isDone) return null;
+            if (isDone()) return null;
             return courses[current];
         }
-        StudentCourse next()
+        public StudentCourse next()
         {
             current += 1;
             if (isDone()) return null;
             return courses[current];
         }
-        bool isDone()
+        public bool isDone()
         {
-            return current >= courses.count;
+            return current >= courses.count();
         }
     }
 }

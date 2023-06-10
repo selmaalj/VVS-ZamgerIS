@@ -2,6 +2,6 @@
 {
     public interface IStudentCourseIteratorCreator
     {
-        public Iterator CreateIterator();
+        Iterator CreateIterator();
     }
 }
