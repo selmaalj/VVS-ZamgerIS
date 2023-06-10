@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -141,7 +137,8 @@ namespace ooadproject.Controllers
                 return NotFound();
             }
             ViewData["CourseID"] = new SelectList(await _context.Course.ToListAsync(), "ID", "Name", exam.CourseID);
-            ViewData["Courses"] = await _context.Course.ToListAsync();
+            var user = await _userManager.GetUserAsync(User);
+            ViewData["Courses"] = await _context.Course.Where(c => c.TeacherID == user.Id).ToListAsync();
             ViewData["ExamTypes"] = GetExamTypesList();
             return View(exam);
         }

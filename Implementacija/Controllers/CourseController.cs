@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -13,10 +10,12 @@ namespace ooadproject.Controllers
     public class CourseController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<Person> _userManager;
 
-        public CourseController(ApplicationDbContext context)
+        public CourseController(ApplicationDbContext context, UserManager<Person> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         public List<SelectListItem>  GetTeacherNamesList()
@@ -31,9 +30,6 @@ namespace ooadproject.Controllers
             return Teachers;
 
         }
-
-
-
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Course.Include(c => c.Teacher);
@@ -181,16 +177,25 @@ namespace ooadproject.Controllers
             var course = await _context.Course.FindAsync(id);
             var StudentCourses = await _context.StudentCourse.Where(sc => sc.Course == course).ToListAsync();
             var Students = new List<Student>();
+            var user = await _userManager.GetUserAsync(User);
+            var Courses = await _context.Course.Where(c => c.Teacher == user).ToListAsync();
             foreach (var item in StudentCourses)
             {
                 Students.Add(item.Student);
             }
 
             var Exams = await _context.Exam.Where(e => e.Course == course).ToListAsync();
-            
+
             var Homeworks = await _context.Homework.Where(h => h.Course == course).ToListAsync();
 
-            return ViewBag(Students, Exams, Homeworks);
+            ViewData["course"] = course;
+            ViewData["Courses"] = Courses;
+            ViewData["StudentCourses"] = StudentCourses;
+            ViewData["Students"] = Students;
+            ViewData["Exams"] = Exams;
+            ViewData["Homeworks"] = Homeworks;
+
+            return View();
         }
 
         /* @egraca3
