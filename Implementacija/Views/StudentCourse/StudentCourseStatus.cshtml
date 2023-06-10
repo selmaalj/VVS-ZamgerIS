@@ -37,12 +37,12 @@
     </ul>
 }
 <h1>@ViewBag.StudentCourse.Course.Name</h1>
-<h2>@ViewBag.StudentCourse.Course.Teacher.GetFullName()</h2>
-<div class="progress">
+<h3 class="pt-2">Nastavnik: @ViewBag.StudentCourse.Course.Teacher.GetFullName()</h3>
+<div class="progress mt-5">
     <div class="progress-bar" role="progressbar" aria-valuenow="@ViewBag.PointsScored" aria-valuemin="0" aria-valuemax="@ViewBag.TotalPoints" style="width: @((double)ViewBag.PointsScored / (double)ViewBag.TotalPoints * 100)%"></div>
 
 </div>
-<h3>Ostvarili ste @ViewBag.PointsScored/@ViewBag.TotalPoints</h3>
+<h3 class="pt-3 pb-5" style="text-align: center;">Ostvarili ste @ViewBag.PointsScored/@ViewBag.TotalPoints bodova</h3>
 @if (ViewBag.Activities != null && ViewBag.Activities.Count > 0)
 {
     <table class="table table-bordered">
