@@ -1,31 +1,29 @@
 ﻿@model IEnumerable<ooadproject.Models.Teacher>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Nastavnici";
+    Layout = "~/Views/Shared/_LayoutStudentService.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Nastavnici</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Title)
+                Titula
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FirstName)
+                Ime
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LastName)
+                Prezime
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.UserName)
+                Korisničko ime
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                Email
             </th>
    
             <th></th>
@@ -52,11 +50,12 @@
                 </td>
 
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Uredi</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Detalji</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Izbriši</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+<a class="btn btn-primary mt-3" asp-controller="Teacher" asp-action="Create">Dodaj novog nastavnika</a>

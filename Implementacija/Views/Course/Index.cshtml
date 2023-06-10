@@ -1,32 +1,30 @@
 ﻿@model IEnumerable<ooadproject.Models.Course>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Predmeti";
+    Layout = "~/Views/Shared/_LayoutStudentService.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Predmeti</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
+<table class="table table-hover">
     <thead>
         <tr>
            
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                Predmet
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Teacher)
+                Nastavnik
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AcademicYear)
+                Akademska godina
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ECTS)
+                ECTS
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Semester)
+                Semestar
             </th>
             <th></th>
         </tr>
@@ -51,11 +49,12 @@
                 @Html.DisplayFor(modelItem => item.Semester)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.ID">Uredi</a> |
+                <a asp-action="Details" asp-route-id="@item.ID">Detalji</a> |
+                <a asp-action="Delete" asp-route-id="@item.ID">Izbriši</a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+<a class="btn btn-primary mt-3" asp-action="Create">Dodaj novi predmet</a>
