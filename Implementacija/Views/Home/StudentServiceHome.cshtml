@@ -4,27 +4,9 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutStudentService.cshtml";
 }
-@section SideMenu{
-    <ul class="list-unstyled ps-0">
-        <li class="mb-1">
-            <a class="btn align-items-center rounded-active" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-page="/StudentService/Index">Početna</a>
-        </li>
-        <li class="mb-1">
-            <a class="btn align-items-center rounded-active" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-page="">Studenti</a>
-        </li>
-        <li class="mb-1">
-            <a class="btn align-items-center rounded-active" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-page="">Nastavnici</a>
-        </li>
-        <li class="mb-1">
-            <a class="btn align-items-center rounded-active" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-page="">Predmeti</a>
-        </li>
-        <li class="mb-1">
-            <a class="btn align-items-center rounded-active" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-page="">Zahtjevi</a>
-        </li>
 
-    </ul>
-}
 @if (SignInManager.IsSignedIn(User))
 {
     <h1 class="pb-3">Dobro došli, @User.Identity?.Name!</h1>
