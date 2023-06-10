@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ooadproject.Data;
 using ooadproject.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace ooadproject.Controllers
 {
     public class StudentCourseController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<Person> _userManager;
 
-        public StudentCourseController(ApplicationDbContext context)
+        public StudentCourseController(ApplicationDbContext context, UserManager<Person> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: StudentCourse
@@ -107,7 +110,15 @@ namespace ooadproject.Controllers
 
         public async Task<IActionResult> StudentCourseStatus(int? id)
         {
+            var user = await _userManager.GetUserAsync(User);
+            var courses = await _context.StudentCourse.Include(sc => sc.Course).Where(sc => sc.StudentID == user.Id).ToListAsync();
             var StudentCourse = await _context.StudentCourse.FindAsync(id);
+            StudentCourse.Course.Teacher = await _context.Teacher.FindAsync(StudentCourse.Course.TeacherID);
+            //Set Teacher for every StudentCourse.Course
+            foreach (var item in courses)
+            {
+                item.Course.Teacher = await _context.Teacher.FindAsync(item.Course.TeacherID);
+            }
    
             var StudentExams = await _context.StudentExam.Where(se => se.CourseID == id).ToListAsync();
             var StudentHomeworks = await _context.StudentHomework.Where(sh => sh.CourseID == id).ToListAsync();
@@ -130,6 +141,7 @@ namespace ooadproject.Controllers
             }
 
             // ovdje sve sto treba za ovaj view
+            ViewData["Courses"] = courses;
             ViewData["StudentCourse"] = StudentCourse;
             ViewData["Activities"] = Activities;
             ViewData["PointsScored"] = Scored;

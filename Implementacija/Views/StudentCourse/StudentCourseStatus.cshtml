@@ -1,8 +1,7 @@
-﻿@model IEnumerable<ooadproject.Models.ExamRegistration>
-
-@{
-    ViewData["Title"] = "Index";
+﻿@{
+    ViewData["Title"] = "StudentCourseStatus";
 }
+
 @section SideMenu {
     <ul class="list-unstyled ps-0">
         <li class="mb-1">
@@ -19,7 +18,8 @@
                     @foreach (var course in ViewBag.Courses)
                     {
                         <li>
-                            <a class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="StudentCourse" asp-action="StudentCourseStatus" asp-route-id="@course.ID">@course.Course.Name</a>
+                            <a class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'"
+                               asp-controller="StudentCourse" asp-action="StudentCourseStatus" asp-route-id="@course.ID">@course.Course.Name</a>
                         </li>
                     }
                 </ul>
@@ -36,49 +36,38 @@
         </li>
     </ul>
 }
+<h1>@ViewBag.StudentCourse.Course.Name</h1>
+<h3 class="pt-2">Nastavnik: @ViewBag.StudentCourse.Course.Teacher.GetFullName()</h3>
+<div class="progress mt-5">
+    <div class="progress-bar" role="progressbar" aria-valuenow="@ViewBag.PointsScored" aria-valuemin="0" aria-valuemax="@ViewBag.TotalPoints" style="width: @((double)ViewBag.PointsScored / (double)ViewBag.TotalPoints * 100)%"></div>
 
-<h1 class="pb-3">Aktuelni ispiti</h1>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Predmet</th>
-            <th>Ispit</th>
-            <th>Datum</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var exam in ViewBag.OpenedExams)
-        {
+</div>
+<h3 class="pt-3 pb-5" style="text-align: center;">Ostvarili ste @ViewBag.PointsScored/@ViewBag.TotalPoints bodova</h3>
+@if (ViewBag.Activities != null && ViewBag.Activities.Count > 0)
+{
+    <table class="table table-bordered">
+        <thead>
             <tr>
-                <td>@exam.Exam.Course.Name</td>
-                <td>@exam.Exam.Type</td>
-                <td>@exam.Exam.Time</td>
-                <td><a>Prijavi se</a></td>
+                <th>Tip</th>
+                <th>Naziv</th>
+                <th>Datum</th>
+                <th>Ukupno bodova</th>
+                <th>Mogućih</th>
             </tr>
-        }
-    </tbody>
-</table>
-<h1 class="pb-3">Prijavljeni ispiti</h1>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Predmet</th>
-            <th>Ispit</th>
-            <th>Datum</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var exam in ViewBag.RegisteredExams)
-        {
-            <tr>
-                <td>@exam.Exam.Course.Name</td>
-                <td>@exam.Exam.Type</td>
-                <td>@exam.Exam.Time</td>
-                <td><a>Odjavi se</a></td>
-            </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var activity in ViewBag.Activities)
+            {
+                <tr>
+                    <td>@activity.GetActivityType()</td>
+                    <td>@activity.GetActivityName()</td>
+                    <td>@activity.GetActivityDate()</td>
+                    <td>@activity.GetPointsScored()</td>
+                    <td>@activity.GetTotalPoints()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
 
