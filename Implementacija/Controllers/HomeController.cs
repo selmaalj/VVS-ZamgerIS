@@ -35,6 +35,11 @@ namespace ooadproject.Controllers
             return notifications;
 
         }
+        public int GetExamRegistrations(int id)
+        {
+            return _context.ExamRegistration.Where(er => er.ExamID == id).CountAsync().Result;
+
+        }
 
         //redirecting to Home view according to user role
 
@@ -75,10 +80,16 @@ namespace ooadproject.Controllers
             var Courses = await _context.Course.Where(c => c.TeacherID == teacher.Id).ToListAsync();
             var Exams = await _context.Exam.Include(e => e.Course).Where(e => e.Course.TeacherID == teacher.Id && e.Time > DateTime.Now).ToListAsync();
             var notifications = await GetUserNotificationsAsync();
+            var registered = new Dictionary<int, int>();
+            foreach (var item in Exams)
+            {
+                registered.Add(item.ID, GetExamRegistrations(item.ID));
+            }
 
             ViewData["Courses"] = Courses;
             ViewData["Notifications"] = notifications;
             ViewData["Exams"] = Exams;
+            ViewData["RegisteredForExam"] = registered;
 
             return View();
         }
