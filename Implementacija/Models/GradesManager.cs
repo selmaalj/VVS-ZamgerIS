@@ -87,6 +87,7 @@ namespace ooadproject.Models
                 studentCourse.Grade = grade;
                 _context.Update(studentCourse);
                 await _context.SaveChangesAsync();
+                studentCourse.Notify();
             }
 
 
