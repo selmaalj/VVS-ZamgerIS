@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ooadproject.Data;
 using ooadproject.Models;
+using static ooadproject.Models.StudentCourseManager;
 
 namespace ooadproject.Controllers
 {
@@ -207,8 +208,13 @@ namespace ooadproject.Controllers
             ViewData["Exams"] = Exams;
             ViewData["Homeworks"] = Homeworks;
             */
-            ViewData["Info"] = await _courseManager.RetrieveStudentCourseInfo(id, _courseManager.Get_gradeManager());
+            var students = await _context.StudentCourse.Where(sc => sc.Course == course).ToListAsync();
+            List<StudentCourseInfo> list = await _courseManager.RetrieveStudentCourseInfo(id);
+            ViewData["Info"] = list;
             ViewData["Maximum"] =  await _courseManager.GetMaximumPoints(id);
+            ViewData["NumberOfPassed"] = await _courseManager.GetNumberOfPassed(list);
+            ViewData["NumberOfStudents"] = students.Count;
+
 
             return View();
         }
