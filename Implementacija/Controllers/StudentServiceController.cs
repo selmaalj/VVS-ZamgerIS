@@ -60,12 +60,8 @@ namespace ooadproject.Controllers
         {
             if (ModelState.IsValid)
             {
-                var hashedPassword = _passwordHasher.HashPassword(studentService, "password");
-                studentService.PasswordHash = hashedPassword;
-                studentService.SecurityStamp = Guid.NewGuid().ToString();
-
-                await _userManager.CreateAsync(studentService,"password");
-                await _userManager.AddToRoleAsync(studentService, "StudentService");
+            
+                await PersonFactory.CreatePerson(studentService, _userManager, _passwordHasher);
 
                 return RedirectToAction(nameof(Index));
             }

@@ -1,10 +1,18 @@
 ﻿
 
+using Microsoft.EntityFrameworkCore;
+using ooadproject.Data;
+
 namespace ooadproject.Models
 {
     public class GradesManager
 
     {
+
+        private readonly ApplicationDbContext _context;
+        public GradesManager(ApplicationDbContext context) {
+            _context = context;
+        }
         private static double pointsFromExams(List<StudentExam> exams)
         {
             double examPoints = 0;
@@ -63,6 +71,26 @@ namespace ooadproject.Models
             return (int)Math.Round(totalPoints / 10);
         }
 
-        public GradesManager() {} 
+       
+
+        public async Task SaveEvaluatedGrades(int courseID)
+        {
+            var StudentCourses = await _context.StudentCourse.Include(sc => sc.Student).Where(sc => sc.CourseID == courseID).ToListAsync();
+            var Students = new StudentCourseCollection(StudentCourses);
+            var it = Students.CreateIterator();
+            while (!it.isDone())
+            {
+                var studentCourse = it.currentCourse();
+                var exams = await _context.StudentExam.Where(se => se.CourseID == studentCourse.ID).ToListAsync();
+                var hworks = await _context.StudentHomework.Where(se => se.CourseID == studentCourse.ID).ToListAsync();
+                int grade = evaluateGrade(exams, hworks);
+                studentCourse.Grade = grade;
+                _context.Update(studentCourse);
+                await _context.SaveChangesAsync();
+                studentCourse.Notify();
+            }
+
+
+        }
     }
 }

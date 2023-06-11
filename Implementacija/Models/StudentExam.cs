@@ -20,18 +20,10 @@ namespace ooadproject.Models
         public double PointsScored { get; set; }
         public bool IsPassed { get; set; }
 
+        public StudentExam() { }    
+
         [NotMapped]
         private NotificationManager? Notifier = null;
-
-        public StudentExam(StudentCourse course, Exam exam, double points, bool isPassed, NotificationManager notif) 
-        {
-            this.Course = course;
-            this.Exam = exam;
-            this.PointsScored = points;
-            this.IsPassed = isPassed;
-            this.Notifier = notif;
-            this.Notify();
-        }
 
         public double GetPointsScored()
         {

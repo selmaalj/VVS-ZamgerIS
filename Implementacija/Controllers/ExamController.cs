@@ -12,11 +12,13 @@ namespace ooadproject.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<Person> _userManager;
+        private readonly NotificationManager _notificationManager;
 
-        public ExamController(ApplicationDbContext context, UserManager<Person> userManager)
+        public ExamController(ApplicationDbContext context, UserManager<Person> userManager, NotificationManager notificationManager)
         {
             _context = context;
             _userManager = userManager;
+            _notificationManager = notificationManager;
         }
 
         public List<SelectListItem> GetExamTypesList()
@@ -111,6 +113,8 @@ namespace ooadproject.Controllers
             {
                 _context.Add(exam);
                 await _context.SaveChangesAsync();
+                exam.Attach(_notificationManager);
+                exam.Notify();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CourseID"] = new SelectList(_context.Course, "ID", "ID", exam.CourseID);

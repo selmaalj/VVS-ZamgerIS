@@ -59,18 +59,11 @@ namespace ooadproject.Controllers
         public async Task<IActionResult> Create([Bind("Title,Id,FirstName,LastName,UserName,Email,NormalizedUserName,NormalizedEmail,EmailConfirmed,PasswordHash,SecurityStamp,ConcurrencyStamp,PhoneNumber,PhoneNumberConfirmed,TwoFactorEnabled,LockoutEnd,LockoutEnabled,AccessFailedCount")] Teacher teacher)
         {
             if (ModelState.IsValid)
-            {
-                var hashedPassword = _passwordHasher.HashPassword(teacher, "password");
-                teacher.PasswordHash = hashedPassword;
-                teacher.SecurityStamp = Guid.NewGuid().ToString();
-
-                //  _context.Add(student);
-                //   await _context.SaveChangesAsync();
-
-                await _userManager.CreateAsync(teacher, "password");
-
-                await _userManager.AddToRoleAsync(teacher, "Teacher");
                 
+            {
+         
+                await PersonFactory.CreatePerson(teacher, _userManager, _passwordHasher);
+
                 return RedirectToAction(nameof(Index));
             }
             return View(teacher);
