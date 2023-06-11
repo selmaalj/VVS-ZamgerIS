@@ -174,6 +174,7 @@ namespace ooadproject.Controllers
 
         public async Task<IActionResult> CourseStatus(int? id)
         {
+            /*
             var course = await _context.Course.FindAsync(id);
             var StudentCourses = await _context.StudentCourse.Where(sc => sc.Course == course).ToListAsync();
             var Students = new List<Student>();
@@ -194,14 +195,14 @@ namespace ooadproject.Controllers
             ViewData["Students"] = Students;
             ViewData["Exams"] = Exams;
             ViewData["Homeworks"] = Homeworks;
+            */
+            var manager = new StudentCourseManager(_context);
+            ViewData["Info"] = await manager.RetrieveStudentCourseInfo(id);
+            ViewData["Maximum"] =  await manager.GetMaximumPoints(id);
 
             return View();
         }
 
-        /* @egraca3
-        public async Task<IActionResult> EvaluateGrades()
-        {
 
-        } */
     }
 }
