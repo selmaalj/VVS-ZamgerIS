@@ -58,7 +58,7 @@
                 <td>
                     <form method="post" asp-controller="ExamRegistration" asp-action="Create" asp-route-id="@exam.ID">
                         <input type="hidden" name="examid" value="@exam.ID">
-                        <button type="submit">Prijavi se</button>
+                        <button type="submit" class="btn btn-primary">Prijavi se</button>
                     </form>
                 </td>
             </tr>
@@ -85,7 +85,7 @@
                 <td>
                     <form method="post" asp-controller="ExamRegistration" asp-action="Delete" asp-route-id="@exam.ID">
                         <input type="hidden" name="examid" value="@exam.ID">
-                        <button type="submit">Odjavi se</button>
+                        <button type="submit" class="btn btn-primary">Odjavi se</button>
                     </form>
                 </td>
             </tr>
