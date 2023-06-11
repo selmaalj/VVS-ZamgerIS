@@ -127,15 +127,17 @@ namespace ooadproject.Controllers
 
             double Total = 0, Scored = 0 ;
 
-            foreach (var item in StudentExams)
+            foreach (StudentExam item in StudentExams)
             {
                 Activities.Add(item);
+                item.Exam = await _context.Exam.FindAsync(item.ExamID);
                 Scored += item.GetPointsScored();
                 Total += item.GetTotalPoints();
             }
-            foreach (var item in StudentHomeworks)
+            foreach (StudentHomework item in StudentHomeworks)
             {
                 Activities.Add(item);
+                item.Homework = await _context.Homework.FindAsync(item.HomeworkID);
                 Scored += item.GetPointsScored();
                 Total += item.GetTotalPoints();
             }
