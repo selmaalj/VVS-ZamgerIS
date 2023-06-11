@@ -12,8 +12,8 @@ using ooadproject.Data;
 namespace ooadproject.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230610221726_Request2")]
-    partial class Request2
+    [Migration("20230611084824_Changed")]
+    partial class Changed
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -389,16 +389,16 @@ namespace ooadproject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<int?>("ProcessorID")
+                    b.Property<int>("ProcessorID")
                         .HasColumnType("int");
 
-                    b.Property<DateTime?>("RequestTime")
+                    b.Property<DateTime>("RequestTime")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("RequesterID")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
                     b.Property<int>("Type")
@@ -654,7 +654,9 @@ namespace ooadproject.Migrations
                 {
                     b.HasOne("ooadproject.Models.StudentService", "Processor")
                         .WithMany()
-                        .HasForeignKey("ProcessorID");
+                        .HasForeignKey("ProcessorID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ooadproject.Models.Student", "Requester")
                         .WithMany()

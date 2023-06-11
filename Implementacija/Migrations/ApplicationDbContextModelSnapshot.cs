@@ -393,7 +393,7 @@ namespace ooadproject.Migrations
                     b.Property<DateTime?>("RequestTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("RequesterID")
+                    b.Property<int?>("RequesterID")
                         .HasColumnType("int");
 
                     b.Property<int?>("Status")
@@ -656,9 +656,7 @@ namespace ooadproject.Migrations
 
                     b.HasOne("ooadproject.Models.Student", "Requester")
                         .WithMany()
-                        .HasForeignKey("RequesterID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RequesterID");
 
                     b.Navigation("Processor");
 

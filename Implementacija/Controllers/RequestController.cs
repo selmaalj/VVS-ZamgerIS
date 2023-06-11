@@ -115,7 +115,7 @@ namespace ooadproject.Controllers
         {
             request.RequesterID =   (await _userManager.GetUserAsync(User)).Id;
             request.RequestTime = DateTime.Now;
-            request.ProcessorID = 0;
+            request.ProcessorID = null;
             request.Status = RequestStatus.Pending;
 
             if (ModelState.IsValid)

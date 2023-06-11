@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace ooadproject.Migrations
 {
-    public partial class Request2 : Migration
+    public partial class Requests : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -28,11 +29,17 @@ namespace ooadproject.Migrations
                 name: "RequesterID",
                 table: "Request",
                 type: "int",
-                nullable: false,
-                defaultValue: 0,
+                nullable: true,
                 oldClrType: typeof(int),
-                oldType: "int",
-                oldNullable: true);
+                oldType: "int");
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "RequestTime",
+                table: "Request",
+                type: "datetime2",
+                nullable: true,
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2");
 
             migrationBuilder.AlterColumn<int>(
                 name: "ProcessorID",
@@ -47,8 +54,7 @@ namespace ooadproject.Migrations
                 table: "Request",
                 column: "RequesterID",
                 principalTable: "Student",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Request_StudentService_ProcessorID",
@@ -82,9 +88,21 @@ namespace ooadproject.Migrations
                 name: "RequesterID",
                 table: "Request",
                 type: "int",
-                nullable: true,
+                nullable: false,
+                defaultValue: 0,
                 oldClrType: typeof(int),
-                oldType: "int");
+                oldType: "int",
+                oldNullable: true);
+
+            migrationBuilder.AlterColumn<DateTime>(
+                name: "RequestTime",
+                table: "Request",
+                type: "datetime2",
+                nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                oldClrType: typeof(DateTime),
+                oldType: "datetime2",
+                oldNullable: true);
 
             migrationBuilder.AlterColumn<int>(
                 name: "ProcessorID",
@@ -101,7 +119,8 @@ namespace ooadproject.Migrations
                 table: "Request",
                 column: "RequesterID",
                 principalTable: "Student",
-                principalColumn: "Id");
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Request_StudentService_ProcessorID",
