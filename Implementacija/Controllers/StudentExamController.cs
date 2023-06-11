@@ -63,10 +63,14 @@ namespace ooadproject.Controllers
         }
 
         // GET: StudentExam/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(int id)
         {
-            ViewData["CourseID"] = new SelectList(_context.StudentCourse, "ID", "ID");
-            ViewData["ExamID"] = new SelectList(_context.Exam, "ID", "ID");
+            //Get list of students that are enrolled in the course passed by the id as a SelectList which will display the name of the course
+            var students = await _context.StudentCourse.Include(s => s.Student).Where(s => s.CourseID == id).ToListAsync();
+            //Get list of exams that are open for the course passed by the id as a SelectList which will display the id of the exam
+            var exams = await _context.Exam.Include(e => e.Course).Where(e => e.CourseID == id).ToListAsync();
+            ViewData["CourseID"] = new SelectList(students, "ID", "Student.FirstName");
+            ViewData["ExamID"] = new SelectList(exams, "ID", "Type");
             return View();
         }
 
@@ -83,8 +87,8 @@ namespace ooadproject.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CourseID"] = new SelectList(_context.StudentCourse, "ID", "ID", studentExam.CourseID);
-            ViewData["ExamID"] = new SelectList(_context.Exam, "ID", "ID", studentExam.ExamID);
+           // ViewData["CourseID"] = new SelectList(_context.StudentCourse, "ID", "ID", studentExam.CourseID);
+            //ViewData["ExamID"] = new SelectList(_context.Exam, "ID", "ID", studentExam.ExamID);
             return View(studentExam);
         }
 
