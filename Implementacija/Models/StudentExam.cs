@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ooadproject.Models
 {
-    public class StudentExam: IActivity
+    public class StudentExam : IActivity, INotificationObservable
     {
         [Key]
         public int ID { get; set; }
