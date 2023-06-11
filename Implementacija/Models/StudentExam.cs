@@ -20,7 +20,17 @@ namespace ooadproject.Models
         public double PointsScored { get; set; }
         public bool IsPassed { get; set; }
 
-        public StudentExam() { }
+        private NotificationManager notification;
+
+        public StudentExam(StudentCourse course, Exam exam, double points, bool isPassed, NotificationManager notif) 
+        {
+            this.Course = course;
+            this.Exam = exam;
+            this.PointsScored = points;
+            this.IsPassed = isPassed;
+            this.notification = notif;
+            this.Notify();
+        }
 
         public double GetPointsScored()
         {
@@ -45,6 +55,21 @@ namespace ooadproject.Models
         public string GetActivityType()
         {
             return Exam.Type.ToString();
+        }
+
+        public void Attach(NotificationManager notifications)
+        {
+            this.notification = notification;
+        }
+
+        public void Detach()
+        {
+            notification = null;
+        }
+
+        public void Notify()
+        {
+            notification.UpdateForExamResoults(this);
         }
     }
 }
