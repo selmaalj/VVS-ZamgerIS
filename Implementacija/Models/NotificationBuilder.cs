@@ -15,7 +15,7 @@
         public override NotificationBuilder setRecipient(Person recipient)
         {
             notification.Recipient = recipient;
-            notification.Recipient.Id = recipient.Id;
+            notification.RecipientID = recipient.Id;
             return this; 
         }
 
