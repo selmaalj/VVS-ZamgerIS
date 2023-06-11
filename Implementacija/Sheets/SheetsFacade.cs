@@ -28,7 +28,7 @@
             return spreadsheetId;
         }
 
-        public static Dictionary<int, int> GetExamResults(string link)
+        public static Dictionary<int, double> GetExamResults(string link)
         {
             string id = ExtractSpreadsheetId(link);
 
@@ -36,12 +36,12 @@
             
             var stringResults =  _manager.GetExam();
             
-            var results = new Dictionary<int, int>();
+            var results = new Dictionary<int, double>();
 
            
                 foreach (var kvp in stringResults)
                 {
-                    if (int.TryParse(kvp.Key, out int parsedKey) && int.TryParse(kvp.Value, out int parsedValue))
+                    if (int.TryParse(kvp.Key, out int parsedKey) && double.TryParse(kvp.Value, out double parsedValue))
                     {
                         results.Add(parsedKey, parsedValue);
                     }
