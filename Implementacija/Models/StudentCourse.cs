@@ -19,7 +19,7 @@ namespace ooadproject.Models
         public double Points { get; set; }
         private int Grade { get; set; }
 
-        private NotificationManager notification;
+        private NotificationManager notification = null;
 
         public StudentCourse() { }
 

@@ -20,7 +20,7 @@ namespace ooadproject.Models
 
         public double MinimumPoints { get; set; }
 
-        private NotificationManager notification;
+        private NotificationManager notification = null;
 
         public Exam(Course course, DateTime time, ExamType type, double totalPoints, double minimumPoints, NotificationManager notif) 
         {
