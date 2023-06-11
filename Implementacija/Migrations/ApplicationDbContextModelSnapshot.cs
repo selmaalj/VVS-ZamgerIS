@@ -387,16 +387,16 @@ namespace ooadproject.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
 
-                    b.Property<int>("ProcessorID")
+                    b.Property<int?>("ProcessorID")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("RequestTime")
+                    b.Property<DateTime?>("RequestTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("RequesterID")
+                    b.Property<int?>("RequesterID")
                         .HasColumnType("int");
 
-                    b.Property<int>("Status")
+                    b.Property<int?>("Status")
                         .HasColumnType("int");
 
                     b.Property<int>("Type")
@@ -652,15 +652,11 @@ namespace ooadproject.Migrations
                 {
                     b.HasOne("ooadproject.Models.StudentService", "Processor")
                         .WithMany()
-                        .HasForeignKey("ProcessorID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProcessorID");
 
                     b.HasOne("ooadproject.Models.Student", "Requester")
                         .WithMany()
-                        .HasForeignKey("RequesterID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("RequesterID");
 
                     b.Navigation("Processor");
 

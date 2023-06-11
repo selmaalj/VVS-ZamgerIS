@@ -27,13 +27,13 @@
             </div>
         </li>
         <li class="mb-1">
-            <a class="btn align-items-center rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-page="">Aktuelni zahtjevi</a>
+            <a class="btn align-items-center rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="Request" asp-action="StudentRequests">Aktuelni zahtjevi</a>
         </li>
         <li class="mb-1">
             <a class="btn align-items-center rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="ExamRegistration" asp-action="Index">Prijava ispita</a>
         </li>
         <li class="mb-1">
-            <a class="btn align-items-center rounded text-deco" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="StudentCourse" asp-action="">Pregled rezultata studija</a>
+            <a class="btn align-items-center rounded text-deco" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="StudentCourse" asp-action="StudentOverallStatus">Pregled rezultata studija</a>
         </li>
     </ul>
 }

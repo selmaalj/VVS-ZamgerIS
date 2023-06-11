@@ -10,16 +10,16 @@ namespace ooadproject.Models
         public int ID { get; set; }
 
         [ForeignKey("Student")]
-        public int RequesterID { get; set; }
+        public int? RequesterID { get; set; }
         public Student? Requester { get; set; }
 
-        public DateTime RequestTime { get; set; }
+        public DateTime? RequestTime { get; set; }
         
         public RequestType Type { get; set; }
-        public RequestStatus Status { get; set; }
+        public RequestStatus? Status { get; set; }
 
         [ForeignKey("StudentService")]
-        public int ProcessorID {  get; set; }
+        public int? ProcessorID {  get; set; }
         public StudentService? Processor { get; set; }
 
         public Request() { }

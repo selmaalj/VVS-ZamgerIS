@@ -125,18 +125,22 @@ namespace ooadproject.Controllers
 
             var Activities = new List<IActivity>();
 
-            double Total = 0, Scored = 0 ;
+            double Total = 0, Scored = 0, MaxPossible = 0 ;
 
-            foreach (var item in StudentExams)
+            foreach (StudentExam item in StudentExams)
             {
                 Activities.Add(item);
+                item.Exam = await _context.Exam.FindAsync(item.ExamID);
                 Scored += item.GetPointsScored();
                 Total += item.GetTotalPoints();
+                MaxPossible += item.Exam.TotalPoints;
             }
-            foreach (var item in StudentHomeworks)
+            foreach (StudentHomework item in StudentHomeworks)
             {
                 Activities.Add(item);
+                item.Homework = await _context.Homework.FindAsync(item.HomeworkID);
                 Scored += item.GetPointsScored();
+                MaxPossible += item.Homework.TotalPoints;
                 Total += item.GetTotalPoints();
             }
 
@@ -146,6 +150,35 @@ namespace ooadproject.Controllers
             ViewData["Activities"] = Activities;
             ViewData["PointsScored"] = Scored;
             ViewData["TotalPoints"] = Scored;
+            ViewData["MaxPossible"] = MaxPossible;
+            return View();
+        }
+        //View that shows the status of all courses for a student based on the year of study
+        public async Task<IActionResult> StudentOverallStatus(int? id)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            var courses = await _context.StudentCourse.Include(sc => sc.Course).Where(sc => sc.StudentID == user.Id).ToListAsync();
+
+            //Create a set of courses where the grade is bigger than 5
+            var CoursesWithGrade = new List<StudentCourse>();
+            foreach (var item in courses)
+            {
+                if (item.Grade > 5)
+                {
+                    CoursesWithGrade.Add(item);
+                }
+            }
+            ViewData["GradedCourses"] = CoursesWithGrade.OrderByDescending(c => c.Course.Semester).ThenBy(c => c.Course.Name).ToList();
+            ViewData["Courses"] = courses;
+            //Calculate the average grade for all courses
+            double AverageGrade = 0;
+            foreach (var item in CoursesWithGrade)
+            {
+                AverageGrade += item.Grade;
+            }
+            AverageGrade /= CoursesWithGrade.Count;
+            ViewData["AverageGrade"] = AverageGrade;
+
             return View();
         }
 

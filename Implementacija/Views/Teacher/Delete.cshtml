@@ -1,12 +1,13 @@
 ﻿@model ooadproject.Models.Teacher
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Izbriši";
+    Layout = "~/Views/Shared/_LayoutStudentService.cshtml";
 }
 
 <h1>Delete</h1>
 
-<h3>Are you sure you want to delete this?</h3>
+<h3>Jeste li sigurni da želite ovo izbrisati?</h3>
 <div>
     <h4>Teacher</h4>
     <hr />
@@ -117,7 +118,7 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
+        <input type="submit" value="Izbriši" class="btn btn-danger" /> |
+        <a asp-action="Index">Vrati se</a>
     </form>
 </div>

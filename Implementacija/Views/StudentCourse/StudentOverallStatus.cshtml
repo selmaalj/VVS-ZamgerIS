@@ -1,7 +1,5 @@
-﻿@model IEnumerable<ooadproject.Models.ExamRegistration>
-
-@{
-    ViewData["Title"] = "Index";
+﻿@{
+    ViewData["Title"] = "Pregled rezultata studija";
 }
 @section SideMenu {
     <ul class="list-unstyled ps-0">
@@ -37,60 +35,38 @@
         </li>
     </ul>
 }
-
-<h1 class="pb-3">Aktuelni ispiti</h1>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Predmet</th>
-            <th>Ispit</th>
-            <th>Datum</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var exam in ViewBag.OpenedExams)
-        {
+@if(double.IsNaN(ViewBag.AverageGrade))
+{
+    <h1>Prosjek studija: 0.0</h1>
+}
+else
+{
+    <h1>Prosjek studija: @ViewBag.AverageGrade</h1>
+}
+<hr />
+@if(ViewBag.GradedCourses.Count == 0)
+{
+    <h1 class="pt-3">Nema ocijenjenih predmeta</h1>
+}
+else
+{
+    <table class="table table-striped table-hover mt-3">
+        <thead>
             <tr>
-                <td>@exam.Course.Name</td>
-                <td>@exam.Type</td>
-                <td>@exam.Time</td>
-                <td>
-                    <form method="post" asp-controller="ExamRegistration" asp-action="Create" asp-route-id="@exam.ID">
-                        <input type="hidden" name="examid" value="@exam.ID">
-                        <button type="submit" class="btn btn-primary">Prijavi se</button>
-                    </form>
-                </td>
+                <th scope="col">Naziv predmeta</th>
+                <th scope="col">ECTS</th>
+                <th scope="col">Ocjena</th>
             </tr>
-        }
-    </tbody>
-</table>
-<h1 class="pb-3">Prijavljeni ispiti</h1>
-<table class="table table-bordered">
-    <thead>
-        <tr>
-            <th>Predmet</th>
-            <th>Ispit</th>
-            <th>Datum</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var exam in ViewBag.RegisteredExams)
-        {
-            <tr>
-                <td>@exam.Exam.Course.Name</td>
-                <td>@exam.Exam.Type</td>
-                <td>@exam.Exam.Time</td>
-                <td>
-                    <form method="post" asp-controller="ExamRegistration" asp-action="Delete" asp-route-id="@exam.ID">
-                        <input type="hidden" name="examid" value="@exam.ID">
-                        <button type="submit" class="btn btn-primary">Odjavi se</button>
-                    </form>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
-
+        </thead>
+        <tbody>
+            @foreach (var course in ViewBag.GradedCourses)
+            {
+                <tr>
+                    <td>@course.Course.Name</td>
+                    <td>@course.Course.ECTS</td>
+                    <td>@course.Grade</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
