@@ -1,4 +1,5 @@
 ﻿@model ooadproject.Models.StudentCourse
+@using ooadproject.Models
 @{
     ViewData["Title"] = ViewBag.course.Name;
 }
@@ -62,18 +63,19 @@
     <table class="table table-bordered pb-5">
         <tr>
             <th>Student</th>
-            @foreach (Exam exam in ViewBag.Exams)
-            {
-                <th>@exam.Type
-                    (@exam.Time)
-                </th>
-            }
             <th>Ukupno bodova</th>
             <th>Ocjena</th>
         </tr>
-        <!-- Data rows go here -->
-
+        @foreach (StudentCourseManager.StudentCourseInfo info in ViewBag.Info)
+        {
+            <tr>
+                <td>@info.student.Student.FirstName @info.student.Student.LastName</td>
+                <td>@info.TotalPoints</td>
+                <td>@info.Grade</td>
+            </tr>
+        }
     </table>
+
     <div class="progress mt-5" style="border: 1px solid black; height: 2rem; width: 50vw; margin: auto;">
         <div class="progress-bar " role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
     </div>

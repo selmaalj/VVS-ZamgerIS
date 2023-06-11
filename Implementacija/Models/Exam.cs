@@ -26,7 +26,6 @@ namespace ooadproject.Models
 
         [NotMapped]
         private NotificationManager? Notifier = null;
-
         public void Attach(NotificationManager notifier)
         {
             this.Notifier = notifier;
