@@ -11,8 +11,8 @@ namespace ooadproject.Models
 
         [ForeignKey("Course")]
         public int CourseID { get; set; }
-        [StringLength(maximumLength: 50, MinimumLength = 3, ErrorMessage =
-        "Naziv predmeta smije imati između 3 i 50 karaktera!")]
+    //    [StringLength(maximumLength: 50, MinimumLength = 3, ErrorMessage =
+     //   "Naziv predmeta smije imati između 3 i 50 karaktera!")]
 
         public Course? Course { get; set; }
         [ValidateDate]
@@ -37,9 +37,9 @@ namespace ooadproject.Models
             Notifier = null;
         }
 
-        public void Notify()
+        public async Task Notify()
         {
-            Notifier.UpdateForExamCreation(this);
+            await Notifier.UpdateForExamCreation(this);
         }
     }
 }

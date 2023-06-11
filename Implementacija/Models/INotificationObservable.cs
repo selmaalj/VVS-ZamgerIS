@@ -4,6 +4,6 @@
     {
         void Attach(NotificationManager notifications);
         void Detach();
-        void Notify();
+        Task Notify();
     }
 }

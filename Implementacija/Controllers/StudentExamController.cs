@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using ooadproject.Data;
 using ooadproject.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ooadproject.Controllers
 {
+    [Authorize(Roles = "Teacher")]
     public class StudentExamController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -25,12 +27,13 @@ namespace ooadproject.Controllers
         }
 
         // GET: StudentExam
+
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.StudentExam.Include(s => s.Course).Include(s => s.Exam);
             return View(await applicationDbContext.ToListAsync());
         }
-
+   
         //Create function that returns every type of open exam and homework as a SelectListItem on the specific course by CourseID
         public async Task<IActionResult> TeacherInput(int id)
         {
@@ -43,11 +46,13 @@ namespace ooadproject.Controllers
             ViewData["Courses"] = courses;
             return View();
         }
+       
         public async Task<IActionResult> SaveExamResults()
         {
             var applicationDbContext = _context.StudentExam.Include(s => s.Course).Include(s => s.Exam);
             return View(await applicationDbContext.ToListAsync());
         }
+      
         [HttpPost]
         public async Task<IActionResult> SaveExamResults(int id, string link)
         {

@@ -1,4 +1,5 @@
 ﻿using MessagePack.Formatters;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,6 +9,7 @@ using ooadproject.Models;
 
 namespace ooadproject.Controllers
 {
+    [Authorize(Roles = "Teacher")]
     public class ExamController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -114,7 +116,7 @@ namespace ooadproject.Controllers
                 _context.Add(exam);
                 await _context.SaveChangesAsync();
                 exam.Attach(_notificationManager);
-                exam.Notify();
+                await exam.Notify();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CourseID"] = new SelectList(_context.Course, "ID", "ID", exam.CourseID);

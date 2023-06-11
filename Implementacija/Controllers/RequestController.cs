@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -58,7 +59,7 @@ namespace ooadproject.Controllers
             return Types;
 
         }
-
+        [Authorize(Roles = "StudentService")]
         public async Task<IActionResult> Index()
         {
 
@@ -77,7 +78,7 @@ namespace ooadproject.Controllers
 
             return View(Pending);
         }
-
+        [Authorize(Roles = "Student")]
         public async Task<IActionResult> StudentRequests()
         {
             var user = await _userManager.GetUserAsync(User);

@@ -54,9 +54,9 @@ namespace ooadproject.Models
             Notifier = null;
         }
 
-        public void Notify()
+        public async Task Notify()
         {
-            Notifier.UpdateForExamResults(this);
+            await Notifier.UpdateForExamResults(this);
         }
     }
 }

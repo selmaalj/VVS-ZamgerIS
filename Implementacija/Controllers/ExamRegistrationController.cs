@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,7 @@ namespace ooadproject.Controllers
             _userManager = userManager;
         }
 
-        // GET: ExamRegistration
+        [Authorize(Roles = "Student")]
         public async Task<IActionResult> Index()
         {
             
@@ -40,6 +41,7 @@ namespace ooadproject.Controllers
 
             return View();
         }
+        [Authorize(Roles = "Student")]
         // POST: ExamRegistration/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -66,7 +68,7 @@ namespace ooadproject.Controllers
             return View(examRegistration);
         }
 
-
+        [Authorize(Roles = "Student")]
         // POST: ExamRegistration/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

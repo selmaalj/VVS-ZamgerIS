@@ -3,9 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using ooadproject.Data;
 using ooadproject.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ooadproject.Controllers
 {
+    [Authorize(Roles = "StudentService")]
     public class StudentServiceController : Controller
     {
         private readonly ApplicationDbContext _context;

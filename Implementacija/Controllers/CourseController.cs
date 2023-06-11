@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,7 @@ namespace ooadproject.Controllers
             return Teachers;
 
         }
+        [Authorize(Roles = "StudentService")]
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = _context.Course.Include(c => c.Teacher);
@@ -37,7 +39,7 @@ namespace ooadproject.Controllers
         }
 
 
- 
+        [Authorize(Roles = "StudentService")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Course == null)
@@ -56,7 +58,7 @@ namespace ooadproject.Controllers
             return View(course);
         }
 
-        
+        [Authorize(Roles = "StudentService")]
         public IActionResult Create()
         {
             // putting teacher names in list to display on Create form
@@ -79,7 +81,7 @@ namespace ooadproject.Controllers
             return View(course);
         }
 
-
+        [Authorize(Roles = "StudentService")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Course == null)
@@ -96,7 +98,7 @@ namespace ooadproject.Controllers
             return View(course);
         }
 
-
+        [Authorize(Roles = "StudentService")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("ID,Name,TeacherID,AcademicYear,ECTS,Semester")] Course course)
@@ -129,7 +131,7 @@ namespace ooadproject.Controllers
             ViewData["TeacherID"] = new SelectList(_context.Teacher, "Id", "Id", course.TeacherID);
             return View(course);
         }
-
+        [Authorize(Roles = "StudentService")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Course == null)
@@ -148,7 +150,7 @@ namespace ooadproject.Controllers
             return View(course);
         }
 
-
+        [Authorize(Roles = "StudentService")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -171,7 +173,7 @@ namespace ooadproject.Controllers
         {
           return (_context.Course?.Any(e => e.ID == id)).GetValueOrDefault();
         }
-
+        [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> CourseStatus(int? id)
         {
             /*
