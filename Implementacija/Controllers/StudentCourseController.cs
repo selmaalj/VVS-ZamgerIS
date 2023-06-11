@@ -125,18 +125,20 @@ namespace ooadproject.Controllers
 
             var Activities = new List<IActivity>();
 
-            double Total = 0, Scored = 0 ;
+            double Total = 0, Scored = 0, MaxPossible = 0 ;
 
             foreach (var item in StudentExams)
             {
                 Activities.Add(item);
                 Scored += item.GetPointsScored();
                 Total += item.GetTotalPoints();
+                MaxPossible += item.Exam.TotalPoints;
             }
             foreach (var item in StudentHomeworks)
             {
                 Activities.Add(item);
                 Scored += item.GetPointsScored();
+                MaxPossible += item.Homework.TotalPoints;
                 Total += item.GetTotalPoints();
             }
 
@@ -146,6 +148,7 @@ namespace ooadproject.Controllers
             ViewData["Activities"] = Activities;
             ViewData["PointsScored"] = Scored;
             ViewData["TotalPoints"] = Scored;
+            ViewData["MaxPossible"] = MaxPossible;
             return View();
         }
         //View that shows the status of all courses for a student based on the year of study
