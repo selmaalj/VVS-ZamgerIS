@@ -1,7 +1,11 @@
-﻿namespace ooadproject.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
+namespace ooadproject.Models
 {
     public enum RequestType
     {
-        StudyTestimony, PassedExamsTestimony
+
+        [Display(Name = "Potvrda o redovnom studiju")] StudyTestimony,
+        [Display(Name = "Uvjerenje o položenim ispitima")] PassedExamsTestimony
     }
 }

@@ -1,8 +1,14 @@
-﻿namespace ooadproject.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ooadproject.Models
 {
     public enum ExamType
 
     {
-        Midterm, Final, Integrated, Test, Oral
+        [Display(Name = "Parcijalni")] Midterm,
+        [Display(Name = "Završni")] Final, 
+        [Display(Name = "Integralni")] Integrated, 
+        [Display(Name = "Test")] Test,
+        [Display(Name = "Usmeni")] Oral
     }
 }

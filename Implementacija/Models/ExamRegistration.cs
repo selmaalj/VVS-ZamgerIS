@@ -15,8 +15,7 @@ namespace ooadproject.Models
         [ForeignKey("Exam")]
         public int ExamID { get; set; }
         public Exam? Exam { get; set; }
-        [ValidateDate]
-        [DataType(DataType.Date)]
+        
         public DateTime RegistrationTime { get; set; }
 
         public ExamRegistration() { }
