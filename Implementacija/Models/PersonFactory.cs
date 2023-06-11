@@ -10,7 +10,7 @@ namespace ooadproject.Models
         public  class PersonFactory
         {
             private static string DefaultPassword = "password";
-            public async static void CreatePerson(Person person, UserManager<Person> userManager, IPasswordHasher<Person> passwordHasher)
+            public async static Task CreatePerson(Person person, UserManager<Person> userManager, IPasswordHasher<Person> passwordHasher)
             {
 
                 var hashedPassword = passwordHasher.HashPassword(person, DefaultPassword);
