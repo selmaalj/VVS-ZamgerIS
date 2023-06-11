@@ -16,7 +16,7 @@ namespace ooadproject.Models
 
         public Course? Course { get; set; }
         [ValidateDate]
-        [DataType(DataType.Date)]
+    //    [DataType(DataType.Date)]
         public DateTime Time { get; set; }
         public ExamType Type { get; set; }
         [Range(0,100,ErrorMessage = "Ukupan broj poena mora biti izmedju 0 i 100")]
