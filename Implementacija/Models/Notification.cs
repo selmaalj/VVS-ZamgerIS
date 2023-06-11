@@ -11,7 +11,8 @@ namespace ooadproject.Models
         [ForeignKey("Person")]
         public int RecipientID { get; set; }
         public Person? Recipient;
-        
+        [StringLength(maximumLength: 50, MinimumLength = 3, ErrorMessage =
+"Titula notifikacije smije imati između 3 i 50 karaktera!")]
         public string Title { get; set; }
         public string Message { get; set; }
 
