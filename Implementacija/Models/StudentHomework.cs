@@ -36,11 +36,6 @@ namespace ooadproject.Models
             return Homework.Deadline.Date;
         }
 
-        public string GetActivityName()
-        {
-            throw new NotImplementedException();
-        }
-
         public string GetActivityType()
         {
             return "Homework";
