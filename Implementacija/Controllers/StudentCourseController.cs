@@ -130,22 +130,33 @@ namespace ooadproject.Controllers
 
             var Activities = new List<IActivity>();
 
-            double Total = 0, Scored = 0, MaxPossible = 0 ;
+            var studentExams = await _context.StudentExam
+            .Include(se => se.Exam)
+            .Where(se => se.CourseID == id)
+            .Select(se => new { se.PointsScored, se.Exam.TotalPoints })
+            .ToListAsync();
+
+            var studentHomeworks = await _context.StudentHomework
+                .Include(sh => sh.Homework)
+                .Where(sh => sh.CourseID == id)
+                .Select(sh => new { sh.PointsScored, sh.Homework.TotalPoints })
+                .ToListAsync();
+
+            double scored = studentExams.Sum(se => se.PointsScored) + studentHomeworks.Sum(sh => sh.PointsScored);
+            double maxPossible = studentExams.Sum(se => se.TotalPoints) + studentHomeworks.Sum(sh => sh.TotalPoints);
+
+            double Total = 0;
 
             foreach (StudentExam item in StudentExams)
             {
                 Activities.Add(item);
                 item.Exam = await _context.Exam.FindAsync(item.ExamID);
-                Scored += item.GetPointsScored();
                 Total += item.GetTotalPoints();
-                MaxPossible += item.Exam.TotalPoints;
             }
             foreach (StudentHomework item in StudentHomeworks)
             {
                 Activities.Add(item);
                 item.Homework = await _context.Homework.FindAsync(item.HomeworkID);
-                Scored += item.GetPointsScored();
-                MaxPossible += item.Homework.TotalPoints;
                 Total += item.GetTotalPoints();
             }
 
@@ -153,9 +164,9 @@ namespace ooadproject.Controllers
             ViewData["Courses"] = courses;
             ViewData["StudentCourse"] = StudentCourse;
             ViewData["Activities"] = Activities;
-            ViewData["PointsScored"] = Scored;
-            ViewData["TotalPoints"] = Scored;
-            ViewData["MaxPossible"] = MaxPossible;
+            ViewData["PointsScored"] = scored;
+            ViewData["TotalPoints"] = scored;
+            ViewData["MaxPossible"] = maxPossible;
             return View();
         }
         [Authorize(Roles = "Student")]
