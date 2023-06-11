@@ -3,34 +3,76 @@
 @{
     ViewData["Title"] = "Create";
 }
+@section SideMenu {
+    <ul class="list-unstyled ps-0">
+        <li class="mb-1">
+            <a class="btn align-items-center rounded-active" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="Home" asp-action="Index">Početna</a>
+        </li>
+        <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded collapsed text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" data-bs-toggle="collapse" data-bs-target="#home-collapse1" aria-expanded="true">
+                <i class="fa-solid fa-arrow-right" style="font-size: 1rem;"></i>
+                Izvještaji
+            </button>
+            <div class="collapse" id="home-collapse1">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" style="padding-left: 1rem;">
+                    <!--Display all courses a teacher is teaching-->
+                    @foreach (var course in ViewBag.Courses)
+                    {
+                        <li>
+                            <a asp-controller="Course" asp-action="CourseStatus" asp-route-id="@course.ID" class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'">@course.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </li>
+        <li class="mb-1">
+            <button class="btn btn-toggle align-items-center rounded collapsed text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" data-bs-toggle="collapse" data-bs-target="#home-collapse2" aria-expanded="true">
+                <i class="fa-solid fa-arrow-right" style="font-size: 1rem;"></i>
+                Unos rezultata studenata
+            </button>
+            <div class="collapse" id="home-collapse2">
+                <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small" style="padding-left: 1rem;">
+                    <!-- For each course in Model.CourseNames display a link to the course page-->
+                    @foreach (var course in ViewBag.Courses)
+                    {
+                        <li>
+                            <a asp-controller="StudentExam" asp-action="TeacherInput" asp-route-id="@course.ID" class="link-dark rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'">@course.Name</a>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </li>
+        <li class="mb-1">
+            <a class="btn align-items-center rounded text-decoration-none" onmouseover="this.style.backgroundColor='lightblue'" onmouseout="this.style.backgroundColor='white'" asp-controller="Exam" asp-action="Index" data-viewbag="@ViewBag.">Ispiti</a>
+        </li>
+    </ul>
+}
+<h1>Unesite rezultate ispita</h1>
 
-<h1>Create</h1>
-
-<h4>StudentExam</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CourseID" class="control-label"></label>
+            <div class="form-group mb-2">
+                <label asp-for="CourseID" class="control-label">Ime studenta</label>
                 <select asp-for="CourseID" class ="form-control" asp-items="ViewBag.CourseID"></select>
             </div>
-            <div class="form-group">
-                <label asp-for="ExamID" class="control-label"></label>
+            <div class="form-group mb-2">
+                <label asp-for="ExamID" class="control-label">Naziv ispita</label>
                 <select asp-for="ExamID" class ="form-control" asp-items="ViewBag.ExamID"></select>
             </div>
-            <div class="form-group">
-                <label asp-for="PointsScored" class="control-label"></label>
+            <div class="form-group mb-2">
+                <label asp-for="PointsScored" class="control-label">Osvojeni poeni</label>
                 <input asp-for="PointsScored" class="form-control" />
                 <span asp-validation-for="PointsScored" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
+            <div class="form-group form-check mb-2">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsPassed" /> @Html.DisplayNameFor(model => model.IsPassed)
+                    <input class="form-check-input" asp-for="IsPassed" /> Da li je položio?
                 </label>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-1">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -38,7 +80,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Vrati se</a>
 </div>
 
 @section Scripts {
