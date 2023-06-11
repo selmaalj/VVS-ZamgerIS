@@ -29,7 +29,8 @@ namespace ooadproject.Controllers
             var notifications = _context.Notification.Include(n => n.Recipient).Where(n => n.RecipientID == user.Id).OrderByDescending(n => n.ID);
             return View(await notifications.ToListAsync());
         }
+ 
 
-        
+
     }
 }
