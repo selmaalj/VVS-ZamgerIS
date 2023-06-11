@@ -20,6 +20,8 @@ namespace ooadproject.Models
         public double PointsScored { get; set; }
         public bool IsPassed { get; set; }
 
+        public StudentExam() { }    
+
         [NotMapped]
         private NotificationManager? Notifier = null;
 
