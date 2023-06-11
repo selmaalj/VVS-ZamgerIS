@@ -13,7 +13,7 @@ public class GoogleSheetsManager
     static string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
     static string ApplicationName = "Zam";
     static string ClientSecretFilePath = "Sheets\\cred.json";
-    static string Range = "S1!A1:Z100";
+    static string Range = "Sheet1!A1:Z100";
     string SpreadsheetId;
 
     public GoogleSheetsManager(string _spreadsheetId)
@@ -48,7 +48,7 @@ public class GoogleSheetsManager
         ValueRange response = request.Execute();
         IList<IList<object>> values = response.Values;
         Dictionary<string, string> exam = new Dictionary<string, string>();
-        for (int i = 0; i < values.Count; i++)
+        for (int i = 1; i < values.Count; i++)
         {
             int k = 0;
             string index = "null", points = "null";
