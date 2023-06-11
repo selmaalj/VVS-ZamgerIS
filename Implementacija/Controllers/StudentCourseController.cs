@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using ooadproject.Data;
 using ooadproject.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ooadproject.Controllers
 {
@@ -23,6 +24,7 @@ namespace ooadproject.Controllers
         }
 
         // GET: StudentCourse
+        [Authorize(Roles = "StudentService")]
         public async Task<IActionResult> Index()
         {
 
@@ -32,6 +34,7 @@ namespace ooadproject.Controllers
 
         // GET: StudentCourse/Details/5
         //studentcoursetstatus
+        [Authorize(Roles = "StudentService")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.StudentCourse == null)
@@ -52,6 +55,7 @@ namespace ooadproject.Controllers
         }
 
         // GET: StudentCourse/Create
+        [Authorize(Roles = "StudentService")]
         public IActionResult Create()
         {
             ViewData["CourseID"] = new SelectList(_context.Course, "ID", "Name");
@@ -71,6 +75,7 @@ namespace ooadproject.Controllers
         // POST: StudentCourse/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "StudentService")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("ID,CourseID,StudentID")] StudentCourse studentCourse)
@@ -88,7 +93,7 @@ namespace ooadproject.Controllers
             return View(studentCourse);
         }
 
-
+        [Authorize(Roles = "StudentService")]
         // POST: StudentCourse/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -107,7 +112,7 @@ namespace ooadproject.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
+        [Authorize(Roles = "Student")]
         public async Task<IActionResult> StudentCourseStatus(int? id)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -153,6 +158,7 @@ namespace ooadproject.Controllers
             ViewData["MaxPossible"] = MaxPossible;
             return View();
         }
+        [Authorize(Roles = "Student")]
         //View that shows the status of all courses for a student based on the year of study
         public async Task<IActionResult> StudentOverallStatus(int? id)
         {

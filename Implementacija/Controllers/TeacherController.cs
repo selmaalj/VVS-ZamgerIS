@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ooadproject.Data;
@@ -6,6 +7,7 @@ using ooadproject.Models;
 
 namespace ooadproject.Controllers
 {
+    [Authorize(Roles = "StudentService")]
     public class TeacherController : Controller
     {
         private readonly ApplicationDbContext _context;

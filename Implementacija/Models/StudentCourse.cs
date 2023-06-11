@@ -35,9 +35,9 @@ namespace ooadproject.Models
             Notifier = null;
         }
 
-        public void Notify()
+        public async Task Notify()
         {
-            Notifier.UpdateForFinalGrade(this);
+            await Notifier.UpdateForFinalGrade(this);
         }
     }
 }
