@@ -26,18 +26,6 @@ namespace ooadproject.Models
 
         [NotMapped]
         private NotificationManager? Notifier = null;
-
-        public Exam(Course course, DateTime time, ExamType type, double totalPoints, double minimumPoints, NotificationManager notif) 
-        {
-            this.Course = course;
-            this.Time = time;
-            this.Type = type;
-            this.TotalPoints = totalPoints;
-            this.MinimumPoints = minimumPoints;
-            this.Notifier = notif;
-            this.Notify();
-        }
-
         public void Attach(NotificationManager notifier)
         {
             this.Notifier = notifier;
