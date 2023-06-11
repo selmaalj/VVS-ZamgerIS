@@ -74,17 +74,29 @@ namespace ooadproject.Controllers
 
             return View(studentExam);
         }
+        public List<SelectListItem> GetFullNames(List<StudentCourse> owo)
+        {
+            List<SelectListItem> Students = new List<SelectListItem>();
+
+            foreach (StudentCourse item in owo)
+            {
+                Students.Add(new SelectListItem() { Text = $"{item.Student.FirstName} {item.Student.LastName}", Value = item.ID.ToString() });
+            }
+
+            return Students;
+
+        }
 
         // GET: StudentExam/Create
         public async Task<IActionResult> Create(int id)
         {
             //Get list of students that are enrolled in the course passed by the id as a SelectList which will display the name of the course
-            var students = await _context.StudentCourse.Include(s => s.Student).Where(s => s.CourseID == id).ToListAsync();
+            List<StudentCourse> students = await _context.StudentCourse.Include(s => s.Student).Where(s => s.CourseID == id).ToListAsync();
             //Get list of exams that are open for the course passed by the id as a SelectList which will display the id of the exam
             var exams = await _context.Exam.Include(e => e.Course).Where(e => e.CourseID == id).ToListAsync();
             var user = await _userManager.GetUserAsync(User);
             var courses = await _context.Course.Where(c => c.TeacherID == user.Id).ToListAsync();
-            ViewData["CourseID"] = new SelectList(students, "ID", "Student.FirstName");
+            ViewData["CourseID"] = new SelectList(GetFullNames(students), "Value", "Text");
             ViewData["ExamID"] = new SelectList(exams, "ID", "Type");
             ViewData["Courses"] = courses;
             return View();
@@ -104,7 +116,7 @@ namespace ooadproject.Controllers
             {
                 _context.Add(studentExam);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Create));
             }
             var students = await _context.StudentCourse.Include(s => s.Student).Where(s => s.CourseID == id).ToListAsync();
             //Get list of exams that are open for the course passed by the id as a SelectList which will display the id of the exam
