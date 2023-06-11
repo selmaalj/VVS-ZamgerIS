@@ -42,7 +42,7 @@ namespace ooadproject.Controllers
 
             var Courses = new List<SelectListItem>();
             
-            var UserCourses = await _context.Course.Where(c => c.Teacher.Id == user.Id).ToListAsync();
+            var UserCourses = await _context.Course.Where(c => c.TeacherID == user.Id).ToListAsync();
             foreach (var item in UserCourses)
             {
                 Courses.Add(new SelectListItem() { Text = item.Name, Value = item.ID.ToString() });

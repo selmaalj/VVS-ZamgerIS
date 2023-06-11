@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ooadproject.Models
 {
-    public class StudentExam: IActivity
+    public class StudentExam : IActivity, INotificationObservable
     {
         [Key]
         public int ID { get; set; }
@@ -20,7 +20,18 @@ namespace ooadproject.Models
         public double PointsScored { get; set; }
         public bool IsPassed { get; set; }
 
-        public StudentExam() { }
+        [NotMapped]
+        private NotificationManager? Notifier = null;
+
+        public StudentExam(StudentCourse course, Exam exam, double points, bool isPassed, NotificationManager notif) 
+        {
+            this.Course = course;
+            this.Exam = exam;
+            this.PointsScored = points;
+            this.IsPassed = isPassed;
+            this.Notifier = notif;
+            this.Notify();
+        }
 
         public double GetPointsScored()
         {
@@ -39,6 +50,21 @@ namespace ooadproject.Models
         public string GetActivityType()
         {
             return Exam.Type.ToString();
+        }
+
+        public void Attach(NotificationManager Notifier)
+        {
+            this.Notifier = Notifier;
+        }
+
+        public void Detach()
+        {
+            Notifier = null;
+        }
+
+        public void Notify()
+        {
+            Notifier.UpdateForExamResults(this);
         }
     }
 }
