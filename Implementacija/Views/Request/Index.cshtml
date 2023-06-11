@@ -2,58 +2,41 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutStudentService.cshtml";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Requester)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RequestTime)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Processor)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
+<h1>Aktivni zahtjevi</h1>
+<hr />
+<table class="table table-hover">
+    <tr>
+        <th>Zahtjev</th>
+        <th>Student</th>
+        <th>Actions</th>
+    </tr>
+    @foreach (Request request in ViewBag.PendingRequests)
+    {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Requester.Id)
+                @if (request.Type is RequestType.PassedExamsTestimony)
+                {
+                    @Html.Raw("Uvjerenje o položenim predmetima");
+                }
+                else
+                {
+                    @Html.Raw("Potvrda o redovnom studiju");
+                }
             </td>
+            <!-- Find Student where his id matches request.RequesterID-->
+            var student = ViewBag.Students.Where(s => s.Id == request.RequesterID).FirstOrDefault();
+            <td>student.Name</td>
             <td>
-                @Html.DisplayFor(modelItem => item.RequestTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Processor.Id)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.ID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ID">Delete</a>
+                <a asp-controller="" asp-action="">Potvrdi</a>
+                <a asp-controller="" asp-action="">Odbij</a>
+                <a asp-controller="Request" asp-action="Details" asp-route-id="@request.ID">Detalji</a>
             </td>
         </tr>
-}
-    </tbody>
+    }
 </table>
+
+
+
