@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -33,13 +28,11 @@ namespace ooadproject.Controllers
             var exams = await _context.Exam.Include(e => e.Course).Where(e => courses.Contains(e.CourseID) && e.Time > DateTime.Now).ToListAsync();
             var examsID = exams.Select(exams => exams.ID).ToList();
 
-            var registrations = await _context.ExamRegistration.Include(er => er.Exam).Where(er => examsID.Contains(er.ExamID) && er.StudentID == user.Id).ToListAsync();
-
-            var registeredExams = registrations.Select(r => r.Exam).ToList();
-
-            var openedExams = registrations.Where(r => examsID.Contains(r.ExamID) && !registeredExams.Contains(r.Exam))
-                                        //   .Select(r => r.Exam)
-                                           .ToList();
+            //Get all exams that a student has registered for
+            var registrations = await _context.ExamRegistration.Include(er => er.Exam).Where(er => er.StudentID == user.Id).ToListAsync();
+            //Get all open exams that a student has not registered for and where the date is not passed
+            var openedExams = exams.Where(e => !registrations.Select(r => r.ExamID).Contains(e.ID)).ToList();            
+            
 
             ViewData["RegisteredExams"] = registrations;
             ViewData["OpenedExams"] = openedExams;
@@ -52,27 +45,28 @@ namespace ooadproject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,StudentID,ExamID,RegistrationTime")] ExamRegistration examRegistration)
+        public async Task<IActionResult> Create(int examID, [Bind("ID,StudentID,ExamID,RegistrationTime")] ExamRegistration examRegistration)
         {
-            // pass ExamID via different controller
-            int examID = (int)TempData["ExamID"];
-            var user = await _userManager.GetUserAsync(User);
-            examRegistration.StudentID = user.Id;
-            examRegistration.ExamID = examID;
-            examRegistration.RegistrationTime = DateTime.Now;
-
             if (ModelState.IsValid)
             {
-                _context.Add(examRegistration);
+                var user = await _userManager.GetUserAsync(User);
+                examRegistration.StudentID = user.Id;
+                examRegistration.ExamID = examID;
+                examRegistration.RegistrationTime = DateTime.Now;
+
+                await _context.ExamRegistration.AddAsync(examRegistration);
                 await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
+
             ViewData["ExamID"] = new SelectList(_context.Exam, "ID", "ID", examRegistration.ExamID);
             ViewData["StudentID"] = new SelectList(_context.Student, "Id", "Id", examRegistration.StudentID);
+
             return View(examRegistration);
         }
 
-  
+
         // POST: ExamRegistration/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
