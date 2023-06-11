@@ -21,7 +21,7 @@ public class GoogleSheetsManager
         SpreadsheetId = _spreadsheetId;
     }
 
-    public Dictionary<string,string> GetExam()
+    public Dictionary<string, string> GetExam()
     {
         UserCredential credential;
 
@@ -45,16 +45,16 @@ public class GoogleSheetsManager
         // Retrieve the values from the specified range.
         SpreadsheetsResource.ValuesResource.GetRequest request =
             service.Spreadsheets.Values.Get(SpreadsheetId, Range);
-        ValueRange response = request.Execute();
-        IList<IList<object>> values = response.Values;
+        ValueRange? response = request.Execute();
+        IList<IList<object>>? values = response?.Values;
         Dictionary<string, string> exam = new Dictionary<string, string>();
-        for (int i = 1; i < values.Count; i++)
+        for (int i = 1; values != null && i < values.Count; i++)
         {
             int k = 0;
             string index = "null", points = "null";
-            for (int j=0; j < values[i].Count; j++)
+            for (int j = 0; values[i] != null && j < values[i].Count; j++)
             {
-                if (values[i][j].ToString().Length != 0)
+                if (values[i][j]?.ToString()?.Length != 0)
                 {
                     if (k == 0)
                     {

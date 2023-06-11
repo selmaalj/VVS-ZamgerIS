@@ -53,16 +53,16 @@
 <h2 class="pt-3">Grupni unos rezultata</h2>
 <div class="row mb-3">
     <div class="col-md-4">
-        <form>
+        <form asp-action="SaveExamResults">
             <div class="form-group">
                 <label class="control-label pb-1 pt-3">Ispit</label>
                 <!--Kasnije kada se doda Homework, pridodati na ovo i Homework-->
-                <select class="form-control"></select>
+                <select class="form-control" asp-items="@ViewBag.Exams" name="id"></select>
             </div>
 
             <div class="form-group">
                 <label for="linkInput" class="control-label pb-1 pt-3">Link</label>
-                <input type="url" class="form-control" id="linkInput" placeholder="Unesite spreadsheet link">
+                <input type="url" class="form-control" id="linkInput" placeholder="Unesite spreadsheet link" name="link">
             </div>
 
             <button type="submit" class="btn btn-primary mt-3">Unesi</button>

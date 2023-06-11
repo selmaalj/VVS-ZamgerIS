@@ -30,7 +30,8 @@ namespace ooadproject.Models
                     newExam.IsPassed = result.Value >= exam.MinimumPoints;
                     newExam.PointsScored = result.Value;
 
-                    await _context.AddAsync(newExam);
+                    _context.AddAsync(newExam);
+                    await _context.SaveChangesAsync();
                 }
             }
         }
