@@ -4,6 +4,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    var Registrations = (Dictionary<int, int>)ViewData["RegisteredForExam"];
 }
 
 @section SideMenu {
@@ -81,7 +82,9 @@
                     <td>@exam.Course.Name</td>
                     <td>@exam.Type</td>
                     <td>@exam.Time</td>
-                    <td>5</td>
+                    <td>
+                         @Registrations[exam.ID])
+                    </td>
                     <td>
                         <a asp-controller="Exam" asp-action="Edit" asp-route-id="@exam.ID" class="link-dark rounded">Uredi</a>
                     </td>
