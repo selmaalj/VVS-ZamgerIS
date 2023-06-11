@@ -45,7 +45,7 @@ namespace ooadproject.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int examID, [Bind("ID,StudentID,ExamID,RegistrationTime")] ExamRegistration examRegistration)
+        public async Task<IActionResult> Create(int examID, [Bind("StudentID,ExamID,RegistrationTime")] ExamRegistration examRegistration)
         {
             if (ModelState.IsValid)
             {

@@ -82,7 +82,12 @@
                 <td>@exam.Exam.Course.Name</td>
                 <td>@exam.Exam.Type</td>
                 <td>@exam.Exam.Time</td>
-                <td><a>Odjavi se</a></td>
+                <td>
+                    <form method="post" asp-controller="ExamRegistration" asp-action="Delete" asp-route-id="@exam.ID">
+                        <input type="hidden" name="examid" value="@exam.ID">
+                        <button type="submit">Odjavi se</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>
