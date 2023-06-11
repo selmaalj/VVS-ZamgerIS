@@ -9,6 +9,7 @@ namespace ooadproject.Models
         {
             double examPoints = 0;
             int beginIndex = 0;
+
             while (beginIndex < exams.Count && 
                 (exams[beginIndex].Exam.Type == ExamType.Test || exams[beginIndex].Exam.Type == ExamType.Oral)) beginIndex++;
 
@@ -36,6 +37,13 @@ namespace ooadproject.Models
                 else return -1;
             }
             else return -1;
+
+            foreach (var exam in exams)
+            {
+                if (exam.Exam.Type == ExamType.Test || exam.Exam.Type == ExamType.Oral)
+                    examPoints += exam.PointsScored;
+            }
+
             return examPoints;
         }
         public static int evaluateGrade(List<StudentExam> exams, List<StudentHomework> homeworks)
