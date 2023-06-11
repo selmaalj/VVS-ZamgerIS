@@ -8,28 +8,9 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li>
-            <div style="position:relative;display:inline-block;">
-                <button class="btn notif-btn" style="z-index=999;">
+                <a class="btn" asp-controller="Home" asp-action="Index">
                     <i class="fas fa-bell"></i>
-                </button>
-                <div style="position:absolute;top:30px;right:0;background-color:white;border:1px solid black;padding:10px;z-index:999;visibility:hidden;">
-                    <div>Notification 1</div>
-                    <div>Notification 2</div>
-                    <div>Notification 3</div>
-                </div>
-            </div>
-            <script>
-                const bellIcon = document.querySelector('.notif-btn');
-                const notificationPanel = document.querySelector('[style="position:absolute;top:30px;right:0;background-color:white;border:1px solid black;padding:10px;z-index:999;visibility:hidden;"]');
-
-                bellIcon.onclick = function () {
-                    if (notificationPanel.style.visibility === "hidden") {
-                        notificationPanel.style.visibility = "visible";
-                    } else {
-                        notificationPanel.style.visibility = "hidden";
-                    }
-                }
-            </script>
+                </a>
     </li>
     <li class="nav-item">
         <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
