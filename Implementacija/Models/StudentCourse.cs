@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ooadproject.Models
 {
-    public class StudentCourse
+    public class StudentCourse : INotificationObservable
     {
         [Key]
         public int ID {  get; set; }
@@ -17,10 +17,31 @@ namespace ooadproject.Models
         public Student? Student { get; set; }
 
         public double Points { get; set; }
-        public int Grade { get; set; }
+        private int Grade { get; set; }
+
+        private NotificationManager notification;
 
         public StudentCourse() { }
 
+        public void setGrade(int grade) 
+        {
+            this.Grade = grade;
+            this.Notify();
+        }
 
+        public void Attach(NotificationManager notifications)
+        {
+            this.notification = notification;
+        }
+
+        public void Detach()
+        {
+            notification = null;
+        }
+
+        public void Notify()
+        {
+            notification.UpdateForFinalGrade(this);
+        }
     }
 }

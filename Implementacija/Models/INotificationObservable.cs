@@ -1,6 +1,9 @@
 ﻿namespace ooadproject.Models
 {
-    public interface INotificationObserved
+    public interface INotificationObservable
     {
+        void Attach(NotificationManager notifications);
+        void Detach();
+        void Notify();
     }
 }
