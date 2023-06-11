@@ -36,12 +36,6 @@ namespace ooadproject.Models
         {
             return Exam.Time.Date;
         }
-
-        public string GetActivityName()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public string GetActivityType()
         {
             return Exam.Type.ToString();

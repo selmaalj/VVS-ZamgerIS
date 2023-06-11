@@ -47,21 +47,9 @@
     </ul>
 }
 <h1 class="pb-3">@ViewBag.CurrentCourse.Name</h1>
-<table class="table table-bordered pb-5">
-    <tr>
-        <th>Student</th>
-        @foreach (var exam in ViewBag.Exams)
-        {
-            <th>
-                @exam.Type
-                (@exam.Time)
-            </th>
-        }
-        <th></th>
-    </tr>
-    <!-- Data rows go here -->
+<h2 class="pb-3">Pojedinačni unos rezultata</h2>
+<a class="btn btn-primary" asp-controller="StudentExam" asp-action="Create" asp-route-id="@ViewBag.CurrentCourse.ID">Unesi rezultat</a>
 
-</table>
 <h2 class="pt-3">Grupni unos rezultata</h2>
 <div class="row mb-3">
     <div class="col-md-4">

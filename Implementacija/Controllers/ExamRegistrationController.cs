@@ -60,8 +60,8 @@ namespace ooadproject.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewData["ExamID"] = new SelectList(_context.Exam, "ID", "ID", examRegistration.ExamID);
-            ViewData["StudentID"] = new SelectList(_context.Student, "Id", "Id", examRegistration.StudentID);
+           // ViewData["ExamID"] = new SelectList(_context.Exam, "ID", "ID", examRegistration.ExamID);
+            //ViewData["StudentID"] = new SelectList(_context.Student, "Id", "Id", examRegistration.StudentID);
 
             return View(examRegistration);
         }

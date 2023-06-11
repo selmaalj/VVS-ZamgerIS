@@ -6,7 +6,6 @@
         double GetTotalPoints();
 
         DateTime GetActivityDate();
-        string GetActivityName();
         string GetActivityType();
     }
 }

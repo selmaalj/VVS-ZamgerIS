@@ -42,9 +42,9 @@ namespace ooadproject.Controllers
         }
         public List<SelectListItem> GetRequestStatusList()
         {
+            //Get all request types from enum of model RequestStatus
             List<SelectListItem> Types = new List<SelectListItem>();
             var EnumValues = Enum.GetValues(typeof(RequestStatus));
-
             foreach (var value in EnumValues)
             {
                 Types.Add(new SelectListItem
@@ -53,6 +53,7 @@ namespace ooadproject.Controllers
                     Value = ((int)value).ToString()
                 });
             }
+                    
 
             return Types;
 
@@ -65,6 +66,7 @@ namespace ooadproject.Controllers
                 .Where(r => r.Status == RequestStatus.Pending)
                 .OrderBy(r => r.RequestTime)
                 .ToListAsync();
+            //Get all requests a student has made where the RequestStatus is not pending
             var Processed = await _context.Request.Include(r => r.Processor).Include(r => r.Requester)
                 .Where(r => r.Status != RequestStatus.Pending)
                 .OrderByDescending(r => r.RequestTime)
@@ -86,6 +88,7 @@ namespace ooadproject.Controllers
             .Where(r => r.Status == RequestStatus.Pending && r.RequesterID == user.Id)
             .OrderBy(r => r.RequestTime)
             .ToList();
+            //Get all requests a student has made in descending order by request time
             var Processed = _context.Request.Include(r => r.Processor).Include(r => r.Requester)
                 .Where(r => r.Status != RequestStatus.Pending && r.RequesterID == user.Id)
                 .OrderByDescending(r => r.RequestTime)
@@ -132,16 +135,21 @@ namespace ooadproject.Controllers
 
         public async Task<IActionResult> Edit(int? id)
         {
+            
+     
             if (id == null || _context.Request == null)
             {
                 return NotFound();
             }
 
             var request = await _context.Request.FindAsync(id);
+            //Get student by requests requesterID
+            var student = await _context.Student.FindAsync(request.RequesterID);
             if (request == null)
             {
                 return NotFound();
             }
+            ViewData["Student"] = student;
             ViewData["RequestTypes"] = GetRequestTypesList();
             ViewData["RequestStatus"] = GetRequestStatusList();
             return View(request);
@@ -153,7 +161,7 @@ namespace ooadproject.Controllers
         public async Task<IActionResult> Edit(int id, [Bind("ID,RequesterID,RequestTime,Type,Status,ProcessorID")] Request request)
         {
 
-            request.ProcessorID = _userManager.GetUserAsync(User).Id;
+            request.ProcessorID = (await _userManager.GetUserAsync(User)).Id;
 
             if (id != request.ID)
             {
@@ -181,8 +189,7 @@ namespace ooadproject.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RequestTypes"] = GetRequestTypesList();
-            ViewData["RequestStatus"] = GetRequestStatusList();
+
             return View(Index);
         }
 
@@ -204,6 +211,26 @@ namespace ooadproject.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(StudentRequests));
         }
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null || _context.Request == null)
+            {
+                return NotFound();
+            }
+
+            var request = await _context.Request
+                .Include(r => r.Processor)
+                .Include(r => r.Requester)
+                .FirstOrDefaultAsync(m => m.ID == id);
+            if (request == null)
+            {
+                return NotFound();
+            }
+            var student = await _context.Student.FindAsync(request.RequesterID);
+            ViewData["Student"] = student;
+            return View(request);
+        }
+
 
         private bool RequestExists(int id)
         {
