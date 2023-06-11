@@ -19,7 +19,8 @@ namespace ooadproject.Models
         public double Points { get; set; }
         private int Grade { get; set; }
 
-        private NotificationManager notification = null;
+        [NotMapped]
+        private NotificationManager? Notifier = null;
 
         public StudentCourse() { }
 
@@ -31,17 +32,17 @@ namespace ooadproject.Models
 
         public void Attach(NotificationManager notifications)
         {
-            this.notification = notification;
+            this.Notifier = notifications;
         }
 
         public void Detach()
         {
-            notification = null;
+            Notifier = null;
         }
 
         public void Notify()
         {
-            notification.UpdateForFinalGrade(this);
+            Notifier.UpdateForFinalGrade(this);
         }
     }
 }

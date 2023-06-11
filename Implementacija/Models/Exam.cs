@@ -20,7 +20,7 @@ namespace ooadproject.Models
 
         public double MinimumPoints { get; set; }
 
-        private NotificationManager notification = null;
+        private NotificationManager? Notifier = null;
 
         public Exam(Course course, DateTime time, ExamType type, double totalPoints, double minimumPoints, NotificationManager notif) 
         {
@@ -29,23 +29,23 @@ namespace ooadproject.Models
             this.Type = type;
             this.TotalPoints = totalPoints;
             this.MinimumPoints = minimumPoints;
-            this.notification = notif;
+            this.Notifier = notif;
             this.Notify();
         }
 
-        public void Attach(NotificationManager notifications)
+        public void Attach(NotificationManager notifier)
         {
-            this.notification = notification;
+            this.Notifier = notifier;
         }
 
         public void Detach()
         {
-            notification = null;
+            Notifier = null;
         }
 
         public void Notify()
         {
-            notification.UpdateForExamCreation(this);
+            Notifier.UpdateForExamCreation(this);
         }
     }
 }

@@ -4,7 +4,7 @@
     {
         void UpdateForFinalGrade(StudentCourse studentCourse);
         void UpdateForExamCreation(Exam exam);
-        void UpdateForExamResoults(StudentExam studentExam);
+        void UpdateForExamResults(StudentExam studentExam);
 
     }
 }
