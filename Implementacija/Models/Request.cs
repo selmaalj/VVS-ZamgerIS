@@ -10,7 +10,7 @@ namespace ooadproject.Models
         public int ID { get; set; }
 
         [ForeignKey("Student")]
-        public int RequesterID { get; set; }
+        public int? RequesterID { get; set; }
         public Student? Requester { get; set; }
 
         public DateTime? RequestTime { get; set; }

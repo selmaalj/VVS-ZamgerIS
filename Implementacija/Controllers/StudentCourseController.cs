@@ -163,7 +163,7 @@ namespace ooadproject.Controllers
                     CoursesWithGrade.Add(item);
                 }
             }
-            ViewData["GradedCourses"] = CoursesWithGrade;
+            ViewData["GradedCourses"] = CoursesWithGrade.OrderBy(c => c.Course.Semester).ThenBy(c => c.Course.Name);
             ViewData["Courses"] = courses;
             //Calculate the average grade for all courses
             double AverageGrade = 0;

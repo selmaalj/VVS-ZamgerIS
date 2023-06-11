@@ -31,7 +31,7 @@ namespace ooadproject.Controllers
         public async Task<List<Notification>> GetUserNotificationsAsync()
         {
             var user = await _userManager.GetUserAsync(User);
-            var notifications = _context.Notification.Where(n => n.RecipientID == user.Id).ToList();
+            var notifications = _context.Notification.Where(n => n.RecipientID == user.Id).Take(5).ToList();
             return notifications;
 
         }

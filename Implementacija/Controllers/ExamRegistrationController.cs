@@ -29,8 +29,8 @@ namespace ooadproject.Controllers
             
             var user = await _userManager.GetUserAsync(User);
             var studentCourses = await _context.StudentCourse.Include(sc => sc.Course).Where(c => c.StudentID == user.Id).ToListAsync();
-            var courses = studentCourses.Select(c => c.Course).ToList();
-            var exams = await _context.Exam.Include(e => e.Course).Where(e => courses.Contains(e.Course) && e.Time > DateTime.Now).ToListAsync();
+            var courses = studentCourses.Select(c => c.CourseID).ToList();
+            var exams = await _context.Exam.Include(e => e.Course).Where(e => courses.Contains(e.CourseID) && e.Time > DateTime.Now).ToListAsync();
             var examsID = exams.Select(exams => exams.ID).ToList();
 
             var registrations = await _context.ExamRegistration.Include(er => er.Exam).Where(er => examsID.Contains(er.ExamID) && er.StudentID == user.Id).ToListAsync();
