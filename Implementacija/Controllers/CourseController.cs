@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ooadproject.Data;
 using ooadproject.Models;
+using static ooadproject.Models.StudentCourseManager;
 
 namespace ooadproject.Controllers
 {
@@ -12,11 +13,15 @@ namespace ooadproject.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<Person> _userManager;
+        private readonly StudentCourseManager _courseManager;
+        private readonly GradesManager _gradesManager;
 
         public CourseController(ApplicationDbContext context, UserManager<Person> userManager)
         {
             _context = context;
             _userManager = userManager;
+            _courseManager = new StudentCourseManager(_context);
+            _gradesManager = new GradesManager(_context);
         }
 
         public List<SelectListItem>  GetTeacherNamesList()
@@ -176,8 +181,13 @@ namespace ooadproject.Controllers
         [Authorize(Roles = "Teacher")]
         public async Task<IActionResult> CourseStatus(int? id)
         {
-            /*
+            var user = await _userManager.GetUserAsync(User);
+            var courses = await _context.Course.Where(c => c.Teacher == user).ToListAsync();
             var course = await _context.Course.FindAsync(id);
+            ViewData["course"] = course;
+            ViewData["Courses"] = courses;
+            /*
+            
             var StudentCourses = await _context.StudentCourse.Where(sc => sc.Course == course).ToListAsync();
             var Students = new List<Student>();
             var user = await _userManager.GetUserAsync(User);
@@ -191,16 +201,20 @@ namespace ooadproject.Controllers
 
             var Homeworks = await _context.Homework.Where(h => h.Course == course).ToListAsync();
 
-            ViewData["course"] = course;
+            
             ViewData["Courses"] = Courses;
             ViewData["StudentCourses"] = StudentCourses;
             ViewData["Students"] = Students;
             ViewData["Exams"] = Exams;
             ViewData["Homeworks"] = Homeworks;
             */
-            var manager = new StudentCourseManager(_context);
-            ViewData["Info"] = await manager.RetrieveStudentCourseInfo(id);
-            ViewData["Maximum"] =  await manager.GetMaximumPoints(id);
+            var students = await _context.StudentCourse.Where(sc => sc.Course == course).ToListAsync();
+            List<StudentCourseInfo> list = await _courseManager.RetrieveStudentCourseInfo(id);
+            ViewData["Info"] = list;
+            ViewData["Maximum"] =  await _courseManager.GetMaximumPoints(id);
+            ViewData["NumberOfPassed"] = await _courseManager.GetNumberOfPassed(list);
+            ViewData["NumberOfStudents"] = students.Count;
+
 
             return View();
         }

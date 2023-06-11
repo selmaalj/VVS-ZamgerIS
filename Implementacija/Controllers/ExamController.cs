@@ -122,7 +122,22 @@ namespace ooadproject.Controllers
             ViewData["CourseID"] = new SelectList(_context.Course, "ID", "ID", exam.CourseID);
             return RedirectToAction(nameof(Index)); 
         }
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null || _context.Exam == null)
+            {
+                return NotFound();
+            }
 
+            var exam = await _context.Exam.FindAsync(id);
+            if (exam == null)
+            {
+                return NotFound();
+            }
+            var user = await _userManager.GetUserAsync(User);
+            ViewData["Courses"] = await _context.Course.Where(c => c.TeacherID == user.Id).ToListAsync();
+            return RedirectToAction(nameof(Index));
+        }
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
