@@ -58,7 +58,7 @@ namespace ooadproject.Controllers
         {
             var exam = await _context.Exam.FindAsync(id);
             await _examManager.SaveExamResults(exam, link);
-            return View();
+            return RedirectToAction(nameof(Index));
         }
         // GET: StudentExam/Details/5
         public async Task<IActionResult> Details(int? id)
