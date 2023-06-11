@@ -47,9 +47,17 @@ namespace ooadproject.Models
             await Db.SaveChangesAsync();
         }
 
-        public void UpdateForFinalGrade(StudentCourse studentCourse)
+        public async Task UpdateForFinalGrade(StudentCourse studentCourse)
         {
-            //it will be called when someone defines the final grade in StduentCourse... notification bla bla...
+
+                var notification = new NotificationBuilder()
+                    .setTitle("Zaključena ocjena.")
+                    .setMessage("Čestitamo. Dobili ste " + studentCourse.Grade)
+                    .setRecipient(studentCourse.Student)
+                    .build();
+                await Db.AddAsync(notification);
+                await Db.SaveChangesAsync();
+            
         }
     }
 }

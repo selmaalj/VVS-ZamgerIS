@@ -17,18 +17,13 @@ namespace ooadproject.Models
         public Student? Student { get; set; }
 
         public double Points { get; set; }
-        private int Grade { get; set; }
+        public int Grade { get; set; }
 
         [NotMapped]
         private NotificationManager? Notifier = null;
 
         public StudentCourse() { }
 
-        public void setGrade(int grade) 
-        {
-            this.Grade = grade;
-            this.Notify();
-        }
 
         public void Attach(NotificationManager notifications)
         {
