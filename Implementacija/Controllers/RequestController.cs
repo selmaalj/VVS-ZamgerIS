@@ -80,17 +80,21 @@ namespace ooadproject.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
+            //Get all courses a student is enrolled in
+            var Courses = await _context.StudentCourse.Include(sc => sc.Course).Where(sc => sc.StudentID == user.Id).ToListAsync();
             var Pending = _context.Request.Include(r => r.Processor).Include(r => r.Requester)
-                .Where(r => r.Status == RequestStatus.Pending && r.RequesterID == user.Id)
-                .OrderBy(r => r.RequestTime)
-                .ToListAsync();
+            .Where(r => r.Status == RequestStatus.Pending && r.RequesterID == user.Id)
+            .OrderBy(r => r.RequestTime)
+            .ToList();
             var Processed = _context.Request.Include(r => r.Processor).Include(r => r.Requester)
                 .Where(r => r.Status != RequestStatus.Pending && r.RequesterID == user.Id)
                 .OrderByDescending(r => r.RequestTime)
-                .ToListAsync();
+                .ToList();
 
             ViewData["PendingRequests"] = Pending;
             ViewData["ProcessedRequests"] = Processed;
+            ViewData["Courses"] = Courses;
+
 
             return View();
         }
@@ -111,7 +115,7 @@ namespace ooadproject.Controllers
         {
             request.RequesterID =   (await _userManager.GetUserAsync(User)).Id;
             request.RequestTime = DateTime.Now;
-            request.ProcessorID = null;
+            request.ProcessorID = 0;
             request.Status = RequestStatus.Pending;
 
             if (ModelState.IsValid)
