@@ -8,7 +8,7 @@ namespace ooadproject.Models
         [Key]
         public int ID { get; set; }
         [StringLength(maximumLength: 50, MinimumLength = 3, ErrorMessage =
-"Naziv predmeta smije imati između 3 i 50 karaktera!")]
+            "Naziv predmeta smije imati između 3 i 50 karaktera!")]
         [RegularExpression(@"[0-9| |a-z|A-Z]*", ErrorMessage = 
             "Dozvoljeno je samo korištenje velikih i malih slova, brojeva i razmaka!")]
         public string Name { get; set; }
