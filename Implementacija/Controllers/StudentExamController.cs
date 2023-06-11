@@ -15,11 +15,13 @@ namespace ooadproject.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<Person> _userManager;
+        private readonly ExamManager _examManager;
 
         public StudentExamController(ApplicationDbContext context, UserManager<Person> userManager)
         {
             _context = context;
             _userManager = userManager;
+            _examManager = new ExamManager(_context);
         }
 
         // GET: StudentExam
@@ -36,12 +38,23 @@ namespace ooadproject.Controllers
             var courses = await _context.Course.Where(c => c.TeacherID == user.Id).ToListAsync();
             var currentCourse = await _context.Course.FindAsync(id);
             var exams = await _context.Exam.Include(e => e.Course).Where(e => courses.Contains(e.Course)).ToListAsync();
-            ViewData["Courses"] = courses;
-            ViewData["Exams"] = exams;
+            ViewData["Exams"] = new SelectList(exams,"ID","Type");
             ViewData["CurrentCourse"] = currentCourse;
+            ViewData["Courses"] = courses;
             return View();
         }
-
+        public async Task<IActionResult> SaveExamResults()
+        {
+            var applicationDbContext = _context.StudentExam.Include(s => s.Course).Include(s => s.Exam);
+            return View(await applicationDbContext.ToListAsync());
+        }
+        [HttpPost]
+        public async Task<IActionResult> SaveExamResults(int id, string link)
+        {
+            var exam = await _context.Exam.FindAsync(id);
+            await _examManager.SaveExamResults(exam, link);
+            return View();
+        }
         // GET: StudentExam/Details/5
         public async Task<IActionResult> Details(int? id)
         {

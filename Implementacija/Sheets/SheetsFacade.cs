@@ -18,7 +18,7 @@
                 Uri uri = new Uri(link);
                 string path = uri.AbsolutePath;
                 string[] segments = path.Split('/');
-                spreadsheetId = segments[segments.Length - 1];
+                spreadsheetId = segments[segments.Length - 2];
             }
             catch (Exception ex)
             {

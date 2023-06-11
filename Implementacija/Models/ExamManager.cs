@@ -7,11 +7,9 @@ namespace ooadproject.Models
     public class ExamManager
     {
         private readonly ApplicationDbContext _context;
-        private readonly NotificationManager _notificationManager;
-        public ExamManager(ApplicationDbContext context, NotificationManager notificationManager) 
+        public ExamManager(ApplicationDbContext context) 
         {
             _context = context;
-            _notificationManager = notificationManager;
         }
         public async Task SaveExamResults(Exam exam, string link)
         {
@@ -32,9 +30,8 @@ namespace ooadproject.Models
                     newExam.IsPassed = result.Value >= exam.MinimumPoints;
                     newExam.PointsScored = result.Value;
 
-                    await _context.AddAsync(newExam);
-                    newExam.Attach(_notificationManager);
-                    newExam.Notify();
+                    _context.AddAsync(newExam);
+                    await _context.SaveChangesAsync();
                 }
             }
         }
