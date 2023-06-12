@@ -1,6 +1,9 @@
-OOAD 22/23
+** OOAD 22/23 **
+
 
 **Tim Zamger**
+
+**http://zamger-001-site1.atempurl.com/**
 
 Članovi tima: Nedim Džajić, Nihad Baberović, Edwin Graca, Ajdin Šuta, Ada Džanko
 
@@ -16,5 +19,5 @@ Student ima uvid u ostvareni rezultat na svim predmetima koje sluša po svim osn
 Nastavnik unosi bodove sa zadaća i ispita, a postoji i opcija izmjene već unesenih bodova. Nastavnik ima kompletan uvid u rezultate svakog studenta koji sluša predmet, kao i zbirne rezultate kroz izvještaj o predmetu. 
 
 Studentska služba vrši dodavanje novih studenata i nastavnika u sistem, kao i obradu zahtjeva studenata za ovjerenim uvjerenjima.
-https://win6049.site4now.net:8172/MsDeploy.axd?site=zamger-001-site1
+
 
