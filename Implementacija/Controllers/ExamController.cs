@@ -113,7 +113,7 @@ namespace ooadproject.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(exam);
+                await _context.AddAsync(exam);
                 await _context.SaveChangesAsync();
                 //exam.Attach(_notificationManager);
                 //await exam.Notify();
