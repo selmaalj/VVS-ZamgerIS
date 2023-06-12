@@ -115,8 +115,8 @@ namespace ooadproject.Controllers
             {
                 _context.Add(exam);
                 await _context.SaveChangesAsync();
-                exam.Attach(_notificationManager);
-                await exam.Notify();
+                //exam.Attach(_notificationManager);
+                //await exam.Notify();
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CourseID"] = new SelectList(_context.Course, "ID", "ID", exam.CourseID);
