@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ooadproject.Models
 {
-    public class StudentExam : IActivity, INotificationObservable
+    public class StudentExam : IActivity
     {
         [Key]
         public int ID { get; set; }
@@ -22,8 +22,6 @@ namespace ooadproject.Models
 
         public StudentExam() { }    
 
-        [NotMapped]
-        private NotificationManager? Notifier = null;
 
         public double GetPointsScored()
         {
@@ -42,21 +40,6 @@ namespace ooadproject.Models
         public string GetActivityType()
         {
             return Exam.Type.ToString();
-        }
-
-        public void Attach(NotificationManager Notifier)
-        {
-            this.Notifier = Notifier;
-        }
-
-        public void Detach()
-        {
-            Notifier = null;
-        }
-
-        public async Task Notify()
-        {
-            await Notifier.UpdateForExamResults(this);
         }
     }
 }

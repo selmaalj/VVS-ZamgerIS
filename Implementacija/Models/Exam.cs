@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ooadproject.Models
 {
-    public class Exam : INotificationObservable
+    public class Exam
     {
 
         [Key]
@@ -23,23 +23,5 @@ namespace ooadproject.Models
         public double TotalPoints { get; set; }
         [Range(0, 100, ErrorMessage = "Ukupan broj poena mora biti izmedju 0 i 100")]
         public double MinimumPoints { get; set; }
-
-        [NotMapped]
-        private NotificationManager? Notifier = null;
-
-        public void Attach(NotificationManager notifier)
-        {
-            this.Notifier = notifier;
-        }
-
-        public void Detach()
-        {
-            Notifier = null;
-        }
-
-        public async Task Notify()
-        {
-            await Notifier.UpdateForExamCreation(this);
-        }
     }
 }

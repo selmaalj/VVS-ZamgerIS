@@ -27,7 +27,6 @@ namespace ooadproject.Data
         public DbSet<StudentHomework> StudentHomework { get; set; }
         public DbSet<ExamRegistration> ExamRegistration { get; set; }
         public DbSet<Request> Request { get; set; }
-        public DbSet<Notification> Notification { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -60,11 +59,6 @@ namespace ooadproject.Data
             modelBuilder.Entity<Teacher>()
             .HasBaseType<Person>();
 
-            modelBuilder.Entity<Notification>()
-            .HasOne(se => se.Recipient)
-            .WithMany()
-            .HasForeignKey(se => se.RecipientID)
-            .OnDelete(DeleteBehavior.NoAction);
 
            
 
