@@ -28,13 +28,6 @@ namespace ooadproject.Controllers
             var role = await _userManager.GetRolesAsync(user);
             return role[0]; // always a single role
         }
-        public async Task<List<Notification>> GetUserNotificationsAsync()
-        {
-            var user = await _userManager.GetUserAsync(User);
-            var notifications = _context.Notification.Where(n => n.RecipientID == user.Id).Take(5).ToList();
-            return notifications;
-
-        }
         public int GetExamRegistrations(int id)
         {
             return _context.ExamRegistration.Where(er => er.ExamID == id).CountAsync().Result;
@@ -65,9 +58,7 @@ namespace ooadproject.Controllers
             var student = await _userManager.GetUserAsync(User);
 
             var StudentCourses = await _context.StudentCourse.Include(sc => sc.Course).Where(sc => sc.StudentID == student.Id).ToListAsync();
-            var notifications = await GetUserNotificationsAsync();
             ViewData["Courses"] = StudentCourses;
-            ViewData["Notifications"] = notifications;
 
             return View();
         }
@@ -79,7 +70,6 @@ namespace ooadproject.Controllers
 
             var Courses = await _context.Course.Where(c => c.TeacherID == teacher.Id).ToListAsync();
             var Exams = await _context.Exam.Include(e => e.Course).Where(e => e.Course.TeacherID == teacher.Id && e.Time > DateTime.Now).ToListAsync();
-            var notifications = await GetUserNotificationsAsync();
             var registered = new Dictionary<int, int>();
             foreach (var item in Exams)
             {
@@ -87,7 +77,6 @@ namespace ooadproject.Controllers
             }
 
             ViewData["Courses"] = Courses;
-            ViewData["Notifications"] = notifications;
             ViewData["Exams"] = Exams;
             ViewData["RegisteredForExam"] = registered;
 
@@ -102,10 +91,8 @@ namespace ooadproject.Controllers
 
             var Courses = await _context.Course.Where(c => c.TeacherID == teacher.Id).ToListAsync();
             var Exams = await _context.Exam.Include(e => e.Course).Where(e => e.Course.TeacherID == teacher.Id && e.Time > DateTime.Now).ToListAsync();
-            var notifications = await GetUserNotificationsAsync();
 
             ViewData["Courses"] = Courses;
-            ViewData["Notifications"] = notifications;
             ViewData["Exams"] = Exams;
 
             return View();

@@ -14,14 +14,12 @@ namespace ooadproject.Controllers
         private readonly ApplicationDbContext _context;
         private readonly UserManager<Person> _userManager;
         private readonly StudentCourseManager _courseManager;
-        private readonly GradesManager _gradesManager;
 
         public CourseController(ApplicationDbContext context, UserManager<Person> userManager)
         {
             _context = context;
             _userManager = userManager;
             _courseManager = new StudentCourseManager(_context);
-            _gradesManager = new GradesManager(_context);
         }
 
         public List<SelectListItem>  GetTeacherNamesList()

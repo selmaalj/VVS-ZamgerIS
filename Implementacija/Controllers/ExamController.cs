@@ -1,5 +1,4 @@
-﻿using MessagePack.Formatters;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -14,13 +13,11 @@ namespace ooadproject.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<Person> _userManager;
-        private readonly NotificationManager _notificationManager;
 
-        public ExamController(ApplicationDbContext context, UserManager<Person> userManager, NotificationManager notificationManager)
+        public ExamController(ApplicationDbContext context, UserManager<Person> userManager)
         {
             _context = context;
             _userManager = userManager;
-            _notificationManager = notificationManager;
         }
 
         public List<SelectListItem> GetExamTypesList()

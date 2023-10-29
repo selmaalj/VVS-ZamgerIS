@@ -6,10 +6,8 @@ namespace ooadproject.Models
     public class StudentCourseManager
     {
         private readonly ApplicationDbContext _context;  
-        private readonly GradesManager _gradeManager;
         public StudentCourseManager(ApplicationDbContext context) {
             _context = context;
-            _gradeManager = new GradesManager(_context);
         }
         public class StudentCourseInfo
         {               
@@ -18,11 +16,6 @@ namespace ooadproject.Models
                 public double TotalPoints;
                 public int numberOfPassed;
                 public int Grade;
-        }
-
-        public GradesManager Get_gradeManager()
-        {
-            return _gradeManager;
         }
 
         public async Task<List<StudentCourseInfo>> RetrieveStudentCourseInfo(int? courseID)
