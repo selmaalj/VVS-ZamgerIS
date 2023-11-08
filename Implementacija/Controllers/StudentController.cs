@@ -32,7 +32,21 @@ namespace ooadproject.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var Index = await _context.Student.OrderBy(s => s.Year).ThenBy(s => s.Department).ToListAsync();
+            var Index = await _context.Student.ToListAsync();
+
+            //Bubble sort of index by name
+            for (int i = 0; i < Index.Count - 1; i++)
+            {
+                for (int j = 0; j < Index.Count - i - 1; j++)
+                {
+                    if (Index[j].FirstName.CompareTo(Index[j + 1].FirstName) > 0)
+                    {
+                        var temp = Index[j];
+                        Index[j] = Index[j + 1];
+                        Index[j + 1] = temp;
+                    }
+                }
+            }
 
             return _context.Student != null ?
                         View(Index) :

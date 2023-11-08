@@ -176,7 +176,8 @@ namespace ooadproject.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("Semester")
                         .HasColumnType("int");
@@ -275,32 +276,6 @@ namespace ooadproject.Migrations
                     b.ToTable("Homework", (string)null);
                 });
 
-            modelBuilder.Entity("ooadproject.Models.Notification", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("RecipientID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("RecipientID");
-
-                    b.ToTable("Notification");
-                });
-
             modelBuilder.Entity("ooadproject.Models.Person", b =>
                 {
                     b.Property<int>("Id")
@@ -326,11 +301,13 @@ namespace ooadproject.Migrations
 
                     b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -635,17 +612,6 @@ namespace ooadproject.Migrations
                         .IsRequired();
 
                     b.Navigation("Course");
-                });
-
-            modelBuilder.Entity("ooadproject.Models.Notification", b =>
-                {
-                    b.HasOne("ooadproject.Models.Person", "Recipient")
-                        .WithMany()
-                        .HasForeignKey("RecipientID")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Recipient");
                 });
 
             modelBuilder.Entity("ooadproject.Models.Request", b =>
