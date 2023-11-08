@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace ooadproject.Migrations
 {
-    public partial class Changed : Migration
+    public partial class VVSMigracija : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-        /*    migrationBuilder.CreateTable(
+            migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
                 {
@@ -30,8 +30,8 @@ namespace ooadproject.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
+                    LastName = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -159,26 +159,6 @@ namespace ooadproject.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Notification",
-                columns: table => new
-                {
-                    ID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RecipientID = table.Column<int>(type: "int", nullable: false),
-                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Message = table.Column<string>(type: "nvarchar(max)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Notification", x => x.ID);
-                    table.ForeignKey(
-                        name: "FK_Notification_AspNetUsers_RecipientID",
-                        column: x => x.RecipientID,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Student",
                 columns: table => new
                 {
@@ -236,11 +216,11 @@ namespace ooadproject.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RequesterID = table.Column<int>(type: "int", nullable: false),
-                    RequestTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    RequesterID = table.Column<int>(type: "int", nullable: true),
+                    RequestTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Type = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    ProcessorID = table.Column<int>(type: "int", nullable: false)
+                    Status = table.Column<int>(type: "int", nullable: true),
+                    ProcessorID = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -249,14 +229,12 @@ namespace ooadproject.Migrations
                         name: "FK_Request_Student_RequesterID",
                         column: x => x.RequesterID,
                         principalTable: "Student",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Request_StudentService_ProcessorID",
                         column: x => x.ProcessorID,
                         principalTable: "StudentService",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -265,7 +243,7 @@ namespace ooadproject.Migrations
                 {
                     ID = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     TeacherID = table.Column<int>(type: "int", nullable: false),
                     AcademicYear = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ECTS = table.Column<int>(type: "int", nullable: false),
@@ -501,11 +479,6 @@ namespace ooadproject.Migrations
                 column: "CourseID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Notification_RecipientID",
-                table: "Notification",
-                column: "RecipientID");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Request_ProcessorID",
                 table: "Request",
                 column: "ProcessorID");
@@ -543,8 +516,8 @@ namespace ooadproject.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_StudentHomework_HomeworkID",
                 table: "StudentHomework",
-                column: "HomeworkID"); */
-        } 
+                column: "HomeworkID");
+        }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
@@ -565,9 +538,6 @@ namespace ooadproject.Migrations
 
             migrationBuilder.DropTable(
                 name: "ExamRegistration");
-
-            migrationBuilder.DropTable(
-                name: "Notification");
 
             migrationBuilder.DropTable(
                 name: "Request");
