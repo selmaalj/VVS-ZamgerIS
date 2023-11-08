@@ -29,11 +29,8 @@ namespace ooadproject.Controllers
         }
 
 
-
-        public async Task<IActionResult> Index()
+        public List<Student> bubbleSort(List<Student> Index)
         {
-            var Index = await _context.Student.ToListAsync();
-
             //Bubble sort of index by name
             for (int i = 0; i < Index.Count - 1; i++)
             {
@@ -47,6 +44,13 @@ namespace ooadproject.Controllers
                     }
                 }
             }
+            return Index;
+        }
+        public async Task<IActionResult> Index()
+        {
+            var Index = await _context.Student.ToListAsync();
+
+            Index = bubbleSort(Index);
 
             return _context.Student != null ?
                         View(Index) :
