@@ -37,7 +37,6 @@ builder.Services.AddDefaultIdentity<Person>(options =>
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddScoped<ExamManager>();
 builder.Services.AddScoped<StudentCourseManager>();
 
 
