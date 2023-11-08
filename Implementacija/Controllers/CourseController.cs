@@ -34,11 +34,35 @@ namespace ooadproject.Controllers
             return Teachers;
 
         }
+        public List<Course> selectionSort(List<Course> Index)
+        {
+            for (int i = 0; i < Index.Count - 1; i++)
+            {
+                int minIndex = i;
+                for (int j = i + 1; j < Index.Count; j++)
+                {
+                    if (Index[j].Semester < Index[minIndex].Semester)
+                    {
+                        minIndex = j;
+                    }
+                }
+                if (minIndex != i)
+                {
+                    Course temp = Index[i];
+                    Index[i] = Index[minIndex];
+                    Index[minIndex] = temp;
+                }
+            }
+            return Index;
+        }
         [Authorize(Roles = "StudentService")]
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Course.Include(c => c.Teacher);
-            return View(await applicationDbContext.ToListAsync());
+            var applicationDbContext = await _context.Course.Include(c => c.Teacher).ToListAsync();
+            applicationDbContext = selectionSort(applicationDbContext);
+
+
+            return View(applicationDbContext);
         }
 
 
