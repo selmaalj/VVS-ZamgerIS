@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ooadproject.Controllers;
@@ -263,6 +264,7 @@ namespace ProjectTests
             mockSet.As<IQueryable<Teacher>>().Setup(m => m.ElementType).Returns(teachers.AsQueryable().ElementType);
             mockSet.As<IQueryable<Teacher>>().Setup(m => m.GetEnumerator()).Returns(teachers.AsQueryable().GetEnumerator());
             _mockContext.Setup(c => c.Set<Teacher>()).Returns(mockSet.Object);
+            _mockContext.Object.Teacher.Add(teacher);
             var controller = new TeacherController(_mockContext.Object, _mockUserManager.Object, _mockPasswordHasher.Object);
 
             //Act
@@ -272,5 +274,93 @@ namespace ProjectTests
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
         }
 
+        [TestMethod]
+        public async Task Delete_ReturnsNotFound_WhenIdIsNull()
+        {
+            // Arrange
+            int? id = null;
+
+            // Act
+            var result = await _teacherController.Delete(id);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
+
+        [TestMethod]
+        public async Task Delete_ReturnsNotFound_WhenTeacherIsNull()
+        {
+            // Arrange
+            int id = 1;
+
+            // Act
+            var result = await _teacherController.Delete(id);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
+
+        [TestMethod]
+        public async Task Delete_ReturnsViewResult_WhenTeacherIsNotNull()
+        {
+            // Arrange
+            var teacher = new Teacher { Title = "Mr.", FirstName = "Michael", LastName = "Davis", UserName = "michaeldavis", Email = "michaeldavis@example.com" };
+            _context.Teacher.Add(teacher);
+
+            // Act
+            var newFoundTeacher = await _context.Teacher.FirstOrDefaultAsync(m => m.FirstName == "Michael");
+            var newId = newFoundTeacher?.Id;
+            var result = await _teacherController.Delete(newId);
+            _context.Teacher.Remove(newFoundTeacher);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+        }
+
+        [TestMethod]
+        public async Task DeleteConfirmed_ReturnsRedirectToActionResult_WhenTeacherExists()
+        {
+            // Arrange
+            var teacher = new Teacher { Title = "Mr.", FirstName = "Michael", LastName = "Davis", UserName = "michaeldavis", Email = "michaeldavis@example.com" };
+            _context.Teacher.Add(teacher);
+
+            // Act
+            var id = (await _context.Teacher.FirstOrDefaultAsync(m => m.FirstName =="Michael")).Id;
+            var result = await _teacherController.DeleteConfirmed(id);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+            var redirectResult = (RedirectToActionResult)result;
+            Assert.AreEqual("Index", redirectResult.ActionName);
+        }
+
+        [TestMethod]
+        public async Task DeleteConfirmed_ReturnsNotFoundResult_WhenTeacherDoesNotExist()
+        {
+            // Arrange
+            var teacher = new Teacher { Title = "Mr.", FirstName = "Michael", LastName = "Davis", UserName = "michaeldavis", Email = "michaeldavis@example.com" };
+            _context.Teacher.Add(teacher);
+
+            // Act
+            var result = await _teacherController.DeleteConfirmed(2);
+            var id = await _context.Teacher.FirstOrDefaultAsync(m => m.FirstName == "Michael");
+            _context.Teacher.Remove(id);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+        }
+
+        [TestMethod]
+        public async Task DeleteConfirmed_ReturnsProblemResult_WhenTeacherIsNull()
+        {
+            // Arrange
+            _context.Teacher = null;
+
+            // Act
+            var result = await _teacherController.DeleteConfirmed(1);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ObjectResult));
+        }
     }
 }
