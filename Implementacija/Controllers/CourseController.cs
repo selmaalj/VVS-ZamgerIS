@@ -24,7 +24,7 @@ namespace ooadproject.Controllers
 
         public List<SelectListItem>  GetTeacherNamesList()
         {
-            List<SelectListItem> Teachers = new List<SelectListItem>();
+            List<SelectListItem> Teachers = new();
 
             foreach (var item in _context.Teacher)
             {
@@ -34,7 +34,7 @@ namespace ooadproject.Controllers
             return Teachers;
 
         }
-        public List<Course> selectionSort(List<Course> Index)
+        public List<Course> SelectionSort(List<Course> Index)
         {
             for (int i = 0; i < Index.Count - 1; i++)
             {
@@ -48,9 +48,7 @@ namespace ooadproject.Controllers
                 }
                 if (minIndex != i)
                 {
-                    Course temp = Index[i];
-                    Index[i] = Index[minIndex];
-                    Index[minIndex] = temp;
+                    (Index[minIndex], Index[i]) = (Index[i], Index[minIndex]);
                 }
             }
             return Index;
@@ -59,7 +57,7 @@ namespace ooadproject.Controllers
         public async Task<IActionResult> Index()
         {
             var applicationDbContext = await _context.Course.Include(c => c.Teacher).ToListAsync();
-            applicationDbContext = selectionSort(applicationDbContext);
+            applicationDbContext = SelectionSort(applicationDbContext);
 
 
             return View(applicationDbContext);
@@ -208,28 +206,6 @@ namespace ooadproject.Controllers
             var course = await _context.Course.FindAsync(id);
             ViewData["course"] = course;
             ViewData["Courses"] = courses;
-            /*
-            
-            var StudentCourses = await _context.StudentCourse.Where(sc => sc.Course == course).ToListAsync();
-            var Students = new List<Student>();
-            var user = await _userManager.GetUserAsync(User);
-            var Courses = await _context.Course.Where(c => c.Teacher == user).ToListAsync();
-            foreach (var item in StudentCourses)
-            {
-                Students.Add(item.Student);
-            }
-
-            var Exams = await _context.Exam.Where(e => e.Course == course).ToListAsync();
-
-            var Homeworks = await _context.Homework.Where(h => h.Course == course).ToListAsync();
-
-            
-            ViewData["Courses"] = Courses;
-            ViewData["StudentCourses"] = StudentCourses;
-            ViewData["Students"] = Students;
-            ViewData["Exams"] = Exams;
-            ViewData["Homeworks"] = Homeworks;
-            */
             var students = await _context.StudentCourse.Where(sc => sc.Course == course).ToListAsync();
             List<StudentCourseInfo> list = await _courseManager.RetrieveStudentCourseInfo(id);
             ViewData["Info"] = list;
