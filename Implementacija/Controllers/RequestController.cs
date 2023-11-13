@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -26,7 +21,7 @@ namespace ooadproject.Controllers
 
         public List<SelectListItem> GetRequestTypesList()
         {
-            List<SelectListItem> Types = new List<SelectListItem>();
+            List<SelectListItem> Types = new();
             var EnumValues = Enum.GetValues(typeof(RequestType));
 
             foreach (var value in EnumValues)
@@ -44,7 +39,7 @@ namespace ooadproject.Controllers
         public List<SelectListItem> GetRequestStatusList()
         {
             //Get all request types from enum of model RequestStatus
-            List<SelectListItem> Types = new List<SelectListItem>();
+            List<SelectListItem> Types = new();
             var EnumValues = Enum.GetValues(typeof(RequestStatus));
             foreach (var value in EnumValues)
             {
@@ -191,7 +186,7 @@ namespace ooadproject.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            return View(Index);
+            return View(request);
         }
 
 

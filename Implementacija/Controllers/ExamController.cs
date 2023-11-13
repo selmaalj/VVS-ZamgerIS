@@ -22,7 +22,7 @@ namespace ooadproject.Controllers
 
         public List<SelectListItem> GetExamTypesList()
         {
-            List<SelectListItem> Types = new List<SelectListItem>();
+            List<SelectListItem> Types = new();
             var EnumValues = Enum.GetValues(typeof(ExamType));
 
             foreach (var value in EnumValues)
@@ -41,15 +41,12 @@ namespace ooadproject.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            var Courses = new List<SelectListItem>();
-            
-            var UserCourses = await _context.Course.Where(c => c.TeacherID == user.Id).ToListAsync();
-            foreach (var item in UserCourses)
-            {
-                Courses.Add(new SelectListItem() { Text = item.Name, Value = item.ID.ToString() });
-            }
+            var courses = await _context.Course
+                .Where(c => c.TeacherID == user.Id)
+                .Select(c => new SelectListItem { Text = c.Name, Value = c.ID.ToString() })
+                .ToListAsync();
 
-            return Courses;
+            return courses;
 
         }
         public int GetExamRegistrations(int id)
