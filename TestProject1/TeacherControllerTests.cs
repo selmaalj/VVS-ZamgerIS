@@ -306,12 +306,13 @@ namespace ProjectTests
             // Arrange
             var teacher = new Teacher { Title = "Mr.", FirstName = "Michael", LastName = "Davis", UserName = "michaeldavis", Email = "michaeldavis@example.com" };
             _context.Teacher.Add(teacher);
+            _context.SaveChanges();
 
             // Act
-            var newFoundTeacher = await _context.Teacher.FirstOrDefaultAsync(m => m.FirstName == "Michael");
-            var newId = newFoundTeacher?.Id;
-            var result = await _teacherController.Delete(newId);
-            _context.Teacher.Remove(newFoundTeacher);
+            var foundTeacherId = (_context.Teacher.FirstOrDefault(m => m.FirstName == teacher.FirstName)).Id;
+            var result = await _teacherController.Delete(foundTeacherId);
+            _context.Teacher.Remove(teacher);
+            _context.SaveChanges();
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(ViewResult));
@@ -321,11 +322,11 @@ namespace ProjectTests
         public async Task DeleteConfirmed_ReturnsRedirectToActionResult_WhenTeacherExists()
         {
             // Arrange
-            var teacher = new Teacher { Title = "Mr.", FirstName = "Michael", LastName = "Davis", UserName = "michaeldavis", Email = "michaeldavis@example.com" };
+            var teacher = new Teacher { Id = 999, Title = "Mr.", FirstName = "Michael", LastName = "Davis", UserName = "michaeldavis", Email = "michaeldavis@example.com" };
             _context.Teacher.Add(teacher);
+            var id = 999;
 
             // Act
-            var id = (await _context.Teacher.FirstOrDefaultAsync(m => m.FirstName =="Michael")).Id;
             var result = await _teacherController.DeleteConfirmed(id);
 
             // Assert
@@ -340,11 +341,13 @@ namespace ProjectTests
             // Arrange
             var teacher = new Teacher { Title = "Mr.", FirstName = "Michael", LastName = "Davis", UserName = "michaeldavis", Email = "michaeldavis@example.com" };
             _context.Teacher.Add(teacher);
+            _context.SaveChanges();
 
             // Act
+            var foundTeacher = _context.Teacher.FirstOrDefault(m => m.FirstName == teacher.FirstName);
             var result = await _teacherController.DeleteConfirmed(2);
-            var id = await _context.Teacher.FirstOrDefaultAsync(m => m.FirstName == "Michael");
-            _context.Teacher.Remove(id);
+            _context.Teacher.Remove(foundTeacher);
+            _context.SaveChanges();
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
