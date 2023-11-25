@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ooadproject.Data;
@@ -40,7 +36,7 @@ namespace ooadproject.Controllers
             var user = await _userManager.GetUserAsync(User);
             var courses = await _context.Course.Where(c => c.TeacherID == user.Id).ToListAsync();
             var currentCourse = await _context.Course.FindAsync(id);
-            var exams = await _context.Exam.Include(e => e.Course).Where(e => courses.Contains(e.Course)).ToListAsync();
+            var exams = await _context.Exam.Include(e => e.Course).Where(e => courses.Contains(e.Course!)).ToListAsync();
             ViewData["Exams"] = new SelectList(exams,"ID","Type");
             ViewData["CurrentCourse"] = currentCourse;
             ViewData["Courses"] = courses;
@@ -85,7 +81,10 @@ namespace ooadproject.Controllers
 
             foreach (StudentCourse item in owo)
             {
-                Students.Add(new SelectListItem() { Text = $"{item.Student.FirstName} {item.Student.LastName}", Value = item.ID.ToString() });
+                if (item.Student != null)
+                {
+                    Students.Add(new SelectListItem() { Text = $"{item.Student.FirstName} {item.Student.LastName}", Value = item.ID.ToString() });
+                }
             }
 
             return Students;

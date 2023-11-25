@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ooadproject.Data;
 using ooadproject.Models;
@@ -29,7 +22,7 @@ namespace ooadproject.Controllers
         }
 
 
-        public List<Student> bubbleSort(List<Student> Index)
+        public List<Student> BubbleSort(List<Student> Index)
         {
             //Bubble sort of index by name
             for (int i = 0; i < Index.Count - 1; i++)
@@ -38,9 +31,7 @@ namespace ooadproject.Controllers
                 {
                     if (Index[j].FirstName.CompareTo(Index[j + 1].FirstName) > 0)
                     {
-                        var temp = Index[j];
-                        Index[j] = Index[j + 1];
-                        Index[j + 1] = temp;
+                        (Index[j + 1], Index[j]) = (Index[j], Index[j + 1]);
                     }
                 }
             }
@@ -50,7 +41,7 @@ namespace ooadproject.Controllers
         {
             var Index = await _context.Student.ToListAsync();
 
-            Index = bubbleSort(Index);
+            Index = BubbleSort(Index);
 
             return _context.Student != null ?
                         View(Index) :
@@ -133,7 +124,7 @@ namespace ooadproject.Controllers
                     _context.Update(student);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException ex)
+                catch (DbUpdateConcurrencyException)
                 {
                     if (!StudentExists(student.Id))
                     {
