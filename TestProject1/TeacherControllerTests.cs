@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using ooadproject.Controllers;
@@ -23,8 +21,6 @@ namespace ProjectTests
         private Mock<ApplicationDbContext> _mockContext;
         private Mock<UserManager<Person>> _mockUserManager;
         private Mock<IPasswordHasher<Person>> _mockPasswordHasher;
-        private readonly UserManager<Teacher> _userManager;
-
 
         [TestInitialize]
         public void Setup()
@@ -245,7 +241,7 @@ namespace ProjectTests
         }
 
         [TestMethod]
-        public async Task Edit_ReturnsNotFound_WhenTeacherExistsButConcurrencyExceptionOccurs()
+        public async Task Edit_ReturnsNotFound_WhenTeacherDoesNotExistsButConcurrencyExceptionOccurs()
         {
             // Arrange
             var teacher = new Teacher { Id = 1, Title = "Mr.", FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "johndoe@example.com" };
@@ -264,7 +260,6 @@ namespace ProjectTests
             mockSet.As<IQueryable<Teacher>>().Setup(m => m.ElementType).Returns(teachers.AsQueryable().ElementType);
             mockSet.As<IQueryable<Teacher>>().Setup(m => m.GetEnumerator()).Returns(teachers.AsQueryable().GetEnumerator());
             _mockContext.Setup(c => c.Set<Teacher>()).Returns(mockSet.Object);
-            _mockContext.Object.Teacher.Add(teacher);
             var controller = new TeacherController(_mockContext.Object, _mockUserManager.Object, _mockPasswordHasher.Object);
 
             //Act
@@ -272,6 +267,50 @@ namespace ProjectTests
 
             //Assert
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
+
+        [TestMethod]
+        public async Task Edit_ReturnsNotFound_WhenTeacherDoesExistsButConcurrencyExceptionOccurs()
+        {
+            //Arrange
+            var teacher = new Teacher { Id = 1, Title = "Mr.", FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "johndoe@example.com" };
+            _mockContext.Setup(c => c.Update(It.IsAny<Teacher>())).Throws(new DbUpdateConcurrencyException());
+            var teachers = new List<Teacher>
+            {
+                new Teacher { Id = 1, Title = "Mr.", FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "johndoe@example.com" },
+                new Teacher { Id = 2, Title = "Ms.", FirstName = "Jane", LastName = "Smith", UserName = "janesmith", Email = "janesmith@example.com" },
+                new Teacher { Id = 3, Title = "Dr.", FirstName = "David", LastName = "Johnson", UserName = "davidjohnson", Email = "davidjohnson@example.com" },
+                new Teacher { Id = 4, Title = "Mrs.", FirstName = "Emily", LastName = "Brown", UserName = "emilybrown", Email = "emilybrown@example.com" },
+                new Teacher { Id = 5, Title = "Mr.", FirstName = "Michael", LastName = "Davis", UserName = "michaeldavis", Email = "michaeldavis@example.com" }
+            };
+            var mockSet = new Mock<DbSet<Teacher>>();
+            mockSet.As<IQueryable<Teacher>>().Setup(m => m.Provider).Returns(teachers.AsQueryable().Provider);
+            mockSet.As<IQueryable<Teacher>>().Setup(m => m.Expression).Returns(teachers.AsQueryable().Expression);
+            mockSet.As<IQueryable<Teacher>>().Setup(m => m.ElementType).Returns(teachers.AsQueryable().ElementType);
+            mockSet.As<IQueryable<Teacher>>().Setup(m => m.GetEnumerator()).Returns(teachers.AsQueryable().GetEnumerator());
+
+            _mockContext.Setup(c => c.Teacher).Returns(mockSet.Object);
+            var controller = new TeacherController(_mockContext.Object, _mockUserManager.Object, _mockPasswordHasher.Object);
+
+            //Act
+
+            //Assert
+            await Assert.ThrowsExceptionAsync<DbUpdateConcurrencyException>(async () => await controller.Edit(1, teacher));
+        }
+
+        [TestMethod]
+        public async Task Edit_WhenModelStateIsNotValid_ReturnsView()
+        {
+            // Arrange
+            var teacher = new Teacher { Id = 1, Title = "Mr.", FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "johndoe@example.com" };
+            var _controller = new TeacherController(_mockContext.Object, _mockUserManager.Object, _mockPasswordHasher.Object);
+            _controller.ModelState.AddModelError("Error", "ModelState is not valid");
+
+            // Act
+            var result = await _controller.Edit(1, teacher);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
         }
 
         [TestMethod]
