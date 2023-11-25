@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ooadproject.Data;
@@ -118,13 +114,18 @@ namespace ooadproject.Controllers
             var user = await _userManager.GetUserAsync(User);
             var courses = await _context.StudentCourse.Include(sc => sc.Course).Where(sc => sc.StudentID == user.Id).ToListAsync();
             var StudentCourse = await _context.StudentCourse.FindAsync(id);
-            StudentCourse.Course.Teacher = await _context.Teacher.FindAsync(StudentCourse.Course.TeacherID);
+            if (StudentCourse != null && StudentCourse.Course != null) {
+                StudentCourse.Course.Teacher = await _context.Teacher.FindAsync(StudentCourse.Course.TeacherID);
+            }
             //Set Teacher for every StudentCourse.Course
             foreach (var item in courses)
             {
-                item.Course.Teacher = await _context.Teacher.FindAsync(item.Course.TeacherID);
+                if (item.Course != null)
+                {
+                    item.Course.Teacher = await _context.Teacher.FindAsync(item.Course.TeacherID);
+                }
             }
-   
+
             var StudentExams = await _context.StudentExam.Where(se => se.CourseID == id).ToListAsync();
             var StudentHomeworks = await _context.StudentHomework.Where(sh => sh.CourseID == id).ToListAsync();
 
@@ -133,13 +134,13 @@ namespace ooadproject.Controllers
             var studentExams = await _context.StudentExam
             .Include(se => se.Exam)
             .Where(se => se.CourseID == id)
-            .Select(se => new { se.PointsScored, se.Exam.TotalPoints })
+            .Select(se => new { se.PointsScored, se.Exam!.TotalPoints })
             .ToListAsync();
 
             var studentHomeworks = await _context.StudentHomework
                 .Include(sh => sh.Homework)
                 .Where(sh => sh.CourseID == id)
-                .Select(sh => new { sh.PointsScored, sh.Homework.TotalPoints })
+                .Select(sh =>  new { sh.PointsScored, sh.Homework!.TotalPoints })
                 .ToListAsync();
 
             double scored = studentExams.Sum(se => se.PointsScored) + studentHomeworks.Sum(sh => sh.PointsScored);
@@ -185,7 +186,16 @@ namespace ooadproject.Controllers
                     CoursesWithGrade.Add(item);
                 }
             }
-            ViewData["GradedCourses"] = CoursesWithGrade.OrderByDescending(c => c.Course.Semester).ThenBy(c => c.Course.Name).ToList();
+
+            ViewData["GradedCourses"] = CoursesWithGrade.OrderByDescending(c =>
+            {
+                return c.Course!.Semester;
+            }).ThenBy(c =>
+            {
+                return c.Course?.Name;
+            })
+            .ToList();
+
             ViewData["Courses"] = courses;
             //Calculate the average grade for all courses
             double AverageGrade = 0;

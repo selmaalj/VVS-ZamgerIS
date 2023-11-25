@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ooadproject.Data;
 using ooadproject.Models;
@@ -61,10 +60,6 @@ namespace ooadproject.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-
-           // ViewData["ExamID"] = new SelectList(_context.Exam, "ID", "ID", examRegistration.ExamID);
-            //ViewData["StudentID"] = new SelectList(_context.Student, "Id", "Id", examRegistration.StudentID);
-
             return View(examRegistration);
         }
 

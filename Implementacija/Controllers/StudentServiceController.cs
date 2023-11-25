@@ -11,10 +11,10 @@ namespace ooadproject.Controllers
     public class StudentServiceController : Controller
     {
         private readonly ApplicationDbContext _context;
-        private readonly Microsoft.AspNetCore.Identity.UserManager<Person> _userManager;
+        private readonly UserManager<Person> _userManager;
         private readonly IPasswordHasher<Person> _passwordHasher;
 
-        public StudentServiceController(ApplicationDbContext context, Microsoft.AspNetCore.Identity.UserManager<Person> userManager, IPasswordHasher<Person> passwordHasher)
+        public StudentServiceController(ApplicationDbContext context, UserManager<Person> userManager, IPasswordHasher<Person> passwordHasher)
         {
             _context = context;
             _userManager = userManager;

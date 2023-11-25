@@ -69,7 +69,17 @@ namespace ooadproject.Controllers
             var teacher = await _userManager.GetUserAsync(User);
 
             var Courses = await _context.Course.Where(c => c.TeacherID == teacher.Id).ToListAsync();
-            var Exams = await _context.Exam.Include(e => e.Course).Where(e => e.Course.TeacherID == teacher.Id && e.Time > DateTime.Now).ToListAsync();
+            var Exams = new List<Exam>();
+            var exams = await _context.Exam.Include(e => e.Course).ToListAsync();
+            foreach (var exam in exams)
+            {
+                if (exam.Course == null)
+                    continue;
+                if (exam.Course.TeacherID == teacher.Id && exam.Time > DateTime.Now)
+                {
+                    Exams.Add(exam);
+                }
+            }
             var registered = new Dictionary<int, int>();
             foreach (var item in Exams)
             {
@@ -84,14 +94,22 @@ namespace ooadproject.Controllers
         }
 
 
-        // nije implement, kopirano TeacherHome
         public async Task<IActionResult> StudentServiceHome()
         {
             var teacher = await _userManager.GetUserAsync(User);
 
             var Courses = await _context.Course.Where(c => c.TeacherID == teacher.Id).ToListAsync();
-            var Exams = await _context.Exam.Include(e => e.Course).Where(e => e.Course.TeacherID == teacher.Id && e.Time > DateTime.Now).ToListAsync();
-
+            var Exams = new List<Exam>();
+            var exams = await _context.Exam.Include(e => e.Course).ToListAsync();
+            foreach (var exam in exams)
+            {
+                if (exam.Course == null)
+                    continue;
+                if (exam.Course.TeacherID == teacher.Id && exam.Time > DateTime.Now)
+                {
+                    Exams.Add(exam);
+                }
+            }
             ViewData["Courses"] = Courses;
             ViewData["Exams"] = Exams;
 
