@@ -57,7 +57,7 @@ namespace ProjectTests
         }
 
         [TestMethod]
-        public async Task BubbleSort_ReturnsSortedList()
+        public void BubbleSort_ReturnsSortedList()
         {
             var students = new List<Student>
             {
@@ -65,8 +65,11 @@ namespace ProjectTests
                 new Student { Index = 3, FirstName = "Zelda"},
                 new Student { Index = 1, FirstName = "Ana" },
             };
-            students = _studentController.bubbleSort(students);
-            //Assert.IsTrue(sortirano);
+            students = _studentController.BubbleSort(students);
+            Assert.AreEqual(3, students.Count);
+            Assert.AreEqual(1, students[0].Index);
+            Assert.AreEqual(2, students[1].Index);
+            Assert.AreEqual(3, students[2].Index);
         }
 
         [TestMethod]
@@ -148,7 +151,7 @@ namespace ProjectTests
         [TestMethod]
         public async Task Edit_ReturnsCorrectStudent_WhenStudentIsNotNull()
         {
-            var id = 11;  //provjeriti u bazi
+            var id = 11;  
             var result = await _studentController.Edit(id) as ViewResult;
             var resultStudent = result!.Model as Student;
             Assert.AreEqual(id, resultStudent!.Id);
