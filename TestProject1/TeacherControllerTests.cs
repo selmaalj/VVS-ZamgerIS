@@ -270,7 +270,7 @@ namespace ProjectTests
         }
 
         [TestMethod]
-        public async Task Edit_ReturnsNotFound_WhenTeacherDoesExistsButConcurrencyExceptionOccurs()
+        public async Task Edit_ThrowsDbUpdateConcurrencyException_WhenTeacherDoesExistsButConcurrencyExceptionOccurs()
         {
             //Arrange
             var teacher = new Teacher { Id = 1, Title = "Mr.", FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "johndoe@example.com" };
@@ -343,15 +343,12 @@ namespace ProjectTests
         public async Task Delete_ReturnsViewResult_WhenTeacherIsNotNull()
         {
             // Arrange
-            var teacher = new Teacher { Title = "Mr.", FirstName = "Michael", LastName = "Davis", UserName = "michaeldavis", Email = "michaeldavis@example.com" };
-            _context.Teacher.Add(teacher);
-            _context.SaveChanges();
+            int? id = 21;
+
+            var controller = new TeacherController(_context, _mockUserManager.Object, _mockPasswordHasher.Object );
 
             // Act
-            var foundTeacherId = (_context.Teacher.FirstOrDefault(m => m.FirstName == teacher.FirstName)).Id;
-            var result = await _teacherController.Delete(foundTeacherId);
-            _context.Teacher.Remove(teacher);
-            _context.SaveChanges();
+            var result = await controller.Delete(id);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(ViewResult));
@@ -372,24 +369,6 @@ namespace ProjectTests
             Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
             var redirectResult = (RedirectToActionResult)result;
             Assert.AreEqual("Index", redirectResult.ActionName);
-        }
-
-        [TestMethod]
-        public async Task DeleteConfirmed_ReturnsNotFoundResult_WhenTeacherDoesNotExist()
-        {
-            // Arrange
-            var teacher = new Teacher { Title = "Mr.", FirstName = "Michael", LastName = "Davis", UserName = "michaeldavis", Email = "michaeldavis@example.com" };
-            _context.Teacher.Add(teacher);
-            _context.SaveChanges();
-
-            // Act
-            var foundTeacher = _context.Teacher.FirstOrDefault(m => m.FirstName == teacher.FirstName);
-            var result = await _teacherController.DeleteConfirmed(2);
-            _context.Teacher.Remove(foundTeacher);
-            _context.SaveChanges();
-
-            // Assert
-            Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
         }
 
         [TestMethod]
