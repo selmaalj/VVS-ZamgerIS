@@ -268,8 +268,6 @@ namespace ProjectTests
             var result = await controller.Edit(1, course);
 
             //Assert
-         
-
         }
 
         [TestMethod]
@@ -379,14 +377,15 @@ namespace ProjectTests
         public async Task CourseStatus()
         {
             // Arrange
-            var course = new Course { Name = "Vjerovatnoća i statistika", TeacherID = 21, AcademicYear = "2022", ECTS = 6, Semester = 2 };
-            var teacher = new Teacher { Id = 1, Title = "Mr.", FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "johndoe@example.com" };
+            var foundCourse = await _context.Course.FirstOrDefaultAsync(m => (m.Name == "Neki test" && m.TeacherID == 21));//203
+
+            Teacher? teacher = await _context.Teacher.FirstOrDefaultAsync(m => m.Id.Equals(foundCourse.TeacherID));
+
             _mockUserManager.Setup(c => c.GetUserAsync(default)).ReturnsAsync(teacher);
-            _mockContext.Setup(c => c.SaveChangesAsync(default)).Throws(new DbUpdateConcurrencyException());
 
             var mockController = new CourseController(_context, _mockUserManager.Object);
             // Act
-            var result = await mockController.CourseStatus(5);
+            var result = await mockController.CourseStatus(foundCourse.ID);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(ViewResult));
