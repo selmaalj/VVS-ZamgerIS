@@ -73,7 +73,7 @@ namespace ProjectTests
         public async Task Details_ReturnsNotFound_WhenCourseIsNull()
         {
             // Arrange
-            int? id = 200;
+            int? id = 3;
 
             // Act
             var result = await _courseController.Details(id);
@@ -176,7 +176,7 @@ namespace ProjectTests
         public async Task Edit_ReturnsNotFound_WhenCourseIsNull()
         {
             // Arrange
-            int? id = 200;
+            int? id = 3;
 
             // Act
             var result = await _courseController.Edit(id);
