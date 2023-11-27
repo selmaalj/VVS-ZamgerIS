@@ -15,18 +15,18 @@ namespace ooadproject.Data
             : base(options)
         {
         }
-        public DbSet<Person> Person { get; set; }
-        public DbSet<Student> Student { get; set; }
-        public DbSet<Teacher> Teacher { get; set; }
-        public DbSet<StudentService> StudentService { get; set; }
-        public DbSet<Course> Course { get; set; }
-        public DbSet<StudentCourse> StudentCourse { get; set; }
-        public DbSet<Exam> Exam { get; set; }
-        public DbSet<StudentExam> StudentExam { get; set; }
-        public DbSet<Homework> Homework { get; set; }
-        public DbSet<StudentHomework> StudentHomework { get; set; }
-        public DbSet<ExamRegistration> ExamRegistration { get; set; }
-        public DbSet<Request> Request { get; set; }
+        public virtual DbSet<Person> Person { get; set; }
+        public virtual DbSet<Student> Student { get; set; }
+        public virtual DbSet<Teacher> Teacher { get; set; }
+        public virtual DbSet<StudentService> StudentService { get; set; }
+        public virtual DbSet<Course> Course { get; set; }
+        public virtual DbSet<StudentCourse> StudentCourse { get; set; }
+        public virtual DbSet<Exam> Exam { get; set; }
+        public virtual DbSet<StudentExam> StudentExam { get; set; }
+        public virtual DbSet<Homework> Homework { get; set; }
+        public virtual DbSet<StudentHomework> StudentHomework { get; set; }
+        public virtual DbSet<ExamRegistration> ExamRegistration { get; set; }
+        public virtual DbSet<Request> Request { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
