@@ -116,6 +116,34 @@ namespace ProjectTests
         public async Task Create_InvalidModel_ReturnsViewResultWithModel()
         {
             // Arrange
+            var courses = new List<Course>
+            {
+                new Course{ ID = 1, Name = "Test", TeacherID = 21, AcademicYear = "2022", ECTS = 6, Semester = 1 },
+                new Course{ ID = 2, Name = "Test2", TeacherID = 21, AcademicYear = "2022", ECTS = 6, Semester = 1 },
+                new Course{ ID = 3, Name = "Test3", TeacherID = 21, AcademicYear = "2022", ECTS = 6, Semester = 1 },
+                new Course{ ID = 4, Name = "Test4", TeacherID = 21, AcademicYear = "2022", ECTS = 6, Semester = 1 },
+                new Course{ ID = 5, Name = "Test5", TeacherID = 21, AcademicYear = "2022", ECTS = 6, Semester = 1 },
+            };
+            var mockSet = new Mock<DbSet<Course>>();
+            mockSet.As<IQueryable<Course>>().Setup(m => m.Provider).Returns(courses.AsQueryable().Provider);
+            mockSet.As<IQueryable<Course>>().Setup(m => m.Expression).Returns(courses.AsQueryable().Expression);
+            mockSet.As<IQueryable<Course>>().Setup(m => m.ElementType).Returns(courses.AsQueryable().ElementType);
+            mockSet.As<IQueryable<Course>>().Setup(m => m.GetEnumerator()).Returns(courses.AsQueryable().GetEnumerator());
+            _mockContext.Setup(c => c.Course).Returns(mockSet.Object);
+            var students = new List<Student>
+            {
+                new Student { Id = 1,  FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "johndoe@example.com" },
+                new Student { Id = 2,  FirstName = "Jane", LastName = "Smith", UserName = "janesmith", Email = "janesmith@example.com" },
+                new Student { Id = 3,  FirstName = "David", LastName = "Johnson", UserName = "davidjohnson", Email = "davidjohnson@example.com" },
+                new Student { Id = 4, FirstName = "Emily", LastName = "Brown", UserName = "emilybrown", Email = "emilybrown@example.com" },
+                new Student { Id = 5, FirstName = "Michael", LastName = "Davis", UserName = "michaeldavis", Email = "michaeldavis@example.com" }
+            };
+            var mockSet1 = new Mock<DbSet<Student>>();
+            mockSet1.As<IQueryable<Student>>().Setup(m => m.Provider).Returns(students.AsQueryable().Provider);
+            mockSet1.As<IQueryable<Student>>().Setup(m => m.Expression).Returns(students.AsQueryable().Expression);
+            mockSet1.As<IQueryable<Student>>().Setup(m => m.ElementType).Returns(students.AsQueryable().ElementType);
+            mockSet1.As<IQueryable<Student>>().Setup(m => m.GetEnumerator()).Returns(students.AsQueryable().GetEnumerator());
+            _mockContext.Setup(c => c.Student).Returns(mockSet1.Object);
             var controller = new StudentCourseController(_mockContext.Object, _mockUserManager.Object);
             var studentCourse = new StudentCourse { ID = 99, CourseID = 1, StudentID = 1, Points = 75, Grade = 8 };
             controller.ModelState.AddModelError("error", "some error");

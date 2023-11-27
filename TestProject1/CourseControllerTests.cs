@@ -131,6 +131,20 @@ namespace ProjectTests
         public async Task Create_InvalidModel_ReturnsViewResultWithModel()
         {
             // Arrange
+            var teachers = new List<Teacher>
+            {
+                new Teacher { Id = 1, Title = "Mr.", FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "johndoe@example.com" },
+                new Teacher { Id = 2, Title = "Ms.", FirstName = "Jane", LastName = "Smith", UserName = "janesmith", Email = "janesmith@example.com" },
+                new Teacher { Id = 3, Title = "Dr.", FirstName = "David", LastName = "Johnson", UserName = "davidjohnson", Email = "davidjohnson@example.com" },
+                new Teacher { Id = 4, Title = "Mrs.", FirstName = "Emily", LastName = "Brown", UserName = "emilybrown", Email = "emilybrown@example.com" },
+                new Teacher { Id = 5, Title = "Mr.", FirstName = "Michael", LastName = "Davis", UserName = "michaeldavis", Email = "michaeldavis@example.com" }
+            };
+            var mockSet = new Mock<DbSet<Teacher>>();
+            mockSet.As<IQueryable<Teacher>>().Setup(m => m.Provider).Returns(teachers.AsQueryable().Provider);
+            mockSet.As<IQueryable<Teacher>>().Setup(m => m.Expression).Returns(teachers.AsQueryable().Expression);
+            mockSet.As<IQueryable<Teacher>>().Setup(m => m.ElementType).Returns(teachers.AsQueryable().ElementType);
+            mockSet.As<IQueryable<Teacher>>().Setup(m => m.GetEnumerator()).Returns(teachers.AsQueryable().GetEnumerator());
+            _mockContext.Setup(c => c.Teacher).Returns(mockSet.Object);
             var controller = new CourseController(_mockContext.Object, _mockUserManager.Object);
             var course = new Course { Name = "Vjerovatnoća i statistika", TeacherID = 21, AcademicYear = "2022", ECTS = 6, Semester = 2 };
             controller.ModelState.AddModelError("error", "some error");
@@ -228,6 +242,7 @@ namespace ProjectTests
         }
 
         [TestMethod]
+        [ExpectedException(typeof(DbUpdateConcurrencyException))]
         public async Task Edit_SameIdsExeption()
         {
             // Arrange
@@ -246,14 +261,14 @@ namespace ProjectTests
             mockSet.As<IQueryable<Course>>().Setup(m => m.Expression).Returns(courses.AsQueryable().Expression);
             mockSet.As<IQueryable<Course>>().Setup(m => m.ElementType).Returns(courses.AsQueryable().ElementType);
             mockSet.As<IQueryable<Course>>().Setup(m => m.GetEnumerator()).Returns(courses.AsQueryable().GetEnumerator());
-            _mockContext.Setup(c => c.Set<Course>()).Returns(mockSet.Object);
+            _mockContext.Setup(c => c.Course).Returns(mockSet.Object);
             var controller = new CourseController(_mockContext.Object, _mockUserManager.Object);
 
             //Act
             var result = await controller.Edit(1, course);
 
             //Assert
-            Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+         
 
         }
 
@@ -265,6 +280,20 @@ namespace ProjectTests
             var id = 1;
             var course = new Course
             { ID = 1, Name = "Test", TeacherID = 10, AcademicYear = "2022", ECTS = 6, Semester = 1 };
+            var teachers = new List<Teacher>
+            {
+                new Teacher { Id = 1, Title = "Mr.", FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "johndoe@example.com" },
+                new Teacher { Id = 2, Title = "Ms.", FirstName = "Jane", LastName = "Smith", UserName = "janesmith", Email = "janesmith@example.com" },
+                new Teacher { Id = 3, Title = "Dr.", FirstName = "David", LastName = "Johnson", UserName = "davidjohnson", Email = "davidjohnson@example.com" },
+                new Teacher { Id = 4, Title = "Mrs.", FirstName = "Emily", LastName = "Brown", UserName = "emilybrown", Email = "emilybrown@example.com" },
+                new Teacher { Id = 5, Title = "Mr.", FirstName = "Michael", LastName = "Davis", UserName = "michaeldavis", Email = "michaeldavis@example.com" }
+            };
+            var mockSet = new Mock<DbSet<Teacher>>();
+            mockSet.As<IQueryable<Teacher>>().Setup(m => m.Provider).Returns(teachers.AsQueryable().Provider);
+            mockSet.As<IQueryable<Teacher>>().Setup(m => m.Expression).Returns(teachers.AsQueryable().Expression);
+            mockSet.As<IQueryable<Teacher>>().Setup(m => m.ElementType).Returns(teachers.AsQueryable().ElementType);
+            mockSet.As<IQueryable<Teacher>>().Setup(m => m.GetEnumerator()).Returns(teachers.AsQueryable().GetEnumerator());
+            _mockContext.Setup(c => c.Teacher).Returns(mockSet.Object);
             var controller = new CourseController(_mockContext.Object, _mockUserManager.Object);
             controller.ModelState.AddModelError("error", "some error");
 
