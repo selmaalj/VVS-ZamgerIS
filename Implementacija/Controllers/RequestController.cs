@@ -139,12 +139,12 @@ namespace ooadproject.Controllers
             }
 
             var request = await _context.Request.FindAsync(id);
-            //Get student by requests requesterID
-            var student = await _context.Student.FindAsync(request.RequesterID);
             if (request == null)
             {
                 return NotFound();
             }
+            //Get student by requests requesterID
+            var student = await _context.Student.FindAsync(request.RequesterID);
             ViewData["Student"] = student;
             ViewData["RequestTypes"] = GetRequestTypesList();
             ViewData["RequestStatus"] = GetRequestStatusList();
