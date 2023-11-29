@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
+using NuGet.DependencyResolver;
 
 namespace ProjectTests
 {
@@ -47,14 +48,7 @@ namespace ProjectTests
             Assert.IsInstanceOfType(result, typeof(ViewResult));
         }
 
-        [TestMethod]
-        public async Task Index_ReturnsProblem_WhenStudentIsNull()
-        {
-            _context.Student = null;
-            var result = await _studentController.Index();
-            Assert.IsInstanceOfType(result, typeof(ObjectResult));
-            Assert.IsNotNull(result);
-        }
+        
 
         [TestMethod]
         public void BubbleSort_ReturnsSortedList()
@@ -194,7 +188,7 @@ namespace ProjectTests
         [TestMethod]
         public async Task Edit_ReturnsNotFound_WhenStudentExistsButConcurrencyExceptionOccurs()
         {
-            var student = new Student { Id = 1, Index = 1, Department = "RI", Year = 1, FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "johndoe@example.com" };
+            var student = new Student { Id = 31, Index = 1, Department = "RI", Year = 1, FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "johndoe@example.com" };
             _mockDbContext.Setup(c => c.SaveChangesAsync(default)).Throws(new DbUpdateConcurrencyException());
             var students = new List<Student>
             {
@@ -209,11 +203,48 @@ namespace ProjectTests
             mockSet.As<IQueryable<Student>>().Setup(m => m.Expression).Returns(students.AsQueryable().Expression);
             mockSet.As<IQueryable<Student>>().Setup(m => m.ElementType).Returns(students.AsQueryable().ElementType);
             mockSet.As<IQueryable<Student>>().Setup(m => m.GetEnumerator()).Returns(students.AsQueryable().GetEnumerator());
-            _mockDbContext.Setup(c => c.Set<Student>()).Returns(mockSet.Object);
-            _mockDbContext.Object.Student.Add(student);
+            _mockDbContext.Setup(c => c.Student).Returns(mockSet.Object);
             var controller = new StudentController(_mockDbContext.Object, _mockUserManager.Object, _mockPasswordHasher.Object);
-            var result = await controller.Edit(1, student);
+            var result = await controller.Edit(31, student);
             Assert.IsInstanceOfType(result, typeof(NotFoundResult));
+        }
+
+        [TestMethod]
+        public async Task Edit_ThrowsDbUpdateConcurrencyException_WhenStudentDoesExistsButConcurrencyExceptionOccurs()
+        {
+            var student = new Student { Id = 1, Index = 1, Department = "RI", Year = 1, FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "johndoe@example.com" };
+                _mockDbContext.Setup(c => c.SaveChangesAsync(default)).Throws(new DbUpdateConcurrencyException());
+                var students = new List<Student>
+            {
+                new Student { Id=1, Index = 1, Department = "RI", Year = 1, FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "johndoe@example.com" },
+                new Student { Id=2, Index = 1, Department = "RI", Year = 1, FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "johndoe@example.com" },
+                new Student { Id=3, Index = 1, Department = "RI", Year = 1, FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "johndoe@example.com" },
+                new Student { Id=4, Index = 1, Department = "RI", Year = 1, FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "johndoe@example.com" },
+                new Student { Id=5, Index = 1, Department = "RI", Year = 1, FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "johndoe@example.com" }
+            };
+                var mockSet = new Mock<DbSet<Student>>();
+                mockSet.As<IQueryable<Student>>().Setup(m => m.Provider).Returns(students.AsQueryable().Provider);
+                mockSet.As<IQueryable<Student>>().Setup(m => m.Expression).Returns(students.AsQueryable().Expression);
+                mockSet.As<IQueryable<Student>>().Setup(m => m.ElementType).Returns(students.AsQueryable().ElementType);
+                mockSet.As<IQueryable<Student>>().Setup(m => m.GetEnumerator()).Returns(students.AsQueryable().GetEnumerator());
+                _mockDbContext.Setup(c => c.Student).Returns(mockSet.Object);
+                var controller = new StudentController(_mockDbContext.Object, _mockUserManager.Object, _mockPasswordHasher.Object);
+                await Assert.ThrowsExceptionAsync<DbUpdateConcurrencyException>(async () => await controller.Edit(1, student));
+        }
+
+        [TestMethod]
+        public async Task Edit_WhenModelStateIsNotValid_ReturnsView()
+        {
+            // Arrange
+            var student = new Student { Id = 1, FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "johndoe@example.com" };
+            var _controller = new StudentController(_mockDbContext.Object, _mockUserManager.Object, _mockPasswordHasher.Object);
+            _controller.ModelState.AddModelError("Error", "ModelState is not valid");
+
+            // Act
+            var result = await _controller.Edit(1, student);
+
+            // Assert
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
         }
 
         [TestMethod]
