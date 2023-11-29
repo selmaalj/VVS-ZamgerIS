@@ -82,10 +82,5 @@ namespace ooadproject.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
-
-        private bool ExamRegistrationExists(int id)
-        {
-          return (_context.ExamRegistration?.Any(e => e.ID == id)).GetValueOrDefault();
-        }
     }
 }
