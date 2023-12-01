@@ -11,10 +11,20 @@
 
   <ItemGroup>
     <None Remove="appsettings.test.json" />
+    <None Remove="teachers.json" />
+    <None Remove="teachers.xml" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="appsettings.test.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="teachers.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="teachers.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

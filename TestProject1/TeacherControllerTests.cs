@@ -2,14 +2,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using ooadproject.Controllers;
 using ooadproject.Data;
 using ooadproject.Models;
-
-
-
-
-
+using System.Xml.Linq;
 
 namespace ProjectTests
 {
@@ -30,7 +27,6 @@ namespace ProjectTests
             .UseSqlServer(configuration.GetConnectionString("DefaultConnection"))
             .Options;
             _context = new ApplicationDbContext(options);
-            //_userManager = new Microsoft.AspNetCore.Identity.UserManager<Person>(Person, null, null, null, null, null, null, null, null);
 
             _mockContext = new Mock<ApplicationDbContext>(options);
             _mockUserManager = new Mock<UserManager<Person>>(new Mock<IUserStore<Person>>().Object, null, null, null, null, null, null, null, null);
@@ -39,6 +35,64 @@ namespace ProjectTests
             _teacherController = new TeacherController(_context, null, null);
         }
 
+        public static IEnumerable<object[]> ReadTeachersFromXml()
+        {
+            List<object[]> teachers = new List<object[]>();
+
+            XDocument doc = XDocument.Load(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "teachers.xml"));
+
+            foreach (XElement element in doc.Root.Elements("Teacher"))
+            {
+                object[] teacher = new object[]
+                {
+                    element.Element("Title").Value,
+                    element.Element("FirstName").Value,
+                    element.Element("LastName").Value,
+                    element.Element("UserName").Value,
+                    element.Element("Email").Value
+                };
+
+                teachers.Add(teacher);
+            }
+
+            return teachers;
+        }
+
+        
+        static IEnumerable<object[]> TeachersXML
+        {
+            get
+            {
+                return ReadTeachersFromXml();
+            }
+        }
+
+        public static IEnumerable<object[]> ReadTeachersFromJson()
+        {
+            try
+            {
+                // Read the JSON file content
+                string jsonContent = File.ReadAllText("teachers.json");
+
+                // Parse the JSON array into a list of Teacher objects
+                List<object[]> teachers = JsonConvert.DeserializeObject<List<object[]>>(jsonContent);
+
+                return teachers;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"An error occurred: {ex.Message}");
+                return null;
+            }
+        }
+
+        static IEnumerable<object[]> TeachersJSON
+        {
+            get
+            {
+                return ReadTeachersFromJson();
+            }
+        }
 
         [TestMethod]
         public async Task Details_ReturnsNotFound_WhenIdIsNull()
@@ -90,11 +144,12 @@ namespace ProjectTests
         }
 
         [TestMethod]
-        public async Task Create_ValidModel_ReturnsRedirectToActionResult()
+        [DynamicData(nameof(TeachersXML))]
+        public async Task Create_ValidModel_ReturnsRedirectToActionResult(String Title, String FirstName, String LastName, String UserName, String Email)
         {
             // Arrange
             var controller = new TeacherController(_mockContext.Object, _mockUserManager.Object, _mockPasswordHasher.Object);
-            var teacher = new Teacher { Title = "Mr.", FirstName = "John", LastName = "Doe", UserName = "johndoe", Email = "johndoe@example.com" };
+            var teacher = new Teacher { Title = Title, FirstName = FirstName, LastName = LastName, UserName = UserName, Email = Email };
             var name = teacher.GetFullName();
 
             // Act
@@ -102,9 +157,10 @@ namespace ProjectTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual("Mr. John Doe", name);
+            Assert.AreEqual(Title + " " + FirstName + " " + LastName, name);
             Assert.AreEqual("Index", result.ActionName);
         }
+
         [TestMethod]
         public async Task Create_InvalidModel_ReturnsViewResultWithModel()
         {
@@ -355,15 +411,15 @@ namespace ProjectTests
         }
 
         [TestMethod]
-        public async Task DeleteConfirmed_ReturnsRedirectToActionResult_WhenTeacherExists()
+        [DynamicData(nameof(TeachersJSON))]
+        public async Task DeleteConfirmed_ReturnsRedirectToActionResult_WhenTeacherExists(String Title, String FirstName, String LastName, String UserName, String Email)
         {
             // Arrange
-            var teacher = new Teacher { Id = 999, Title = "Mr.", FirstName = "Michael", LastName = "Davis", UserName = "michaeldavis", Email = "michaeldavis@example.com" };
+            var teacher = new Teacher { Id = 999, Title = Title, FirstName = FirstName, LastName = LastName, UserName = UserName, Email = Email };
             _context.Teacher.Add(teacher);
-            var id = 999;
 
             // Act
-            var result = await _teacherController.DeleteConfirmed(id);
+            var result = await _teacherController.DeleteConfirmed(999);
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
@@ -383,5 +439,7 @@ namespace ProjectTests
             // Assert
             Assert.IsInstanceOfType(result, typeof(ObjectResult));
         }
+
+       
     }
 }
