@@ -311,31 +311,21 @@ namespace ProjectTests
         [TestMethod]
         public async Task DeleteConfirmed_ReturnsNotFoundResult_WhenStudentDoesNotExist()
         {
-            // Arrange
             var student = new Student { Index = 1, Department = "RI", Year = 1, FirstName = "Michael", LastName = "Davis", UserName = "michaeldavis", Email = "michaeldavis@example.com" };
             _context.Student.Add(student);
             _context.SaveChanges();
-
-            // Act
             var foundStudent = _context.Student.FirstOrDefault(m => m.FirstName == student.FirstName);
             var result = await _studentController.DeleteConfirmed(2);
             _context.Student.Remove(foundStudent!);
             _context.SaveChanges();
-
-            // Assert
             Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
         }
 
         [TestMethod]
         public async Task DeleteConfirmed_ReturnsProblemResult_WhenStudentIsNull()
         {
-            // Arrange
             _context.Student = null!;
-
-            // Act
             var result = await _studentController.DeleteConfirmed(1);
-
-            // Assert
             Assert.IsInstanceOfType(result, typeof(ObjectResult));
         }
     }
