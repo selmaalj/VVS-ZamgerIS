@@ -101,8 +101,6 @@ namespace ooadproject.Controllers
             var exams = await _context.Exam.Include(e => e.Course).ToListAsync();
             foreach (var exam in exams)
             {
-                if (exam.Course == null)
-                    continue;
                 if (exam.Course.TeacherID == teacher.Id && exam.Time > DateTime.Now)
                 {
                     Exams.Add(exam);
