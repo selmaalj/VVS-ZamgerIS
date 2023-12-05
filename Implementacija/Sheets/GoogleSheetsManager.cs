@@ -14,7 +14,7 @@ namespace ooadproject.Sheets
     {
         static string[] Scopes = { SheetsService.Scope.SpreadsheetsReadonly };
         static string ApplicationName = "Zam";
-        static string ClientSecretFilePath = "Sheets\\cred.json";
+        static string ClientSecretFilePath = "Sheets\\credentials.json";
         static string Range = "Sheet1!A1:Z100";
         string SpreadsheetId;
 
