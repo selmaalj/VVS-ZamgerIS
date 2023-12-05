@@ -41,6 +41,7 @@ namespace ProjectTests
         public void ExtractSpreadsheetId_ValidLink_ReturnsSpreadsheetId()
         {
             // Arrange
+            var manager = new SheetsFacade();
             string link = "https://docs.google.com/spreadsheets/d/1vErXCyteFukR0smnSF8jN7nVhZznzaz2tNJo8pouWjU/edit#gid=0";
             string expectedId = "1vErXCyteFukR0smnSF8jN7nVhZznzaz2tNJo8pouWjU";
 
