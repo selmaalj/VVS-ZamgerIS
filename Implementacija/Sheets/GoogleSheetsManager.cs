@@ -2,10 +2,6 @@
 using Google.Apis.Sheets.v4;
 using Google.Apis.Sheets.v4.Data;
 using Google.Apis.Services;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
 using Google.Apis.Util.Store;
 
 namespace ooadproject.Sheets
@@ -20,6 +16,10 @@ namespace ooadproject.Sheets
 
         public GoogleSheetsManager(string _spreadsheetId)
         {
+            if (string.IsNullOrEmpty(_spreadsheetId))
+            {
+                throw new ArgumentException("SpreadsheetId cannot be null or empty");
+            }
             SpreadsheetId = _spreadsheetId;
         }
         public Dictionary<string, string> GetExam()
