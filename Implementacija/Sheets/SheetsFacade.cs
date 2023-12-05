@@ -46,7 +46,7 @@
                 }
                 else
                 {
-                    Console.WriteLine($"Greška u formatu rezultata");
+                    throw new Exception("Incorrectly formated data in cells!");
                 }
             }
 
