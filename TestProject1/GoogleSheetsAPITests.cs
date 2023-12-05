@@ -6,6 +6,7 @@ namespace ProjectTests
     public class GoogleSheetsAPITests
     {
         [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
         public void GetExamResults_InvalidLink_ReturnsEmptyResults()
         {
             // Arrange
@@ -15,8 +16,6 @@ namespace ProjectTests
             var results = SheetsFacade.GetExamResults(link);
 
             // Assert
-            Assert.IsNotNull(results);
-            Assert.AreEqual(0, results.Count);
         }
 
         [TestMethod]
@@ -31,10 +30,24 @@ namespace ProjectTests
             // Assert
             Assert.IsNotNull(results);
             Assert.AreEqual(2, results.Count);
-            Assert.IsTrue(results.ContainsKey(1));
-            Assert.IsTrue(results.ContainsKey(2));
-            Assert.AreEqual(90.5, results[1]);
-            Assert.AreEqual(85.2, results[2]);
+            Assert.IsTrue(results.ContainsKey(19109));
+            Assert.IsTrue(results.ContainsKey(19163));
+            Assert.AreEqual(10, results[19163]);
+            Assert.AreEqual(5, results[19109]);
+        }
+
+        [TestMethod]
+        [ExpectedException (typeof(Exception))]
+        public void GetExamResults_WrongFormat_ThrowsException()
+        {
+            // Arrange
+            string link = "https://docs.google.com/spreadsheets/d/1xEbVjwSOi13Z_JS38Q9jjgRI2ePXr3xI4Ua10pixBS8/edit?usp=sharing";
+
+            // Act
+            var results = SheetsFacade.GetExamResults(link);
+
+            // Assert
+            
         }
 
         [TestMethod]
