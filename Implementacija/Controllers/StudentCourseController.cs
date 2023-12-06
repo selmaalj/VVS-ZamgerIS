@@ -208,10 +208,11 @@ namespace ooadproject.Controllers
 
             return View();
         }
-
+        /*
         private bool StudentCourseExists(int id)
         {
           return (_context.StudentCourse?.Any(e => e.ID == id)).GetValueOrDefault();
         }
+        */
     }
 }
