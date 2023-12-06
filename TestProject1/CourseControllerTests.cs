@@ -338,6 +338,9 @@ namespace ProjectTests
 
             // Act
             var result = await _courseController.Delete(course.ID) as ViewResult;
+            _context.Course.Remove(course);
+            await _context.SaveChangesAsync();
+            
 
             // Assert
             Assert.IsInstanceOfType(result, typeof(ViewResult));
