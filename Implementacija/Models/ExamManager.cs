@@ -17,7 +17,7 @@ namespace ooadproject.Models
 
             foreach (KeyValuePair<int, double> result in results)
             {
-                var student =  _context.Student.FirstOrDefault(s => s.Index == result.Key);
+                var student = _context.Student.FirstOrDefault(s => s.Index == result.Key);
                 if (student != null)
                 {
                     var newExam = new StudentExam();

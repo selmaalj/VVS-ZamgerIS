@@ -48,7 +48,7 @@ namespace ooadproject.Controllers
             var applicationDbContext = _context.StudentExam.Include(s => s.Course).Include(s => s.Exam);
             return View(await applicationDbContext.ToListAsync());
         }
-      
+
         [HttpPost]
         public async Task<IActionResult> SaveExamResults(int id, string link)
         {
@@ -56,6 +56,8 @@ namespace ooadproject.Controllers
             await _examManager.SaveExamResults(exam, link);
             return RedirectToAction(nameof(Index));
         }
+
+
         // GET: StudentExam/Details/5
         public async Task<IActionResult> Details(int? id)
         {

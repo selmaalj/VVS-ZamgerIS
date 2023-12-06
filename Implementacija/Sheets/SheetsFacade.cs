@@ -11,7 +11,6 @@
 
         public static string ExtractSpreadsheetId(string link)
         {
-            // Extract the spreadsheet ID from the link
             string spreadsheetId = string.Empty;
             try
             {
@@ -33,29 +32,26 @@
             string id = ExtractSpreadsheetId(link);
 
             _manager = new GoogleSheetsManager(id);
-            
-            var stringResults =  _manager.GetExam();
-            
+
+            var stringResults = _manager.GetExam();
+
             var results = new Dictionary<int, double>();
 
-           
-                foreach (var kvp in stringResults)
+
+            foreach (var kvp in stringResults)
+            {
+                if (int.TryParse(kvp.Key, out int parsedKey) && double.TryParse(kvp.Value, out double parsedValue))
                 {
-                    if (int.TryParse(kvp.Key, out int parsedKey) && double.TryParse(kvp.Value, out double parsedValue))
-                    {
-                        results.Add(parsedKey, parsedValue);
-                    }
-                    else
-                    {
-                        // Handle parsing errors if necessary
-                        Console.WriteLine($"Greška u formatu rezultata");
-                    }
+                    results.Add(parsedKey, parsedValue);
                 }
+                else
+                {
+                    throw new Exception("Incorrectly formated data in cells!");
+                }
+            }
 
-
-             
             return results;
         }
-
     }
+
 }
