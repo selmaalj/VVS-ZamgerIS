@@ -444,6 +444,7 @@ namespace ProjectTests
             var homework = new Homework
             {
                 CourseID = 1,
+                Course = await _context.Course.FindAsync(10),
                 Deadline = DateTime.Now.AddDays(7),
                 TotalPoints = 100,
                 Description = "Sample homework"
