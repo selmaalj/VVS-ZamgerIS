@@ -132,6 +132,7 @@ namespace ooadproject.Controllers
             ViewData["Courses"] = await _context.Course.Where(c => c.TeacherID == user.Id).ToListAsync();
             return RedirectToAction(nameof(Index));
         }
+        /*
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
@@ -151,6 +152,7 @@ namespace ooadproject.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+        */
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Exam == null)
