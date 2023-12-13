@@ -274,5 +274,30 @@ namespace ProjectTests
             Assert.IsInstanceOfType(result, typeof(ViewResult));
         }
 
+        [TestMethod]
+        public async Task SaveExamResults_ShouldRedirectToIndex()
+        {
+            //Arrange
+            String link = "https://docs.google.com/spreadsheets/d/1YUKFj6FtTdgWmuGP1gGHNGS2Ik8_VfrvCYadJ39iZFU/edit?usp=sharing";
+            int id = 297;
+            var controller = new StudentExamController(_context, _mockUserManager.Object);
+
+            //Act
+            var result = await controller.SaveExamResults(id, link) as RedirectToActionResult;
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result, typeof(RedirectToActionResult));
+
+            //Cleanup
+            var examsToRemove = await _context.StudentExam.Where(m => m.ExamID == id).ToListAsync();
+            Assert.IsNotNull(examsToRemove[0].GetTotalPoints());
+            Assert.IsNotNull(examsToRemove[0].GetActivityDate());
+            Assert.IsNotNull(examsToRemove[0].GetActivityType());
+            Assert.IsNotNull(examsToRemove[0].GetPointsScored());
+            _context.StudentExam.RemoveRange(examsToRemove);
+            await _context.SaveChangesAsync();
+        }
+
     }
 }

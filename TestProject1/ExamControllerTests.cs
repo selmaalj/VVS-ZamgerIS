@@ -464,5 +464,43 @@ namespace ProjectTests
             mockUserManager.Verify(um => um.GetUserAsync(It.IsAny<ClaimsPrincipal>()), Times.Once);
         }
         */
+        [TestMethod]
+        public async Task Edit_ModelStateInvalid_ReturnsViewResult()
+        {
+            //Arrange
+            var exam = new Exam {
+                ID = 99,
+                CourseID = 1,
+                Time = DateTime.Now.AddDays(5),
+                Type = ExamType.Midterm,
+                TotalPoints = 100,
+                MinimumPoints = 50
+            };
+            var controller = new ExamController(_context, _mockUserManager.Object);
+            controller.ModelState.AddModelError("error", "Neki error");
+
+            //Act
+            var result = await controller.Edit(exam.ID, exam) as ViewResult;
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(exam, result.Model);
+        }
+
+        [TestMethod]
+        public async Task Edit_ReturnsViewResult_WhenStudentServiceIsNotNull()
+        {
+            //Arrange
+            int? id = 2;
+            var user = await _context.Teacher.FindAsync(18);
+            _mockUserManager.Setup(m => m.GetUserAsync(default)).ReturnsAsync(user);
+            var controller = new ExamController(_context, _mockUserManager.Object);
+
+            //Act
+            var result = await controller.Edit(id);
+
+            //Arrange
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+        }
     }
 }
