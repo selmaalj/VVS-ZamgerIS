@@ -299,5 +299,38 @@ namespace ProjectTests
             await _context.SaveChangesAsync();
         }
 
+        [TestMethod]
+        public async Task Create_ReturnsViewResult_ValidModel()
+        {
+            //Arrange
+            int id = 203;
+            var user = await _context.Teacher.FindAsync(21);
+            _mockUserManager.Setup(m => m.GetUserAsync(default)).ReturnsAsync(user);
+            var controller = new StudentExamController(_context, _mockUserManager.Object);
+
+            //Act
+            var result = await controller.Create(id) as ViewResult;
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+        }
+
+        [TestMethod]
+        public async Task TeacherInput_ReturnsViewResult_ValidModel()
+        {
+            //Arrange
+            var user = await _context.Teacher.FindAsync(21);
+            _mockUserManager.Setup(m => m.GetUserAsync(default)).ReturnsAsync(user);
+            var controller = new StudentExamController(_context, _mockUserManager.Object);
+
+            //Act
+            var result = await controller.TeacherInput(203);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.IsInstanceOfType(result, typeof(ViewResult));
+        }
+
     }
 }
